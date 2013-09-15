@@ -1,6 +1,4 @@
-/*global define */
-define([], function () {
-    'use strict';
-
-    return '\'Allo \'Allo!';
+define(['angular', 'ui.router'], function (angular) {
+  'use strict';
+  return angular.module('app', ['ui.router']);
 });
