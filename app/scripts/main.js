@@ -46,4 +46,21 @@ require([
     Backbone.history.start();
     var codeView = (new CodeView({ el: '.codeView' })).render();
     $('#sidebar').mmenu();
+
+    var sampleData = [
+        {
+            label: 'Sample Folder',
+            children: [
+            {
+                label: 'File 1'
+            },
+            {
+                label: 'File 2'
+            }]
+        }
+    ];
+
+    $('#file-tree').tree({
+        data: sampleData
+    })
 });
