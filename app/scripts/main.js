@@ -40,27 +40,13 @@ require.config({
 require([
     'backbone',
     'views/code',
+    'views/sidebar',
     'mmenu',
     'jqTree'
-], function (Backbone, CodeView) {
+], function (Backbone, CodeView, Sidebar) {
     Backbone.history.start();
     var codeView = (new CodeView({ el: '.codeView' })).render();
     $('#sidebar').mmenu();
 
-    var sampleData = [
-        {
-            label: 'Sample Folder',
-            children: [
-            {
-                label: 'File 1'
-            },
-            {
-                label: 'File 2'
-            }]
-        }
-    ];
-
-    $('#file-tree').tree({
-        data: sampleData
-    })
+    var sidebar = (new Sidebar({ el: '#file-tree'})).render();
 });
