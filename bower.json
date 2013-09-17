@@ -2,7 +2,7 @@
   "name": "marc",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "~1.9.0",
+    "jquery": "~1.10.2",
     "underscore": "~1.4.3",
     "backbone": "~1.0.0",
     "requirejs": "~2.1.5",
