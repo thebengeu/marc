@@ -11,7 +11,11 @@ define([
 
     var CodeView = Backbone.View.extend({
         render: function() {
-            CodeMirror(this.el);
+            CodeMirror(this.el, {
+                lineNumbers: true,
+                lineWrapping: true,
+                readOnly: true
+            });
             return this;
         }
     });
