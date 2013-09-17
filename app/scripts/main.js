@@ -1,22 +1,28 @@
+/*global require*/
+'use strict';
+
 require.config({
-  paths: {
-    angular: '../bower_components/angular/angular',
-    Prism: '../bower_components/prism/prism',
-    'ui.router': '../bower_components/angular-ui-router/release/angular-ui-router'
-  },
-  shim: {
-    angular: {
-      exports: 'angular'
+    shim: {
+        underscore: {
+            exports: '_'
+        },
+        backbone: {
+            deps: [
+                'underscore',
+                'jquery'
+            ],
+            exports: 'Backbone'
+        }
     },
-    Prism: {
-      exports: 'Prism'
-    },
-    'ui.router': {
-      deps: ['angular']
+    paths: {
+        jquery: '../bower_components/jquery/jquery',
+        backbone: '../bower_components/backbone/backbone',
+        underscore: '../bower_components/underscore/underscore'
     }
-  }
 });
 
-require(['bootstrap', 'directives/prism'], function () {
-  'use strict';
+require([
+    'backbone'
+], function (Backbone) {
+    Backbone.history.start();
 });
