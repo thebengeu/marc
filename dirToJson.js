@@ -30,7 +30,6 @@ var dirToObj = function (dir, callback) {
                     }
                     return;
                 }
-                console.log(file)
                 if (stat && stat.isDirectory()) {
                     dirToObj(dir + '/' + file, function (err, res) {
                         results.children.push(res);
