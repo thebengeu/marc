@@ -8,7 +8,9 @@
     "requirejs": "~2.1.5",
     "requirejs-text": "~2.0.5",
     "modernizr": "~2.6.2",
-    "topcoat": "~0.7.0"
+    "topcoat": "~0.7.0",
+    "jqtree": "~0.18.0",
+    "codemirror": "~3.16.0"
   },
   "devDependencies": {}
 }
