@@ -35,8 +35,8 @@ require.config({
 
 require([
     'backbone',
-    'mmenu',
-    'views/code'
+    'views/code',
+    'mmenu'
 ], function (Backbone, CodeView) {
     Backbone.history.start();
     var codeView = (new CodeView({ el: '.codeView' })).render();
