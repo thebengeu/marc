@@ -33,7 +33,8 @@ require.config({
         mmenu: '../other_components/mmenu/jquery.mmenu.min',
         codemirror: '../bower_components/codemirror/lib/codemirror',
         codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
-        jqTree: '../bower_components/jqtree/tree.jquery'
+        jqTree: '../bower_components/jqtree/tree.jquery',
+        localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage'
     }
 });
 
