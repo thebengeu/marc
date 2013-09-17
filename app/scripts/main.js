@@ -21,6 +21,9 @@ require.config({
         },
         codemirror_javascript: {
             deps: ['codemirror']
+        },
+        jqTree: {
+            deps: ['jquery']
         }
     },
     paths: {
@@ -29,14 +32,16 @@ require.config({
         underscore: '../bower_components/underscore/underscore',
         mmenu: '../other_components/mmenu/jquery.mmenu.min',
         codemirror: '../bower_components/codemirror/lib/codemirror',
-        codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript'
+        codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
+        jqTree: '../bower_components/jqtree/tree.jquery'
     }
 });
 
 require([
     'backbone',
     'views/code',
-    'mmenu'
+    'mmenu',
+    'jqTree'
 ], function (Backbone, CodeView) {
     Backbone.history.start();
     var codeView = (new CodeView({ el: '.codeView' })).render();
