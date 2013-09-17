@@ -12,17 +12,22 @@ require.config({
                 'jquery'
             ],
             exports: 'Backbone'
+        },
+        mmenu: {
+            deps: ['jquery']
         }
     },
     paths: {
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
-        underscore: '../bower_components/underscore/underscore'
+        underscore: '../bower_components/underscore/underscore',
+        mmenu: '../other_components/mmenu/jquery.mmenu.min'
     }
 });
 
 require([
-    'backbone'
+    'backbone', 'mmenu'
 ], function (Backbone) {
     Backbone.history.start();
+    $('#sidebar').mmenu();
 });
