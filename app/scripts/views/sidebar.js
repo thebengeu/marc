@@ -7,9 +7,17 @@ define([
 	'jqTree'
 ], function($, _, Backbone) {
 	var Sidebar = Backbone.View.extend({
+		initialize: function() {
+			var that = this;
+			$.get("//localhost:9000/dir.json", function(response) {
+				that.parseDirJson(response);
+				that.dirStructure = response;
+				that.render();
+			});
+		},
 		render: function() {
 			this.$('#file-tree').tree({
-			    
+			    data: this.dirStructure.children
 			});
 			return this;
 		},
