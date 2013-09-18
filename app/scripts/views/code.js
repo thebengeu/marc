@@ -1,18 +1,24 @@
 /*global define*/
 
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'codemirror'
+    'jquery',
+    'underscore',
+    'backbone',
+    'codemirror'
 ], function ($, _, Backbone, CodeMirror) {
     'use strict';
 
     var CodeView = Backbone.View.extend({
+        setMode: function (mode) {
+            require(['../bower_components/codemirror/mode/' + mode + '/' + mode],
+                _.bind(function () {
+                    this.codeMirror.setOption('mode', mode);
+                }, this));
+        },
         setValue: function (value) {
             this.codeMirror.setValue(value);
         },
-        render: function() {
+        render: function () {
             this.codeMirror = CodeMirror(this.el, {
                 lineNumbers: true,
                 lineWrapping: true,
