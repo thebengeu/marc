@@ -12,6 +12,19 @@ define([
 			    
 			});
 			return this;
+		},
+		parseDirJson: function(rawJson) {
+			for (var property in rawJson) {
+				if (property === 'path') {
+					rawJson.label = rawJson[property];
+					delete rawJson[property];
+				}
+			}
+			if (rawJson.children) {
+				for (var i = 0; i < rawJson.children.length; i++) {
+					this.parseDirJson(rawJson.children[i]);
+				}
+			}
 		}
 	});
 
