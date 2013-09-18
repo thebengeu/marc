@@ -3,8 +3,9 @@
 define([
     'jquery',
     'backbone',
-    'views/code'
-], function ($, Backbone, CodeView) {
+    'views/code',
+    'extToMode'
+], function ($, Backbone, CodeView, extToMode) {
     'use strict';
     var ApplicationRouter = Backbone.Router.extend({
         routes: {
@@ -18,6 +19,9 @@ define([
         },
         server: function (path) {
             $.get(path, function (data) {
+                var extension = path.split('.').pop();
+                var mode = extToMode[extension];
+                CodeView.setMode(mode);
                 CodeView.setValue(data);
             }, 'text');
         }
