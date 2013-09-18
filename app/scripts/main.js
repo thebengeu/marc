@@ -50,4 +50,26 @@ require([
     $('#sidebar').mmenu();
 
     var sidebar = (new Sidebar({ el: '#file-tree'})).render();
+		
+		var data = [
+								{
+										label: '/',
+										id: '/'
+								}
+						];
+    $('#dropbox-tree-view').tree({
+        data: data,
+				autoOpen: false,
+				onLoadFailed: function(response) {
+					alert("boo!");
+					console.log(response);
+				}
+    });
+		
+		$('#dropbox-tree-view').bind(
+				'tree.open',
+				function(e) {
+						console.log(e.node);
+				}
+		);
 });
