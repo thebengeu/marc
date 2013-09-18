@@ -4,14 +4,16 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'codemirror',
-  'codemirror_javascript'
+  'codemirror'
 ], function ($, _, Backbone, CodeMirror) {
     'use strict';
 
     var CodeView = Backbone.View.extend({
+        setValue: function (value) {
+            this.codeMirror.setValue(value);
+        },
         render: function() {
-            CodeMirror(this.el, {
+            this.codeMirror = CodeMirror(this.el, {
                 lineNumbers: true,
                 lineWrapping: true,
                 readOnly: true
@@ -20,5 +22,5 @@ define([
         }
     });
 
-    return CodeView;
+    return (new CodeView({ el: '.codeView' })).render();
 });

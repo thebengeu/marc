@@ -40,16 +40,16 @@ require.config({
 
 require([
     'backbone',
-    'views/code',
     'views/sidebar',
+    'routes/application',
     'mmenu',
     'jqTree'
-], function (Backbone, CodeView, Sidebar) {
+], function (Backbone, Sidebar, ApplicationRouter) {
+    new ApplicationRouter;
     Backbone.history.start();
-    var codeView = (new CodeView({ el: '.codeView' })).render();
     $('#sidebar').mmenu();
 
-    var sidebar = (new Sidebar({ el: '#file-tree'})).render();
+    var sidebar = new Sidebar({ el: '#sidebar'});
 		
 		var data = [
 								{
