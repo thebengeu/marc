@@ -22,9 +22,14 @@ define([
 			return this;
 		},
 		parseDirJson: function(rawJson) {
+			// Change all instances of "path" to "label"
 			for (var property in rawJson) {
 				if (property === 'path') {
-					rawJson.label = rawJson[property];
+					// While we're at it, drop the "/" and anything before.
+					var originalPath = rawJson[property];
+					var lastSlash = originalPath.lastIndexOf("/") + 1;
+					var fileName = originalPath.slice(lastSlash);
+					rawJson.label = fileName;
 					delete rawJson[property];
 				}
 			}
