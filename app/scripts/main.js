@@ -91,10 +91,23 @@ define([
 
     var githubApiUrl = 'https://api.github.com';
 
-    $('#git-button').click(function() {
-        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods').done(function(e) {
-            console.log(e);
-        });
-    });
+    var getSha = function() {
+        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods/branches/master').done(
+            function(e) {
+                handleGetShaSuccess(e['commit']['sha']);
+            });
+    };
+
+    var handleGetShaSuccess = function(sha) {
+        if (!sha) {
+            return null;
+        }
+        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods/git/trees/' + sha + '?recursive=1').done(
+            function(e) {
+                console.log(e);
+            });
+    };
+
+    $('#git-button').click(getSha);
 
 });
