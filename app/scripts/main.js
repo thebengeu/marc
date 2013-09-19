@@ -116,27 +116,41 @@ define([
 
     var storeFileContentsFromLeaf = function(leaf, repoDict) {
         var type = leaf['type'];
-        var path = leaf['path'];
+        var relpath = leaf['path'];
         var sha = leaf['sha'];
+        var abspath = 'github/' + user + '/' + repo + '/' + relpath;
 
         if (type == 'tree') {
-            repoDict[sha] = {
-                'path': path,
+            var dirData = {
+                'relpath': relpath,
+                'abspath': abspath,
                 'type': 'dir',
                 'sha': sha
             };
+
+            // Adding to repoDict - Not used now
+            repoDict[sha] = dirData;
+
+            // Adding to localStorage
+            localStorage[abspath] = JSON.stringify(dirData);
         }
         else if (type == 'blob') {
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + path, {'headers': gitHeaders})
+                '/contents/' + relpath, {'headers': gitHeaders})
                 .done(function(data) {
                     // TODO(benedict): Check if message not found exists
-                    repoDict[sha] = {
-                        'path': path,
-                        'type': 'file',
+                    var fileData = {
+                        'relpath': relpath,
+                        'abspath': abspath,
                         'sha': sha,
                         'content': data['content']
                     };
+
+                    // Adding to repoDict - Not used now
+                    repoDict[sha] = fileData;
+
+                    // Adding to localStorage
+                    localStorage[abspath] = JSON.stringify(fileData);
                 });
         }
 
