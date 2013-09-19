@@ -16,6 +16,7 @@ define([
             });
         },
         render: function () {
+            var that = this;
             this.$('#file-tree').tree({
                 data: this.dirStructure.children
             });
@@ -24,9 +25,15 @@ define([
                 function (event) {
                     var node = event.node;
                     Backbone.history.navigate(
-                        'server/' + node.path,
-                        {trigger: true}
+                        'server/' + node.path, {
+                            trigger: true
+                        }
                     );
+
+                    // Open or close the node.
+                    if (node.children) {
+                        that.$('#file-tree').tree('toggle', node);
+                    }
                 }
             );
             return this;
