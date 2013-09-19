@@ -79,3 +79,22 @@ require([
 				}
 		);
 });
+
+// TODO(benedict): shift this, not sure how to use this framework yet. :(
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'codemirror'
+], function ($, _, Backbone, CodeMirror) {
+    'use strict';
+
+    var githubApiUrl = 'https://api.github.com';
+
+    $('#git-button').click(function() {
+        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods').done(function(e) {
+            console.log(e);
+        });
+    });
+
+});
