@@ -90,10 +90,14 @@ define([
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
+    var user = 'ahbeng';
+    var repo = 'NUSMods';
+    var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
 
     var getSha = function() {
-        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods/branches/master').done(
-            function(e) {
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {'headers': gitHeaders})
+            .done(function(e) {
+                // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
             });
     };
@@ -102,12 +106,56 @@ define([
         if (!sha) {
             return null;
         }
-        $.ajax(githubApiUrl + '/repos/ahbeng/NUSMods/git/trees/' + sha + '?recursive=1').done(
-            function(e) {
-                console.log(e);
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
+            sha + '?recursive=1', {'headers': gitHeaders})
+            .done(function(data) {
+                // TODO(benedict): Check if message not found exists
+                getFileContentsFromTree(data['tree'], data['sha']);
             });
     };
 
-    $('#git-button').click(getSha);
+    var storeFileContentsFromLeaf = function(leaf, repoDict) {
+        var type = leaf['type'];
+        var path = leaf['path'];
+        var sha = leaf['sha'];
 
+        if (type == 'tree') {
+            repoDict[sha] = {
+                'path': path,
+                'type': 'dir',
+                'sha': sha
+            };
+        }
+        else if (type == 'blob') {
+            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
+                '/contents/' + path, {'headers': gitHeaders})
+                .done(function(data) {
+                    // TODO(benedict): Check if message not found exists
+                    repoDict[sha] = {
+                        'path': path,
+                        'type': 'file',
+                        'sha': sha,
+                        'content': data['content']
+                    };
+                });
+        }
+
+    };
+
+    var getFileContentsFromTree = function(tree, sha) {
+        // create repo dictionary
+        // keys: file sha, value: dir path/file contents
+        var repoDictKeys = _.pluck(tree, 'sha');
+        var repoDict = {};
+        _.each(repoDictKeys, function(key) {
+            repoDict[key] = null;
+        });
+
+        // get file contents for each object in the tree
+        _.map(tree, function(leaf) {
+            storeFileContentsFromLeaf(leaf, repoDict)
+        });
+    };
+
+    $('#git-button').click(getSha);
 });
