@@ -16,6 +16,7 @@ define([
             });
         },
         render: function () {
+            var that = this;
             this.$('#file-tree').tree({
                 data: this.dirStructure.children
             });
@@ -28,6 +29,11 @@ define([
                             trigger: true
                         }
                     );
+
+                    // Open or close the node.
+                    if (node.children) {
+                        that.$('#file-tree').tree('toggle', node);
+                    }
                 }
             );
             return this;
