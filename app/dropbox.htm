@@ -1,0 +1,131 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="bower_components/topcoat/css/topcoat-mobile-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="other_components/mmenu/mmenu.css">
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div id="sidebar">
+            <span>This is a test sidebar.</span>
+        </div>
+        <div class="container">
+            <div class="hero-unit">
+                <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.1/dropbox.min.js">
+								</script>
+								<script>
+								function doSomething(client){
+									console.log("Authenticated!")
+								}
+
+								function showError(error){
+									console.log(error);
+								}
+
+								var client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
+
+								var dropbox = {
+									authenticate: function(){
+										client.authenticate(function(error, client) {
+											if (error) {
+											// Replace with a call to your own error-handling code.
+											//
+											// Don't forget to return from the callback, so you don't execute the code
+											// that assumes everything went well.
+											return showError(error);
+											}
+
+											// Replace with a call to your own application code.
+											//
+											// The user authorized your app, and everything went well.
+											// client is a Dropbox.Client instance that you can use to make API calls.
+											dropbox.browseFolder('/');
+										});
+									},
+									
+									browseFolder: function(path){
+										client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
+											if (error) {
+												return showError(error);  // Something went wrong.
+											}
+											
+											$('#dropbox-browse-list').empty();
+
+											console.log(entries);
+											console.log(dirInfo);
+											console.log(dirContentInfo);
+											//alert("Your Dropbox contains " + entries.join(", "));
+											
+											var treeData = [];
+											for(i in dirContentInfo){
+												if(dirContentInfo[i].isFolder){
+													//var elem = document.createElement("li").append(document.createTextNode(dirContentInfo[i].name));
+													//console.log($('#dropbox-browse-list').html());
+													treeData.push({
+														id: dirContentInfo[i].path,
+														path: dirContentInfo[i].path,
+														label: dirContentInfo[i].name,
+														load_on_demand: true
+													});
+												}else{
+													treeData.push({
+														id: dirContentInfo[i].path,
+														path: dirContentInfo[i].path,
+														label: dirContentInfo[i].name
+													});
+												}
+											}
+											
+											node = $('#dropbox-tree-view').tree('getNodeById', dirInfo.path);
+											$('#dropbox-tree-view').tree('loadData', treeData, node);
+										});
+									}
+								}
+
+								dropbox.authenticate();
+								</script>
+								<input type="button" onclick="dropbox.browseFolder('/')" value="Root">
+								<input type="button" onclick="dropbox.browseFolder('/')" value="Up">
+								<input type="button" value="Choose this folder">
+								<div id="dropbox-tree-view" data-url="/nodes/"></div>
+								<div id="dropbox-browse-folder" style="display:none;">
+									<ul id="dropbox-browse-list">
+									</ul>
+								</div>
+            </div>
+						
+	
+						
+            <div class="codeView"></div>
+        </div>
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script> -->
+
+        <!-- build:js scripts/main.js -->
+        <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
