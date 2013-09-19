@@ -95,6 +95,19 @@ define([
     var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
 
     /**
+     * Decode base64 strings with newline characters.
+     * @param {string} string The base64 string to be decoded.
+     */
+    var decodeBase64 = function(string) {
+        var splitString = string.split('\n');
+
+        splitString = _.map(splitString, function(s) {
+            return atob(s);
+        });
+        return splitString.join('\n');
+    };
+
+    /**
      * Gets the repo sha.
      */
     var getSha = function() {
@@ -157,7 +170,7 @@ define([
                         'relpath': relpath,
                         'abspath': abspath,
                         'sha': sha,
-                        'content': data['content']
+                        'content': decodeBase64(data['content'])
                     };
 
                     // Adding to repoDict - Not used now
@@ -189,6 +202,6 @@ define([
             storeFileContentsFromLeaf(leaf, repoDict)
         });
     };
-    
+
     $('#git-button').click(getSha);
 });
