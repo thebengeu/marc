@@ -94,6 +94,9 @@ define([
     var repo = 'NUSMods';
     var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
 
+    /**
+     * Gets the repo sha.
+     */
     var getSha = function() {
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {'headers': gitHeaders})
             .done(function(e) {
@@ -102,6 +105,10 @@ define([
             });
     };
 
+    /**
+     * Recursively gets the files from the repo tree given the repo's sha.
+     * @param {number} sha The repo's sha.
+     */
     var handleGetShaSuccess = function(sha) {
         if (!sha) {
             return null;
@@ -114,6 +121,13 @@ define([
             });
     };
 
+    /**
+     * Gets and stores the file contents for each leaf in the repo tree.
+     * Directory types do not have content, but will store te file path
+     * instead.
+     * @param {Object} leaf .
+     * @param {Object} repoDict keys: file sha, value: dir path/file contents
+     */
     var storeFileContentsFromLeaf = function(leaf, repoDict) {
         var type = leaf['type'];
         var relpath = leaf['path'];
@@ -156,6 +170,11 @@ define([
 
     };
 
+    /**
+     * Gets the file contents from the repo tree.
+     * @param {Object} tree The repo's tree.
+     * @param {number} sha The repo's sha.
+     */
     var getFileContentsFromTree = function(tree, sha) {
         // create repo dictionary
         // keys: file sha, value: dir path/file contents
@@ -170,6 +189,6 @@ define([
             storeFileContentsFromLeaf(leaf, repoDict)
         });
     };
-
+    
     $('#git-button').click(getSha);
 });
