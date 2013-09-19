@@ -24,8 +24,9 @@ define([
                 function (event) {
                     var node = event.node;
                     Backbone.history.navigate(
-                        'server/' + node.path,
-                        {trigger: true}
+                        'server/' + node.path, {
+                            trigger: true
+                        }
                     );
                 }
             );
