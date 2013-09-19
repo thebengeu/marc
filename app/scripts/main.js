@@ -83,10 +83,8 @@ require([
 // TODO(benedict): shift this, not sure how to use this framework yet. :(
 define([
     'jquery',
-    'underscore',
-    'backbone',
-    'codemirror'
-], function ($, _, Backbone, CodeMirror) {
+    'underscore'
+], function ($, _) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
