@@ -9,7 +9,7 @@ define([
     var Sidebar = Backbone.View.extend({
         initialize: function () {
             var that = this;
-            $.get("dir.json", function (response) {
+            $.get('dir.json', function (response) {
                 that.parseDirJson(response);
                 that.dirStructure = response;
                 that.render();
@@ -37,7 +37,7 @@ define([
                 if (property === 'path') {
                     // While we're at it, drop the "/" and anything before.
                     var originalPath = rawJson[property];
-                    var lastSlash = originalPath.lastIndexOf("/") + 1;
+                    var lastSlash = originalPath.lastIndexOf('/') + 1;
                     var fileName = originalPath.slice(lastSlash);
                     rawJson.label = fileName;
                 }
