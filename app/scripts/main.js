@@ -60,8 +60,8 @@ require([
                 disable: 'right',
                 element: document.getElementById('content')
             });
-            $('.navbar-toggle').click(function(){
-                if( snapper.state().state=="left" ){
+            $('.navbar-toggle').click(function () {
+                if (snapper.state().state == "left") {
                     snapper.close();
                 } else {
                     snapper.open('left');
@@ -69,39 +69,39 @@ require([
 
             });
         },
-        match : function() {
+        match: function () {
             snapper.disable();
             snapper.open('left');
         },
-        unmatch : function() {
+        unmatch: function () {
             snapper.close('left');
             snapper.enable();
         }
     });
 
     var sidebar = new Sidebar({ el: '.snap-drawer-left'});
-		
-		var data = [
-								{
-										label: '/',
-										id: '/'
-								}
-						];
+
+    var data = [
+        {
+            label: '/',
+            id: '/'
+        }
+    ];
     $('#dropbox-tree-view').tree({
         data: data,
-				autoOpen: false,
-				onLoadFailed: function(response) {
-					alert("boo!");
-					console.log(response);
-				}
+        autoOpen: false,
+        onLoadFailed: function (response) {
+            alert("boo!");
+            console.log(response);
+        }
     });
-		
-		$('#dropbox-tree-view').bind(
-				'tree.open',
-				function(e) {
-						console.log(e.node);
-				}
-		);
+
+    $('#dropbox-tree-view').bind(
+        'tree.open',
+        function (e) {
+            console.log(e.node);
+        }
+    );
 });
 
 // TODO(benedict): shift this, not sure how to use this framework yet. :(
@@ -120,10 +120,10 @@ define([
      * Decode base64 strings with newline characters.
      * @param {string} string The base64 string to be decoded.
      */
-    var decodeBase64 = function(string) {
+    var decodeBase64 = function (string) {
         var splitString = string.split('\n');
 
-        splitString = _.map(splitString, function(s) {
+        splitString = _.map(splitString, function (s) {
             return atob(s);
         });
         return splitString.join('\n');
@@ -132,9 +132,9 @@ define([
     /**
      * Gets the repo sha.
      */
-    var getSha = function() {
+    var getSha = function () {
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {'headers': gitHeaders})
-            .done(function(e) {
+            .done(function (e) {
                 // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
             });
@@ -144,13 +144,13 @@ define([
      * Recursively gets the files from the repo tree given the repo's sha.
      * @param {number} sha The repo's sha.
      */
-    var handleGetShaSuccess = function(sha) {
+    var handleGetShaSuccess = function (sha) {
         if (!sha) {
             return null;
         }
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
             sha + '?recursive=1', {'headers': gitHeaders})
-            .done(function(data) {
+            .done(function (data) {
                 // TODO(benedict): Check if message not found exists
                 getFileContentsFromTree(data['tree'], data['sha']);
             });
@@ -163,7 +163,7 @@ define([
      * @param {Object} leaf .
      * @param {Object} repoDict keys: file sha, value: dir path/file contents
      */
-    var storeFileContentsFromLeaf = function(leaf, repoDict) {
+    var storeFileContentsFromLeaf = function (leaf, repoDict) {
         var type = leaf['type'];
         var relpath = leaf['path'];
         var sha = leaf['sha'];
@@ -186,7 +186,7 @@ define([
         else if (type == 'blob') {
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/contents/' + relpath, {'headers': gitHeaders})
-                .done(function(data) {
+                .done(function (data) {
                     // TODO(benedict): Check if message not found exists
                     var fileData = {
                         'relpath': relpath,
@@ -210,17 +210,17 @@ define([
      * @param {Object} tree The repo's tree.
      * @param {number} sha The repo's sha.
      */
-    var getFileContentsFromTree = function(tree, sha) {
+    var getFileContentsFromTree = function (tree, sha) {
         // create repo dictionary
         // keys: file sha, value: dir path/file contents
         var repoDictKeys = _.pluck(tree, 'sha');
         var repoDict = {};
-        _.each(repoDictKeys, function(key) {
+        _.each(repoDictKeys, function (key) {
             repoDict[key] = null;
         });
 
         // get file contents for each object in the tree
-        _.map(tree, function(leaf) {
+        _.map(tree, function (leaf) {
             storeFileContentsFromLeaf(leaf, repoDict)
         });
     };
