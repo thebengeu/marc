@@ -28,6 +28,36 @@ require.config({
         },
         bootstrap: {
             deps: ['jquery']
+        },
+        matchbrackets: {
+            deps: ['codemirror']
+        },
+        foldcode: {
+            deps: ['codemirror']
+        },
+        foldgutter: {
+            deps: ['foldcode']
+        },
+        'match-highlighter': {
+            deps: ['codemirror']
+        },
+        'brace-fold': {
+            deps: ['foldgutter']
+        },
+        'comment-fold': {
+            deps: ['foldgutter']
+        },
+        'indent-fold': {
+            deps: ['foldgutter']
+        },
+        'xml-fold': {
+            deps: ['foldgutter']
+        },
+        matchtags: {
+            deps: ['xml-fold']
+        },
+        'active-line': {
+            deps: ['codemirror']
         }
     },
     paths: {
@@ -43,7 +73,17 @@ require.config({
         snap: '../bower_components/snapjs/snap',
         enquire: '../bower_components/enquire/dist/enquire',
         fastclick: '../bower_components/fastclick/lib/fastclick',
-        bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
+        bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+        matchbrackets: '../bower_components/codemirror/addon/edit/matchbrackets',
+        foldcode: '../bower_components/codemirror/addon/fold/foldcode',
+        foldgutter: '../bower_components/codemirror/addon/fold/foldgutter',
+        'match-highlighter': '../bower_components/codemirror/addon/search/match-highlighter',
+        'brace-fold': '../bower_components/codemirror/addon/fold/brace-fold',
+        'comment-fold': '../bower_components/codemirror/addon/fold/comment-fold',
+        'indent-fold': '../bower_components/codemirror/addon/fold/indent-fold',
+        'xml-fold': '../bower_components/codemirror/addon/fold/xml-fold',
+        matchtags: '../bower_components/codemirror/addon/edit/matchtags',
+        'active-line': '../bower_components/codemirror/addon/selection/active-line'
     }
 });
 

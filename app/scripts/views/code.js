@@ -4,7 +4,17 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'codemirror'
+    'codemirror',
+    'matchbrackets',
+    'foldcode',
+    'foldgutter',
+    'match-highlighter',
+    'brace-fold',
+    'comment-fold',
+    'indent-fold',
+    'xml-fold',
+    'matchtags',
+    'active-line'
 ], function ($, _, Backbone, CodeMirror) {
     'use strict';
 
@@ -28,7 +38,13 @@ define([
             this.codeMirror = CodeMirror(this.el, {
                 lineNumbers: true,
                 lineWrapping: true,
-                readOnly: true
+                readOnly: true,
+                matchBrackets: true,
+                foldGutter: true,
+                gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+                highlightSelectionMatches: {showToken: /\w/},
+                matchTags: {bothTags: true},
+                styleActiveLine: true
             });
 
             // Add a "Scroll to Top" button to make the ugly space at the bottom
