@@ -8,10 +8,12 @@
     "requirejs": "~2.1.5",
     "requirejs-text": "~2.0.5",
     "modernizr": "~2.6.2",
-    "topcoat": "~0.7.0",
     "jqtree": "~0.18.0",
     "codemirror": "~3.16.0",
-    "Backbone.localStorage": "~1.1.6"
+    "Backbone.localStorage": "~1.1.6",
+    "bootstrap": "~3.0.0",
+    "snapjs": "*",
+    "enquire": "~2.1.0"
   },
   "devDependencies": {}
 }

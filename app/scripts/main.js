@@ -13,9 +13,6 @@ require.config({
             ],
             exports: 'Backbone'
         },
-        mmenu: {
-            deps: ['jquery']
-        },
         codemirror: {
             exports: 'CodeMirror'
         },
@@ -34,13 +31,14 @@ require.config({
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/underscore/underscore',
-        mmenu: '../other_components/mmenu/jquery.mmenu.min',
         codemirror: '../bower_components/codemirror/lib/codemirror',
         codemirror_css: '../bower_components/codemirror/mode/css/css',
         codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
         codemirror_xml: '../bower_components/codemirror/mode/xml/xml',
         jqTree: '../bower_components/jqtree/tree.jquery',
-        localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage'
+        localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
+        snap: '../bower_components/snapjs/snap',
+        enquire: '../bower_components/enquire/dist/enquire'
     }
 });
 
@@ -48,14 +46,40 @@ require([
     'backbone',
     'views/sidebar',
     'routes/application',
-    'mmenu',
+    'snap',
+    'enquire',
     'jqTree'
-], function (Backbone, Sidebar, ApplicationRouter) {
+], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire) {
     new ApplicationRouter;
     Backbone.history.start();
-    $('#sidebar').mmenu();
 
-    var sidebar = new Sidebar({ el: '#sidebar'});
+    var snapper;
+    enquire.register("screen and (min-width: 768px)", {
+        setup: function () {
+            snapper = new Snap({
+                disable: 'right',
+                element: document.getElementById('content')
+            });
+            $('.navbar-toggle').click(function(){
+                if( snapper.state().state=="left" ){
+                    snapper.close();
+                } else {
+                    snapper.open('left');
+                }
+
+            });
+        },
+        match : function() {
+            snapper.disable();
+            snapper.open('left');
+        },
+        unmatch : function() {
+            snapper.close('left');
+            snapper.enable();
+        }
+    });
+
+    var sidebar = new Sidebar({ el: '.snap-drawer-left'});
 		
 		var data = [
 								{
