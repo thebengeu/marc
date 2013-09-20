@@ -25,6 +25,9 @@ require.config({
         },
         jqTree: {
             deps: ['jquery']
+        },
+        bootstrap: {
+            deps: ['jquery']
         }
     },
     paths: {
@@ -39,7 +42,8 @@ require.config({
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
         enquire: '../bower_components/enquire/dist/enquire',
-        fastclick: '../bower_components/fastclick/lib/fastclick'
+        fastclick: '../bower_components/fastclick/lib/fastclick',
+        bootstrap: '../bower_components/bootstrap/dist/js/bootstrap'
     }
 });
 
@@ -50,6 +54,7 @@ require([
     'snap',
     'enquire',
     'fastclick',
+    'bootstrap',
     'jqTree'
 ], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
@@ -229,5 +234,5 @@ define([
         });
     };
 
-    $('#git-button').click(getSha);
+    $('#add-from-github').click(getSha);
 });

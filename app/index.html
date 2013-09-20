@@ -34,7 +34,16 @@
         </nav>
         <div class="snap-drawers">
             <div class="snap-drawer snap-drawer-left">
-                <button id="git-button">Git</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-plus"></span> Add <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" id="add-from-dropbox">Dropbox Folder</a></li>
+                        <li><a href="#" id="add-from-github">GitHub Repository</a></li>
+                        <li><a href="#" id="add-from-server">Server Folder</a></li>
+                    </ul>
+                </div>
                 <div id="file-tree"></div>
             </div>
             <div class="snap-drawer snap-drawer-right"></div>
