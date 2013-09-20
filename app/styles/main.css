@@ -72,6 +72,11 @@
         right: 266px;
     }
 }
+
+.codeView, .CodeMirror {
+    height: 100%;
+}
+
 ul.jqtree-tree {
 	margin-left: 24px;
 }
