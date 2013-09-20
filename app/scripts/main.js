@@ -38,7 +38,8 @@ require.config({
         jqTree: '../bower_components/jqtree/tree.jquery',
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
-        enquire: '../bower_components/enquire/dist/enquire'
+        enquire: '../bower_components/enquire/dist/enquire',
+        fastclick: '../bower_components/fastclick/lib/fastclick'
     }
 });
 
@@ -48,8 +49,9 @@ require([
     'routes/application',
     'snap',
     'enquire',
+    'fastclick',
     'jqTree'
-], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire) {
+], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
 
@@ -102,6 +104,8 @@ require([
             console.log(e.node);
         }
     );
+
+    FastClick.attach(document.body);
 });
 
 // TODO(benedict): shift this, not sure how to use this framework yet. :(
