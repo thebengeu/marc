@@ -33,6 +33,8 @@ define([
         },
         setValue: function (value) {
             this.codeMirror.setValue(value);
+            var scrollInfo = this.codeMirror.getScrollInfo();
+            this.$scrollToTop.toggle(scrollInfo.height > scrollInfo.clientHeight);
         },
         render: function () {
             this.codeMirror = CodeMirror(this.el, {
@@ -51,7 +53,7 @@ define([
             // less obvious, since it may be needed:
             // "heightForcer is needed because behavior of elts with
             // overflow: auto and padding is inconsistent across browsers".
-            $('.CodeMirror-sizer').next()
+            this.$scrollToTop = $('.CodeMirror-sizer').next()
                 .width('100%')
                 .html('<div class="text-center">' +
                     '<button type="button" class="btn btn-default btn-xs">' +
