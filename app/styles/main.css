@@ -67,7 +67,11 @@
     width: 100%;
 }
 
+@media (min-width: 768px) {
+    .snapjs-left .snap-content {
+        right: 266px;
+    }
+}
 ul.jqtree-tree {
 	margin-left: 24px;
 }
-
