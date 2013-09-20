@@ -30,7 +30,7 @@ require.config({
     paths: {
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
-        underscore: '../bower_components/underscore/underscore',
+        underscore: '../bower_components/lodash/dist/lodash',
         codemirror: '../bower_components/codemirror/lib/codemirror',
         codemirror_css: '../bower_components/codemirror/mode/css/css',
         codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
