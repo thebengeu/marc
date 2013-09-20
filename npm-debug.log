@@ -1,0 +1,19 @@
+15505 error Error: ENOENT, lstat '/Users/benedict/Desktop/sem 1 2013:2014 Notes/cs3216/assignment3/2013-mobile-group-8/node_modules/grunt-requirejs/node_modules/grunt-jquerybuilder/node_modules/jquery-builder/jquery/node_modules/grunt/node_modules/jshint/packages/jshint/jshint.js'
+15506 error If you need help, you may report this log at:
+15506 error     <http://github.com/isaacs/npm/issues>
+15506 error or email it to:
+15506 error     <npm-@googlegroups.com>
+15507 error System Darwin 12.5.0
+15508 error command "/usr/local/Cellar/node/0.10.16/bin/node" "/usr/local/bin/npm" "install"
+15509 error cwd /Users/benedict/Desktop/sem 1 2013:2014 Notes/cs3216/assignment3/2013-mobile-group-8
+15510 error node -v v0.10.16
+15511 error npm -v 1.3.8
+15512 error path /Users/benedict/Desktop/sem 1 2013:2014 Notes/cs3216/assignment3/2013-mobile-group-8/node_modules/grunt-requirejs/node_modules/grunt-jquerybuilder/node_modules/jquery-builder/jquery/node_modules/grunt/node_modules/jshint/packages/jshint/jshint.js
+15513 error fstream_path /Users/benedict/Desktop/sem 1 2013:2014 Notes/cs3216/assignment3/2013-mobile-group-8/node_modules/grunt-requirejs/node_modules/grunt-jquerybuilder/node_modules/jquery-builder/jquery/node_modules/grunt/node_modules/jshint/packages/jshint/jshint.js
+15514 error fstream_type File
+15515 error fstream_class FileWriter
+15516 error code ENOENT
+15517 error errno 34
+15518 error fstream_stack /usr/local/Cellar/node/0.10.16/lib/node_modules/npm/node_modules/fstream/lib/writer.js:284:26
+15518 error fstream_stack Object.oncomplete (fs.js:107:15)
+15519 verbose exit [ 34, true ]

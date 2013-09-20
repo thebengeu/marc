@@ -207,4 +207,8 @@ define([
     $('#git-button').click(function() {
         location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
     });
+
+    if (userisloggedin) {
+        do something
+    }
 });
