@@ -10,7 +10,8 @@ define([
     var ApplicationRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
-            'server/*path': 'server'
+            'server/*path': 'server',
+            'gitauth': 'gitauth'
         },
         home: function () {
             $.get('README.md', function (data) {
@@ -24,6 +25,11 @@ define([
                 CodeView.setMode(mode);
                 CodeView.setValue(data);
             }, 'text');
+        },
+        gitauth: function(path) {
+            $.get('README.md', function (data) {
+                CodeView.setValue(data);
+            })
         }
     });
 

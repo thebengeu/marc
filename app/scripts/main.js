@@ -111,15 +111,16 @@ require([
 // TODO(benedict): shift this, not sure how to use this framework yet. :(
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'services/gitauthservice'
+], function ($, _, GitAuthService) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
     var user = 'ahbeng';
     var repo = 'NUSMods';
     var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
-    var clientId = {'client_id': '56b5da733bb16fb8a5b9'};
+    // var clientId = {'client_id': GitAuthService.};
 
     /**
      * Decode base64 strings with newline characters.
@@ -233,7 +234,19 @@ define([
     // $('#git-button').click(getSha);
 
     $('#git-button').click(function() {
-        location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
+        // location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
+        GitAuthService.ensureAuth();
     });
 
 });
+
+
+// define([
+//     'jquery',
+//     'underscore',
+//     'services/gitauthservice'
+// ], function ($, _, GitAuthService) {
+//     'use strict';
+
+//     // 
+// });
