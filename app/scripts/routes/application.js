@@ -19,6 +19,13 @@ define([
         github: githubService
     };
 
+    var updateCodeView = function(path, data) {
+        var extension = path.split('.').pop();
+        var mode = extToMode[extension];
+        CodeView.setMode(mode);
+        CodeView.setValue(data);
+    };
+
     var ApplicationRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
@@ -30,12 +37,17 @@ define([
             })
         },
         view: function (source, path) {
-            sourceToService[source].get(path, function (data) {
-                var extension = path.split('.').pop();
-                var mode = extToMode[extension];
-                CodeView.setMode(mode);
-                CodeView.setValue(data);
-            });
+            var data = LSD.getItem(path);
+            if (data) {
+                console.log(path + ' loaded from localStorage');
+                updateCodeView(path, data);
+            } else {
+                sourceToService[source].get(path, function (data) {
+                    LSD.setItem(path, data);
+                    updateCodeView(path, data);
+                });
+            }
+
         }
     });
 
