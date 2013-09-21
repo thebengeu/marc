@@ -34,12 +34,19 @@ define([
             'gitauth': 'gitauth'
         },
         home: function () {
-            $.get('README.md', function (data) {
-                CodeView.setValue(data);
-                console.log('say hi');
-            })
+            var route = LSD.getItem('route');
+            if (route) {
+                this.navigate(route, {trigger: true});
+            } else {
+                $.get('README.md', function (data) {
+                    CodeView.setValue(data);
+                    console.log('say hi');
+                });
+            }
         },
         view: function (source, path) {
+            LSD.setItem('route', ['view', source, path].join('/'));
+
             var data = LSD.getItem(path);
             if (data) {
                 console.log(path + ' loaded from localStorage');
