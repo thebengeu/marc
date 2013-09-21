@@ -32,11 +32,8 @@ define([
      * Gets the repo sha.
      */
     var getSha = function () {
-        var updatedGitHeaders = gitHeaders;
-        updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
-
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/branches/master', {'headers': updatedGitHeaders})
+                '/branches/master', {'headers': getGitHeaders()})
             .done(function (e) {
                 // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
@@ -51,12 +48,10 @@ define([
         if (!sha) {
             return null;
         }
-        var updatedGitHeaders = gitHeaders;
-        updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
 
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
             sha + '?recursive=1', {
-                'headers': gitHeaders
+                'headers': getGitHeaders()
             })
             .done(function (data) {
                 // TODO(benedict): Check if message not found exists
@@ -92,12 +87,9 @@ define([
             localStorage[abspath] = JSON.stringify(dirData);
         }
         else if (type == 'blob') {
-            var updatedGitHeaders = gitHeaders;
-            updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
-
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/contents/' + relpath, {
-                    'headers': gitHeaders
+                    'headers': getGitHeaders
                 })
                 .done(function (data) {
                     // TODO(benedict): Check if message not found exists
@@ -136,6 +128,23 @@ define([
         _.map(tree, function (leaf) {
             storeFileContentsFromLeaf(leaf, repoDict)
         });
+    };
+
+    var getGitHeaders = function() {
+        var oauth = gitAuthServiceInstance.getOAuth();
+
+        if (!oauth) {
+            throw new Error('Not signed in to Github.');
+        }
+
+        var authorization = gitHeaders['Authorization'];
+        var splitAuthHeader = authorization.split(' ');
+
+        if (splitAuthHeader[1] == '' || splitAuthHeader[1] != oauth) {
+            gitHeaders['Authorization'] = 'token ' + oauth;
+        }
+
+        return gitHeaders;
     };
 
     // $('#add-from-github').click(getSha);
