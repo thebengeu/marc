@@ -8,9 +8,10 @@ define([
     'LSD',
     'serverService',
     'dropboxService',
-    'githubService'
+    'githubService',
+    'services/gitauthservice'
 ], function ($, Backbone, CodeView, extToMode, LSD, serverService,
-             dropboxService, githubService) {
+             dropboxService, githubService, GitAuthService) {
     'use strict';
 
     var sourceToService = {
@@ -29,7 +30,8 @@ define([
     var ApplicationRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
-            'view/:source/*path': 'view'
+            'view/:source/*path': 'view',
+            'gitauth': 'gitauth'
         },
         home: function () {
             $.get('README.md', function (data) {
@@ -47,7 +49,12 @@ define([
                     updateCodeView(path, data);
                 });
             }
-
+        },
+        gitauth: function() {
+            $.get('README.md', function (data) {
+                CodeView.setValue(data);
+                GitAuthService.setOAuthWithCode(window.location.search.split('=')[1]);
+            })
         }
     });
 
