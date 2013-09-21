@@ -101,29 +101,50 @@ require([
     new ApplicationRouter;
     Backbone.history.start();
 
-    var snapper;
     enquire.register("screen and (min-width: 768px)", {
+        openSnapper: function (side) {
+            if (this.matched) {
+                this.$snapContent.css(side === 'left' ? 'right' : 'left', '266px');
+            }
+            this.snapper.open(side);
+        },
+        closeSnapper: function () {
+            if (this.matched) {
+                this.$snapContent.css({
+                    left: 0,
+                    right: 0
+                });
+            }
+            this.snapper.close();
+        },
+        toggleSnapper: function (snapper, side) {
+            return function () {
+                if (snapper.state().state === 'closed') {
+                    this.openSnapper(side);
+                } else {
+                    this.closeSnapper();
+                }
+            }
+        },
         setup: function () {
-            snapper = new Snap({
-                disable: 'right',
+            this.$snapContent = $('.snap-content');
+            this.snapper = new Snap({
                 element: document.getElementById('content')
             });
-            $('.navbar-tree').click(function () {
-                if (snapper.state().state == "left") {
-                    snapper.close();
-                } else {
-                    snapper.open('left');
-                }
-
-            });
+            $('.navbar-tree').click(_.bind(
+                this.toggleSnapper(this.snapper, 'left'), this));
+            $('.navbar-settings').click(_.bind(
+                this.toggleSnapper(this.snapper, 'right'), this));
         },
         match: function () {
-            snapper.disable();
-            snapper.open('left');
+            this.snapper.disable();
+            this.matched = true;
+            this.openSnapper('left');
         },
         unmatch: function () {
-            snapper.close('left');
-            snapper.enable();
+            this.closeSnapper();
+            this.matched = false;
+            this.snapper.enable();
         }
     });
 
@@ -133,10 +154,12 @@ require([
         collection: FileList
     });
 
-    var data = [{
-        label: '/',
-        id: '/'
-    }];
+    var data = [
+        {
+            label: '/',
+            id: '/'
+        }
+    ];
     $('#dropbox-tree-view').tree({
         data: data,
         autoOpen: false,
