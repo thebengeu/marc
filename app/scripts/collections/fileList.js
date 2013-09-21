@@ -6,9 +6,9 @@ define([
 ], function ($, _, Backbone, File) {
 	'use strict';
 
-	var Files = Backbone.Collection.extend({
+	var FileList = Backbone.Collection.extend({
 		model: File
 	});
 
-	return Files;
+	return FileList;
 });
