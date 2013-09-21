@@ -40,7 +40,6 @@ define([
             } else {
                 $.get('README.md', function (data) {
                     CodeView.setValue(data);
-                    console.log('say hi');
                 });
             }
         },
