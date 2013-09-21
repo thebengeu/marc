@@ -4,26 +4,38 @@ define([
     'jquery',
     'backbone',
     'views/code',
-    'extToMode'
-], function ($, Backbone, CodeView, extToMode) {
+    'extToMode',
+    'LSD',
+    'serverService',
+    'dropboxService',
+    'githubService'
+], function ($, Backbone, CodeView, extToMode, LSD, serverService,
+             dropboxService, githubService) {
     'use strict';
+
+    var sourceToService = {
+        server: serverService,
+        dropbox: dropboxService,
+        github: githubService
+    };
+
     var ApplicationRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
-            'server/*path': 'server'
+            'view/:source/*path': 'view'
         },
         home: function () {
             $.get('README.md', function (data) {
                 CodeView.setValue(data);
             })
         },
-        server: function (path) {
-            $.get(path, function (data) {
+        view: function (source, path) {
+            sourceToService[source].get(path, function (data) {
                 var extension = path.split('.').pop();
                 var mode = extToMode[extension];
                 CodeView.setMode(mode);
                 CodeView.setValue(data);
-            }, 'text');
+            });
         }
     });
 
