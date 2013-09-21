@@ -4,21 +4,20 @@ define([
     'jquery',
     'underscore'
 ], function ($, _) {
-    this.oauth = null;
+    var oauth = null;
     var clientId = '56b5da733bb16fb8a5b9';
     var redirectUri = 'http://localhost:9000/#gitauth';
 
     // TODO(benedict): Move somewhere else.
     var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
 
-
     var test = function(res) {
         console.log(res);
     };
 
-    var ensureAuth = function() {
+    var ensureAuth = function(success) {
         if (this.oauth) {
-            return this.oauth;
+            success();
         }
         else {
             window.location.href = 'https://github.com/login/oauth/authorize?' +
@@ -27,29 +26,26 @@ define([
     };
 
     var setOAuthWithCode = function(code) {
-        var urlData = {
-            client_id: clientId,
-            client_secret: clientSecret,
-            code: code
-        };
-
-        $.post('https://github.com/login/oauth/access_token',
-            {
-                data: urlData
+        $.getJSON('http://localhost:9999/authenticate/' + code,
+            function(data) {
+                oauth = data.token;
             }
-        ).done(function(res) {
-            console.log(res);
-        });        
+        );
     };
 
-
+    var getOAuth = function() {
+        return oauth;
+    };
 
     return {
-        ensureAuth: function() {
-            return ensureAuth();
+        ensureAuth: function(success) {
+            return ensureAuth(success);
         },
         setOAuthWithCode: function(code) {
-            setOAuthWithCode(code);
+            return setOAuthWithCode(code);
+        },
+        getOAuth: function() {
+            return getOAuth();
         }
     }
 });

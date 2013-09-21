@@ -164,8 +164,7 @@ define([
     var githubApiUrl = 'https://api.github.com';
     var user = 'ahbeng';
     var repo = 'NUSMods';
-    var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
-    // var clientId = {'client_id': GitAuthService.};
+    var gitHeaders = {'Authorization': 'token '};
 
     /**
      * Decode base64 strings with newline characters.
@@ -184,7 +183,11 @@ define([
      * Gets the repo sha.
      */
     var getSha = function () {
-        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {'headers': gitHeaders})
+        var updatedGitHeaders = gitHeaders;
+        updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
+                '/branches/master', {'headers': updatedGitHeaders})
             .done(function (e) {
                 // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
@@ -199,6 +202,9 @@ define([
         if (!sha) {
             return null;
         }
+        var updatedGitHeaders = gitHeaders;
+        updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
             sha + '?recursive=1', {'headers': gitHeaders})
             .done(function (data) {
@@ -235,6 +241,9 @@ define([
             localStorage[abspath] = JSON.stringify(dirData);
         }
         else if (type == 'blob') {
+            var updatedGitHeaders = gitHeaders;
+            updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/contents/' + relpath, {'headers': gitHeaders})
                 .done(function (data) {
@@ -278,7 +287,6 @@ define([
 
     // $('#add-from-github').click(getSha);
     $('#add-from-github').click(function() {
-        // location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
-        GitAuthService.ensureAuth();
+        GitAuthService.ensureAuth(getSha);
     });
 });

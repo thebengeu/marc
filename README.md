@@ -21,6 +21,14 @@ $ bower install
 $ grunt server
 ```
 
+## Setup Gatekeeper
+```bash
+$ bower install
+$ npm install
+$ cd app/bower_components/gatekeeper
+$ node server.js
+```
+
 ### Setup on Windows
 Download nodejs Windows installer http://nodejs.org/download/
 
