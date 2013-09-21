@@ -4,7 +4,7 @@
 
 .snap-content {
     position: absolute;
-    top: 50px;
+    top: 51px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -22,7 +22,7 @@
 
 .snap-drawers {
     position: absolute;
-    top: 50px;
+    top: 51px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -115,4 +115,37 @@
 
 ul.jqtree-tree {
     margin-left: 24px;
+}
+
+@media (min-width: 768px) {
+    .navbar-toggle {
+        display: block;
+    }
+}
+
+.navbar-settings {
+    color: #ccc;
+    font-size: 20px;
+    padding: 3px 9px 0;
+}
+
+.navbar-form .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.navbar-form .form-control {
+    display: inline-block;
+}
+
+.navbar-form {
+    width: 175px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }

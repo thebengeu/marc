@@ -107,7 +107,7 @@ require([
                 disable: 'right',
                 element: document.getElementById('content')
             });
-            $('.navbar-toggle').click(function () {
+            $('.navbar-tree').click(function () {
                 if (snapper.state().state == "left") {
                     snapper.close();
                 } else {
