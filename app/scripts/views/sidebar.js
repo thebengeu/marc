@@ -6,6 +6,8 @@ define([
     'backbone',
     'jqTree'
 ], function ($, _, Backbone) {
+    'use strict';
+    
     var Sidebar = Backbone.View.extend({
         initialize: function () {
             var that = this;
