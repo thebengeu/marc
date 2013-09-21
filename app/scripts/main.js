@@ -104,6 +104,7 @@ require([
     enquire.register("screen and (min-width: 768px)", {
         openSnapper: function (side) {
             if (this.matched) {
+                this.$snapContent.css(side, 0);
                 this.$snapContent.css(side === 'left' ? 'right' : 'left', '266px');
             }
             this.snapper.open(side);
@@ -119,10 +120,10 @@ require([
         },
         toggleSnapper: function (snapper, side) {
             return function () {
-                if (snapper.state().state === 'closed') {
-                    this.openSnapper(side);
-                } else {
+                if (snapper.state().state === side) {
                     this.closeSnapper();
+                } else {
+                    this.openSnapper(side);
                 }
             }
         },
