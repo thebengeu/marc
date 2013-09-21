@@ -147,7 +147,6 @@ define([
         return gitHeaders;
     };
 
-    // $('#add-from-github').click(getSha);
     $('#add-from-github').click(function() {
         gitAuthServiceInstance.ensureAuth(getSha);
     });
