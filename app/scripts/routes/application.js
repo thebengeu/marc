@@ -36,6 +36,7 @@ define([
         home: function () {
             $.get('README.md', function (data) {
                 CodeView.setValue(data);
+                console.log('say hi');
             })
         },
         view: function (source, path) {
@@ -51,10 +52,11 @@ define([
             }
         },
         gitauth: function() {
-            $.get('README.md', function (data) {
-                CodeView.setValue(data);
-                GitAuthService.getInstance().setOAuthWithCode(window.location.search.split('=')[1]);
-            })
+            var urlParams = window.location.search;
+            var code = urlParams.split('=')[1];
+
+            GitAuthService.getInstance().setOAuthWithCode(code);
+            this.navigate('/', {trigger: true, replace: true});
         }
     });
 

@@ -17,7 +17,7 @@ define([
     var gitAuthService = function() {
         var oauth = null;
         var clientId = '56b5da733bb16fb8a5b9';
-        var redirectUri = 'http://localhost:9000/#gitauth';
+        var redirectUri = 'http://localhost:9000/#/gitauth';
 
         // TODO(benedict): Move somewhere else.
         var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
