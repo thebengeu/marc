@@ -25,6 +25,39 @@ require.config({
         },
         jqTree: {
             deps: ['jquery']
+        },
+        bootstrap: {
+            deps: ['jquery']
+        },
+        matchbrackets: {
+            deps: ['codemirror']
+        },
+        foldcode: {
+            deps: ['codemirror']
+        },
+        foldgutter: {
+            deps: ['foldcode']
+        },
+        'match-highlighter': {
+            deps: ['codemirror']
+        },
+        'brace-fold': {
+            deps: ['foldgutter']
+        },
+        'comment-fold': {
+            deps: ['foldgutter']
+        },
+        'indent-fold': {
+            deps: ['foldgutter']
+        },
+        'xml-fold': {
+            deps: ['foldgutter']
+        },
+        matchtags: {
+            deps: ['xml-fold']
+        },
+        'active-line': {
+            deps: ['codemirror']
         }
     },
     paths: {
@@ -39,7 +72,18 @@ require.config({
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
         enquire: '../bower_components/enquire/dist/enquire',
-        fastclick: '../bower_components/fastclick/lib/fastclick'
+        fastclick: '../bower_components/fastclick/lib/fastclick',
+        bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
+        matchbrackets: '../bower_components/codemirror/addon/edit/matchbrackets',
+        foldcode: '../bower_components/codemirror/addon/fold/foldcode',
+        foldgutter: '../bower_components/codemirror/addon/fold/foldgutter',
+        'match-highlighter': '../bower_components/codemirror/addon/search/match-highlighter',
+        'brace-fold': '../bower_components/codemirror/addon/fold/brace-fold',
+        'comment-fold': '../bower_components/codemirror/addon/fold/comment-fold',
+        'indent-fold': '../bower_components/codemirror/addon/fold/indent-fold',
+        'xml-fold': '../bower_components/codemirror/addon/fold/xml-fold',
+        matchtags: '../bower_components/codemirror/addon/edit/matchtags',
+        'active-line': '../bower_components/codemirror/addon/selection/active-line'
     }
 });
 
@@ -50,6 +94,7 @@ require([
     'snap',
     'enquire',
     'fastclick',
+    'bootstrap',
     'jqTree'
 ], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
@@ -62,7 +107,7 @@ require([
                 disable: 'right',
                 element: document.getElementById('content')
             });
-            $('.navbar-toggle').click(function () {
+            $('.navbar-tree').click(function () {
                 if (snapper.state().state == "left") {
                     snapper.close();
                 } else {
@@ -231,22 +276,9 @@ define([
         });
     };
 
-    // $('#git-button').click(getSha);
-
-    $('#git-button').click(function() {
+    // $('#add-from-github').click(getSha);
+    $('#add-from-github').click(function() {
         // location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
         GitAuthService.ensureAuth();
     });
-
 });
-
-
-// define([
-//     'jquery',
-//     'underscore',
-//     'services/gitauthservice'
-// ], function ($, _, GitAuthService) {
-//     'use strict';
-
-//     // 
-// });
