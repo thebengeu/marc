@@ -13,6 +13,8 @@ define([
     var repo = 'NUSMods';
     var gitHeaders = {'Authorization': 'token '};
 
+    var gitAuthServiceInstance = GitAuthService.getInstance();
+
     /**
      * Decode base64 strings with newline characters.
      * @param {string} string The base64 string to be decoded.
@@ -31,7 +33,7 @@ define([
      */
     var getSha = function () {
         var updatedGitHeaders = gitHeaders;
-        updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+        updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
 
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/branches/master', {'headers': updatedGitHeaders})
@@ -50,7 +52,7 @@ define([
             return null;
         }
         var updatedGitHeaders = gitHeaders;
-        updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+        updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
 
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
             sha + '?recursive=1', {
@@ -91,7 +93,7 @@ define([
         }
         else if (type == 'blob') {
             var updatedGitHeaders = gitHeaders;
-            updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
+            updatedGitHeaders['Authorization'] += gitAuthServiceInstance.getOAuth();
 
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/contents/' + relpath, {
@@ -138,6 +140,6 @@ define([
 
     // $('#add-from-github').click(getSha);
     $('#add-from-github').click(function() {
-        GitAuthService.ensureAuth(getSha);
+        gitAuthServiceInstance.ensureAuth(getSha);
     });
 });

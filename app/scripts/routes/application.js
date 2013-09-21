@@ -53,7 +53,7 @@ define([
         gitauth: function() {
             $.get('README.md', function (data) {
                 CodeView.setValue(data);
-                GitAuthService.setOAuthWithCode(window.location.search.split('=')[1]);
+                GitAuthService.getInstance().setOAuthWithCode(window.location.search.split('=')[1]);
             })
         }
     });
