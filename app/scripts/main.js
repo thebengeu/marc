@@ -90,13 +90,14 @@ require.config({
 require([
     'backbone',
     'views/sidebar',
+    'collections/fileList',
     'routes/application',
     'snap',
     'enquire',
     'fastclick',
     'bootstrap',
     'jqTree'
-], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire, FastClick) {
+], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
 
@@ -126,14 +127,16 @@ require([
         }
     });
 
-    var sidebar = new Sidebar({ el: '.snap-drawer-left'});
+    var FileList = new FileList();
+    var sidebar = new Sidebar({
+        el: '.snap-drawer-left',
+        collection: FileList
+    });
 
-    var data = [
-        {
-            label: '/',
-            id: '/'
-        }
-    ];
+    var data = [{
+        label: '/',
+        id: '/'
+    }];
     $('#dropbox-tree-view').tree({
         data: data,
         autoOpen: false,
@@ -164,7 +167,9 @@ define([
     var githubApiUrl = 'https://api.github.com';
     var user = 'ahbeng';
     var repo = 'NUSMods';
-    var gitHeaders = {'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'};
+    var gitHeaders = {
+        'Authorization': 'token 788d6a9e16886a74d921ae529415bf5e49a6cb06'
+    };
     // var clientId = {'client_id': GitAuthService.};
 
     /**
@@ -184,7 +189,9 @@ define([
      * Gets the repo sha.
      */
     var getSha = function () {
-        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {'headers': gitHeaders})
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', {
+            'headers': gitHeaders
+        })
             .done(function (e) {
                 // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
@@ -200,7 +207,9 @@ define([
             return null;
         }
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
-            sha + '?recursive=1', {'headers': gitHeaders})
+            sha + '?recursive=1', {
+                'headers': gitHeaders
+            })
             .done(function (data) {
                 // TODO(benedict): Check if message not found exists
                 getFileContentsFromTree(data['tree'], data['sha']);
@@ -233,10 +242,11 @@ define([
 
             // Adding to localStorage
             localStorage[abspath] = JSON.stringify(dirData);
-        }
-        else if (type == 'blob') {
+        } else if (type == 'blob') {
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + relpath, {'headers': gitHeaders})
+                '/contents/' + relpath, {
+                    'headers': gitHeaders
+                })
                 .done(function (data) {
                     // TODO(benedict): Check if message not found exists
                     var fileData = {
@@ -277,7 +287,7 @@ define([
     };
 
     // $('#add-from-github').click(getSha);
-    $('#add-from-github').click(function() {
+    $('#add-from-github').click(function () {
         // location.href = 'https://github.com/login/oauth/authorize?client_id=56b5da733bb16fb8a5b9';
         GitAuthService.ensureAuth();
     });
