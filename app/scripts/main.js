@@ -90,13 +90,14 @@ require.config({
 require([
     'backbone',
     'views/sidebar',
+    'collections/fileList',
     'routes/application',
     'snap',
     'enquire',
     'fastclick',
     'bootstrap',
     'jqTree'
-], function (Backbone, Sidebar, ApplicationRouter, Snap, enquire, FastClick) {
+], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
 
@@ -126,14 +127,16 @@ require([
         }
     });
 
-    var sidebar = new Sidebar({ el: '.snap-drawer-left'});
+    var FileList = new FileList();
+    var sidebar = new Sidebar({
+        el: '.snap-drawer-left',
+        collection: FileList
+    });
 
-    var data = [
-        {
-            label: '/',
-            id: '/'
-        }
-    ];
+    var data = [{
+        label: '/',
+        id: '/'
+    }];
     $('#dropbox-tree-view').tree({
         data: data,
         autoOpen: false,
@@ -206,7 +209,9 @@ define([
         updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
 
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
-            sha + '?recursive=1', {'headers': gitHeaders})
+            sha + '?recursive=1', {
+                'headers': gitHeaders
+            })
             .done(function (data) {
                 // TODO(benedict): Check if message not found exists
                 getFileContentsFromTree(data['tree'], data['sha']);
@@ -245,7 +250,9 @@ define([
             updatedGitHeaders['Authorization'] += GitAuthService.getOAuth();
 
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + relpath, {'headers': gitHeaders})
+                '/contents/' + relpath, {
+                    'headers': gitHeaders
+                })
                 .done(function (data) {
                     // TODO(benedict): Check if message not found exists
                     var fileData = {
