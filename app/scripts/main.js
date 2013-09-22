@@ -106,7 +106,7 @@ require([
     new ApplicationRouter;
     Backbone.history.start();
 
-    enquire.register("screen and (min-width: 768px)", {
+    enquire.register('screen and (min-width: 768px)', {
         openSnapper: function (side) {
             if (this.matched) {
                 this.$snapContent.css(side, 0);
@@ -130,7 +130,7 @@ require([
                 } else {
                     this.openSnapper(side);
                 }
-            }
+            };
         },
         setup: function () {
             this.$snapContent = $('.snap-content');
@@ -159,12 +159,10 @@ require([
         collection: FileList
     });
 
-    var data = [
-        {
-            label: '/',
-            id: '/'
-        }
-    ];
+    var data = [{
+        label: '/',
+        id: '/'
+    }];
     $('#dropbox-tree-view').tree({
         data: data,
         autoOpen: false,
