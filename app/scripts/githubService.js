@@ -35,11 +35,11 @@ define([
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/branches/master', {'headers': getGitHeaders()})
             .done(function (e) {
-                // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
             })
             .fail(function(e) {
                 var errorMessage = JSON.parse(e['responseText'])['message'];
+                // TODO(benedict): Show error message. Status butter maybe?
             });
     };
 
@@ -57,8 +57,11 @@ define([
                 'headers': getGitHeaders()
             })
             .done(function (data) {
-                // TODO(benedict): Check if message not found exists
                 getFileContentsFromTree(data['tree'], data['sha']);
+            })
+            .fail(function(e) {
+                var errorMessage = JSON.parse(e['responseText'])['message'];
+                // TODO(benedict): Show error message. Status butter maybe?
             });
     };
 
@@ -95,7 +98,6 @@ define([
                     'headers': getGitHeaders
                 })
                 .done(function (data) {
-                    // TODO(benedict): Check if message not found exists
                     var fileData = {
                         'relpath': relpath,
                         'abspath': abspath,
@@ -108,6 +110,10 @@ define([
 
                     // Adding to localStorage
                     LSD[abspath] = JSON.stringify(fileData);
+                })
+                .fail(function(e) {
+                    var errorMessage = JSON.parse(e['responseText'])['message'];
+                    // TODO(benedict): Show error message. Status butter maybe?
                 });
         }
 
