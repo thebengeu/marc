@@ -200,37 +200,3 @@ require([
 
     FastClick.attach(document.body);
 });
-
-define([
-    'jquery',
-    'backbone',
-    'githubService'
-], function ($, Backbone, GithubService) {
-
-    var GitHubModalView = Backbone.View.extend({
-        events: {
-            'click .github-modal-download-btn': 'download'
-        },
-        download: function() {
-            var githubUsername = $('.github-modal-username-input').val();
-            var repoName = $('.github-modal-repo-input').val();
-
-            if (!githubUsername || !repoName) {
-                $('.github-modal-alert').show();
-            }
-            else {
-                GithubService.downloadRepository(githubUsername, repoName);    
-            }
-        },
-        render: function() {
-            $('.github-modal-alert').hide();
-        }
-    });
-
-    $('#github-modal').modal({
-        show: true,
-        keyboard: true
-    });
-
-    return (new GitHubModalView({ el: '#github-modal' })).render();
-});

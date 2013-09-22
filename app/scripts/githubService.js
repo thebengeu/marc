@@ -5,8 +5,9 @@ define([
     'jquery',
     'underscore',
     'services/gitauthservice',
+    'views/githubmodal',
     'LSD'
-], function ($, _, GitAuthService, LSD) {
+], function ($, _, GitAuthService, GithubModalView, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -149,7 +150,7 @@ define([
     };
 
     $('#add-from-github').click(function() {
-        gitAuthServiceInstance.ensureAuth(getSha);
+        gitAuthServiceInstance.ensureAuth(GithubModalView.showModal());
     });
 
     var downloadRepository = function(username, repoName) {
