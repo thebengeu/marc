@@ -13,11 +13,6 @@ define([
             this.listenTo(this.collection, 'add', this.addFileToTree);
             this.listenTo(this.collection, 'remove', this.removeFileFromTree);
 
-            var that = this;
-            $.get('dir.json', function (response) {
-                that.parseDirJson(response, 'Server');
-            });
-
             this.treeElement = this.$('#file-tree');
             this.initTree();
         },
@@ -43,18 +38,6 @@ define([
                     }
                 }
             );
-        },
-        parseDirJson: function (rawJson, source) {
-            // If this is a folder, add all its children.
-            if (rawJson.children) {
-                for (var index in rawJson.children) {
-                    this.parseDirJson(rawJson.children[index], source);
-                }
-            } else {
-                // Add this to the collection.
-                rawJson.source = source;
-                this.collection.add(rawJson);
-            }
         },
         addFileToTree: function (file) {
             var source = file.get('source');

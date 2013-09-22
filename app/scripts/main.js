@@ -159,6 +159,25 @@ require([
         collection: FileList
     });
 
+    // TEMP. This should be moved elsewhere once we have other sources integrated.
+    // Grab the files on the server.
+    $.get('dir.json', function (response) {
+        function parseDirJson(rawJson, source) {
+            // If this is a folder, add all its children.
+            if (rawJson.children) {
+                for (var index in rawJson.children) {
+                    parseDirJson(rawJson.children[index], source);
+                }
+            } else {
+                // Add this to the collection.
+                rawJson.source = source;
+                FileList.add(rawJson);
+            }
+        }
+        parseDirJson(response, 'Server');
+    });
+    // END TEMP.
+
     var data = [{
         label: '/',
         id: '/'
