@@ -174,7 +174,7 @@ require([
                 FileList.add(rawJson);
             }
         }
-        parseDirJson(response, 'Server');
+        parseDirJson(response, 'm(arc) Source');
     });
     // END TEMP.
 
