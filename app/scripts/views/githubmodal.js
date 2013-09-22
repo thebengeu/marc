@@ -16,12 +16,12 @@ define([
             'click #add-from-github': 'showModal'
         },
         showModal: function() {
-            gitAuthServiceInstance.ensureAuth(
+            gitAuthServiceInstance.ensureAuth(function() {
                 $('#github-modal').modal({
                     show: true,
                     keyboard: true
                 })
-            );
+            });
         },
         download: function() {
             var githubUsername = $('.github-modal-username-input').val();
