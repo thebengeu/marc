@@ -203,8 +203,9 @@ require([
 
 define([
     'jquery',
-    'backbone'
-], function ($, Backbone) {
+    'backbone',
+    'githubService'
+], function ($, Backbone, GithubService) {
 
     var GitHubModalView = Backbone.View.extend({
         events: {
@@ -214,8 +215,7 @@ define([
             var githubUsername = $('.github-modal-username-input').val();
             var repoName = $('.github-modal-repo-input').val();
 
-            console.log(githubUsername);
-            console.log(repoName);
+            GithubService.downloadRepository(githubUsername, repoName);
         }
 
     });

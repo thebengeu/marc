@@ -151,4 +151,17 @@ define([
     $('#add-from-github').click(function() {
         gitAuthServiceInstance.ensureAuth(getSha);
     });
+
+    var downloadRepository = function(username, repoName) {
+        user = username;
+        repo = repoName;
+        gitAuthServiceInstance.ensureAuth(getSha);
+    };
+
+    return {
+        downloadRepository: function(username, repoName) {
+            return downloadRepository(username, repoName);
+        }
+    };
+
 });
