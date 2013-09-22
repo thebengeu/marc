@@ -10,5 +10,5 @@ define([
 		model: File
 	});
 
-	return FileList;
+	return new FileList();
 });

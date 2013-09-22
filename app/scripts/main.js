@@ -127,7 +127,6 @@ require([
         }
     });
 
-    var FileList = new FileList();
     var sidebar = new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
