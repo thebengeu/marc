@@ -7,7 +7,7 @@ define([
     'jqTree'
 ], function ($, _, Backbone) {
     'use strict';
-    
+
     var Sidebar = Backbone.View.extend({
         initialize: function () {
             var that = this;
@@ -16,13 +16,15 @@ define([
                 that.dirStructure = response;
                 that.render();
             });
+
+            this.treeElement = this.$('#file-tree');
         },
         render: function () {
             var that = this;
-            this.$('#file-tree').tree({
+            this.treeElement.tree({
                 data: this.dirStructure.children
             });
-            this.$('#file-tree').bind(
+            this.treeElement.bind(
                 'tree.click',
                 function (event) {
                     var node = event.node;
