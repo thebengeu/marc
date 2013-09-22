@@ -4,8 +4,9 @@
 define([
     'jquery',
     'underscore',
-    'services/gitauthservice'
-], function ($, _, GitAuthService) {
+    'services/gitauthservice',
+    'LSD'
+], function ($, _, GitAuthService, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -83,8 +84,8 @@ define([
             // Adding to repoDict - Not used now
             repoDict[sha] = dirData;
 
-            // Adding to localStorage
-            localStorage[abspath] = JSON.stringify(dirData);
+            // Adding to localStorage through LSD
+            LSD[abspath] = JSON.stringify(dirData);
         }
         else if (type == 'blob') {
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
@@ -104,7 +105,7 @@ define([
                     repoDict[sha] = fileData;
 
                     // Adding to localStorage
-                    localStorage[abspath] = JSON.stringify(fileData);
+                    LSD[abspath] = JSON.stringify(fileData);
                 });
         }
 
