@@ -87,6 +87,7 @@ require.config({
         'xml-fold': '../bower_components/codemirror/addon/fold/xml-fold',
         matchtags: '../bower_components/codemirror/addon/edit/matchtags',
         'active-line': '../bower_components/codemirror/addon/selection/active-line',
+        dropbox: '../bower_components/dropbox-build/dropbox',
         'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch'
     }
 });
@@ -101,6 +102,7 @@ require([
     'fastclick',
     'bootstrap',
     'jqTree',
+    'dropbox',
     'bootstrap-switch'
 ], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;

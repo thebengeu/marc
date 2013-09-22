@@ -16,7 +16,9 @@
     "lodash": "~2.0.0",
     "fastclick": "~0.6.10",
     "gatekeeper": "prose/gatekeeper",
-    "bootstrap-switch": "*"
+    "dropbox": "~0.10.1",
+    "bootstrap-switch": "*",
+    "dropbox-build": "*"
   },
   "devDependencies": {},
   "resolutions": {
