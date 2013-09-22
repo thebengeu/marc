@@ -17,11 +17,24 @@ define([
             this.initTree();
         },
 
-        initTree: function() {
-            this.treeElement.tree({
-                data: []
-            });
+        initTree: function () {
             var that = this;
+            this.treeElement.tree({
+                data: [],
+                dragAndDrop: true,
+                onCanMoveTo: function (moved, target, position) {
+                    // We only support rearranging files and folders within the same directory.
+                    // We hence need to check if moved and target have the same parent path.
+                    if (position === 'inside') {
+                        return false;
+                    }
+                    
+                    var movedParent = that.getParentPathFromString(moved.path);
+                    var targetParent = that.getParentPathFromString(target.path);
+
+                    return movedParent === targetParent;
+                }
+            });
             this.treeElement.bind(
                 'tree.click',
                 function (event) {
