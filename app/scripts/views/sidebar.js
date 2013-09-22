@@ -7,22 +7,35 @@ define([
     'jqTree'
 ], function ($, _, Backbone) {
     'use strict';
-    
+
     var Sidebar = Backbone.View.extend({
         initialize: function () {
-            var that = this;
-            $.get('dir.json', function (response) {
-                that.parseDirJson(response);
-                that.dirStructure = response;
-                that.render();
-            });
+            this.listenTo(this.collection, 'add', this.addFileToTree);
+            this.listenTo(this.collection, 'remove', this.removeFileFromTree);
+
+            this.treeElement = this.$('#file-tree');
+            this.initTree();
         },
-        render: function () {
+
+        initTree: function () {
             var that = this;
-            this.$('#file-tree').tree({
-                data: this.dirStructure.children
+            this.treeElement.tree({
+                data: [],
+                dragAndDrop: true,
+                onCanMoveTo: function (moved, target, position) {
+                    // We only support rearranging files and folders within the same directory.
+                    // We hence need to check if moved and target have the same parent path.
+                    if (position === 'inside') {
+                        return false;
+                    }
+                    
+                    var movedParent = that.getParentPathFromString(moved.path);
+                    var targetParent = that.getParentPathFromString(target.path);
+
+                    return movedParent === targetParent;
+                }
             });
-            this.$('#file-tree').bind(
+            this.treeElement.bind(
                 'tree.click',
                 function (event) {
                     var node = event.node;
@@ -38,24 +51,85 @@ define([
                     }
                 }
             );
-            return this;
         },
-        parseDirJson: function (rawJson) {
-            // Change all instances of "path" to "label"
-            for (var property in rawJson) {
-                if (property === 'path') {
-                    // While we're at it, drop the "/" and anything before.
-                    var originalPath = rawJson[property];
-                    var lastSlash = originalPath.lastIndexOf('/') + 1;
-                    var fileName = originalPath.slice(lastSlash);
-                    rawJson.label = fileName;
-                }
+        addFileToTree: function (file) {
+            var source = file.get('source');
+            var path = file.get('path');
+            var lastSlash = path.lastIndexOf('/') + 1;
+
+            var fileName = path.slice(lastSlash);
+            var directoryPath = path.slice(0, lastSlash - 1);
+
+
+            var fileNode = {
+                id: path,
+                label: fileName,
+                path: path,
+                source: source
+            };
+
+            var parent = this.addDirectoryPathToTree(directoryPath, source);
+            this.treeElement.tree('appendNode', fileNode, parent);
+        },
+        addDirectoryPathToTree: function (directoryPath, source) {
+            // Check if we already have the source in the tree.
+            var sourceNode = this.treeElement.tree('getNodeById', source);
+            if (!sourceNode) {
+                // Create the source.
+                this.treeElement.tree('appendNode', {
+                    id: source,
+                    label: source,
+                    source: source
+                });
+                sourceNode = this.treeElement.tree('getNodeById', source);
             }
-            if (rawJson.children) {
-                for (var i = 0; i < rawJson.children.length; i++) {
-                    this.parseDirJson(rawJson.children[i]);
-                }
+
+            if (directoryPath === '.') {
+                // We out.
+                return sourceNode;
             }
+
+            // Check if we're trying to add a directory that's already in.
+            var existing = this.treeElement.tree('getNodeById', directoryPath);
+            if (existing) {
+                return existing;
+            }
+
+            var parentPath = this.getParentPathFromString(directoryPath);
+
+            var parentDirectory;
+            if (parentPath === '.') {
+                parentPath = source;
+            }
+
+            parentDirectory = this.treeElement.tree('getNodeById', parentPath);
+            if (!parentDirectory) {
+                // Recursively add directories as needed.
+                parentDirectory = this.addDirectoryPathToTree(parentDirectory, source);
+            }
+
+            // Add this directory.
+            var lastSlash = directoryPath.lastIndexOf('/');
+            var directoryName = directoryPath.slice(lastSlash + 1);
+            var directoryNode = {
+                id: directoryPath,
+                label: directoryName,
+                path: directoryPath
+            };
+            this.treeElement.tree('appendNode', directoryNode, parentDirectory);
+
+            var newDirectory = this.treeElement.tree('getNodeById', directoryPath);
+            return newDirectory;
+        },
+        removeFileFromTree: function (file) {
+            var path = file.get('path');
+            var fileNode = this.treeElement.tree('getNodeById', path);
+            this.treeElement.tree('removeNode', fileNode);
+        },
+        getParentPathFromString: function(path) {
+            var lastSlashPosition = path.lastIndexOf('/');
+            var parentPath = path.slice(0, lastSlashPosition);
+            return parentPath;
         }
     });
 

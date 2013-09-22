@@ -67,12 +67,6 @@
     width: 100%;
 }
 
-@media (min-width: 768px) {
-    .snapjs-left .snap-content {
-        right: 266px;
-    }
-}
-
 .codeView, .CodeMirror {
     height: 100%;
 }
@@ -148,4 +142,10 @@ ul.jqtree-tree {
     border: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.snap-drawer-right .control-label {
+    margin-left: 5px;
+    margin-top: 20px;
+    width: 150px;
 }

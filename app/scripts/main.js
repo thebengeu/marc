@@ -58,6 +58,9 @@ require.config({
         },
         'active-line': {
             deps: ['codemirror']
+        },
+        'bootstrap-switch': {
+            deps: ['jquery']
         }
     },
     paths: {
@@ -85,6 +88,7 @@ require.config({
         matchtags: '../bower_components/codemirror/addon/edit/matchtags',
         'active-line': '../bower_components/codemirror/addon/selection/active-line',
         dropbox: '../bower_components/dropbox-build/dropbox'
+        'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch'
     }
 });
 
@@ -98,42 +102,83 @@ require([
     'fastclick',
     'bootstrap',
     'jqTree',
-    'dropbox'
+    'dropbox',
+    'bootstrap-switch'
 ], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
 
-    var snapper;
-    enquire.register("screen and (min-width: 768px)", {
+    enquire.register('screen and (min-width: 768px)', {
+        openSnapper: function (side) {
+            if (this.matched) {
+                this.$snapContent.css(side, 0);
+                this.$snapContent.css(side === 'left' ? 'right' : 'left', '266px');
+            }
+            this.snapper.open(side);
+        },
+        closeSnapper: function () {
+            if (this.matched) {
+                this.$snapContent.css({
+                    left: 0,
+                    right: 0
+                });
+            }
+            this.snapper.close();
+        },
+        toggleSnapper: function (snapper, side) {
+            return function () {
+                if (snapper.state().state === side) {
+                    this.closeSnapper();
+                } else {
+                    this.openSnapper(side);
+                }
+            };
+        },
         setup: function () {
-            snapper = new Snap({
-                disable: 'right',
+            this.$snapContent = $('.snap-content');
+            this.snapper = new Snap({
                 element: document.getElementById('content')
             });
-            $('.navbar-tree').click(function () {
-                if (snapper.state().state == "left") {
-                    snapper.close();
-                } else {
-                    snapper.open('left');
-                }
-
-            });
+            $('.navbar-tree').click(_.bind(
+                this.toggleSnapper(this.snapper, 'left'), this));
+            $('.navbar-settings').click(_.bind(
+                this.toggleSnapper(this.snapper, 'right'), this));
         },
         match: function () {
-            snapper.disable();
-            snapper.open('left');
+            this.snapper.disable();
+            this.matched = true;
+            this.openSnapper('left');
         },
         unmatch: function () {
-            snapper.close('left');
-            snapper.enable();
+            this.closeSnapper();
+            this.matched = false;
+            this.snapper.enable();
         }
     });
 
-    var FileList = new FileList();
     var sidebar = new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
+
+    // TEMP. This should be moved elsewhere once we have other sources integrated.
+    // Grab the files on the server.
+    $.get('dir.json', function (response) {
+        function parseDirJson(rawJson, source) {
+            // If this is a folder, add all its children.
+            if (rawJson.children) {
+                for (var index in rawJson.children) {
+                    parseDirJson(rawJson.children[index], source);
+                }
+            } else {
+                // Add this to the collection.
+                rawJson.source = source;
+                FileList.add(rawJson);
+            }
+        }
+        parseDirJson(response, 'm(arc) Source');
+    });
+    // END TEMP.
 
     var data = [{
         label: '/',

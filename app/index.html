@@ -11,6 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="bower_components/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
         <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
         <link rel="stylesheet" href="bower_components/jqtree/jqtree.css">
         <link rel="stylesheet" href="styles/main.css">
@@ -18,7 +19,7 @@
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
     </head>
-    <body>
+    <body class="snapjs-left">
         <div id="container"></div>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <button type="button" class="navbar-tree navbar-toggle pull-left">
@@ -59,7 +60,52 @@
                 </div>
                 <div id="file-tree"></div>
             </div>
-            <div class="snap-drawer snap-drawer-right"></div>
+            <div class="snap-drawer snap-drawer-right">
+                <form role="form">
+                    <div class="control-group">
+                        <label class="control-label">Code Folding</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Highlight Active Line</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Highlight Same Word</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Line Numbers</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Line Wrapping</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Match Brackets</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Match Tags</label>
+                        <div class="make-switch">
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div id="content" class="snap-content">
