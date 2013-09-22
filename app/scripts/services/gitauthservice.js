@@ -3,8 +3,9 @@
 define([
     'jquery',
     'underscore',
+    'backbone',
     'LSD'
-], function ($, _, LSD) {
+], function ($, _, Backbone, LSD) {
 
     /**
      * This ensures a singleton of the GitAuthService module.
@@ -50,6 +51,7 @@ define([
                 success();
             }
             else {
+                Backbone.history.stop();
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }
