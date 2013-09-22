@@ -15,7 +15,11 @@
     "enquire": "~2.1.0",
     "lodash": "~2.0.0",
     "fastclick": "~0.6.10",
-    "gatekeeper": "prose/gatekeeper"
+    "gatekeeper": "prose/gatekeeper",
+    "bootstrap-switch": "*"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "jquery": "~1.10.2"
+  }
 }

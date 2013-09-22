@@ -143,3 +143,9 @@ ul.jqtree-tree {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+.snap-drawer-right .control-label {
+    margin-left: 5px;
+    margin-top: 20px;
+    width: 150px;
+}
