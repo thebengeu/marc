@@ -112,18 +112,25 @@
             <div class="codeView"></div>
         </div>
 
-        <div id="github-modal-view" class="modal fade">
+        <div id="github-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">GitHub Repository</h4>
                     </div> 
-                    <div class="modal-body">
-                        <p>One fine body&hellip;</p>
+                    <div class="github-modal-body modal-body">
+                        <div class="github-modal-view-input-group input-group">
+                            <span class="input-group-addon">@</span>
+                            <input type="text" class="github-modal-username-input form-control" placeholder="GitHub Username">
+                        </div>
+                        <div class="github-modal-input-group input-group">
+                            <span class="input-group-addon">Repository Name</span>
+                            <input type="text" class="github-modal-repo-input form-control" placeholder="Repository Name">
+                        </div>
                     </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Download Repository</button>
+                        <button type="button" class="github-modal-download-btn btn btn-primary">Download Repository</button>
                       </div>
                 </div>
             </div>

@@ -150,6 +150,10 @@ ul.jqtree-tree {
     width: 150px;
 }
 
-#github-modal-view {
-    
+#github-modal .github-modal-body {
+    padding: 0 20px;
+}
+
+.github-modal-input-group {
+    margin: 10px 0;
 }

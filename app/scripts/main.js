@@ -205,8 +205,25 @@ define([
     'jquery',
     'backbone'
 ], function ($, Backbone) {
-    $('#github-modal-view').modal({
+
+    var GitHubModalView = Backbone.View.extend({
+        events: {
+            'click .github-modal-download-btn': 'download'
+        },
+        download: function() {
+            var githubUsername = $('.github-modal-username-input').val();
+            var repoName = $('.github-modal-repo-input').val();
+
+            console.log(githubUsername);
+            console.log(repoName);
+        }
+
+    });
+
+    $('#github-modal').modal({
         show: true,
         keyboard: true
     });
+
+    return (new GitHubModalView({ el: '#github-modal' })).render();
 });
