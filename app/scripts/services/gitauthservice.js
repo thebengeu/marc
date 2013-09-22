@@ -2,8 +2,9 @@
 
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'LSD'
+], function ($, _, LSD) {
 
     /**
      * This ensures a singleton of the GitAuthService module.
@@ -15,7 +16,7 @@ define([
      * authentications to allow other services to connect to Github.
      */
     var gitAuthService = function() {
-        var oauth = null;
+        var oauth = LSD['oauthToken'] || null;
         var clientId = '56b5da733bb16fb8a5b9';
         var redirectUri = 'http://localhost:9000/#/gitauth';
 
@@ -40,7 +41,8 @@ define([
         };
 
         /**
-         * Exchanges the authentication access code with an OAuth token.
+         * Exchanges the authentication access code with an OAuth token. The
+         * token is saved to localStorage as well.
          * @param {string} code The authentication access code obtained from
          *      the first authentication step.
          */
@@ -48,6 +50,7 @@ define([
             $.getJSON('http://localhost:9999/authenticate/' + code,
                 function(data) {
                     oauth = data.token;
+                    LSD['oauthToken'] = oauth;
                 }
             );
         };
