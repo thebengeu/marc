@@ -200,3 +200,13 @@ require([
 
     FastClick.attach(document.body);
 });
+
+define([
+    'jquery',
+    'backbone'
+], function ($, Backbone) {
+    $('#github-modal-view').modal({
+        show: true,
+        keyboard: true
+    });
+});
