@@ -83,7 +83,8 @@ require.config({
         'indent-fold': '../bower_components/codemirror/addon/fold/indent-fold',
         'xml-fold': '../bower_components/codemirror/addon/fold/xml-fold',
         matchtags: '../bower_components/codemirror/addon/edit/matchtags',
-        'active-line': '../bower_components/codemirror/addon/selection/active-line'
+        'active-line': '../bower_components/codemirror/addon/selection/active-line',
+        dropbox: '../bower_components/dropbox-build/dropbox'
     }
 });
 
@@ -96,7 +97,8 @@ require([
     'enquire',
     'fastclick',
     'bootstrap',
-    'jqTree'
+    'jqTree',
+    'dropbox'
 ], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
