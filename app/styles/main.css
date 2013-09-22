@@ -67,12 +67,6 @@
     width: 100%;
 }
 
-@media (min-width: 768px) {
-    .snapjs-left .snap-content {
-        right: 266px;
-    }
-}
-
 .codeView, .CodeMirror {
     height: 100%;
 }

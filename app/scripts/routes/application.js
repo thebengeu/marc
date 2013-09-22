@@ -34,11 +34,18 @@ define([
             'gitauth': 'gitauth'
         },
         home: function () {
-            $.get('README.md', function (data) {
-                CodeView.setValue(data);
-            })
+            var route = LSD.getItem('route');
+            if (route) {
+                this.navigate(route, {trigger: true});
+            } else {
+                $.get('README.md', function (data) {
+                    CodeView.setValue(data);
+                });
+            }
         },
         view: function (source, path) {
+            LSD.setItem('route', ['view', source, path].join('/'));
+
             var data = LSD.getItem(path);
             if (data) {
                 console.log(path + ' loaded from localStorage');
@@ -51,10 +58,11 @@ define([
             }
         },
         gitauth: function() {
-            $.get('README.md', function (data) {
-                CodeView.setValue(data);
-                GitAuthService.setOAuthWithCode(window.location.search.split('=')[1]);
-            })
+            var urlParams = window.location.search;
+            var code = urlParams.split('=')[1];
+
+            GitAuthService.getInstance().setOAuthWithCode(code);
+            this.navigate('/', {trigger: true, replace: true});
         }
     });
 

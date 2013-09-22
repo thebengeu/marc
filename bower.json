@@ -14,7 +14,8 @@
     "snapjs": "*",
     "enquire": "~2.1.0",
     "lodash": "~2.0.0",
-    "fastclick": "~0.6.10"
+    "fastclick": "~0.6.10",
+    "gatekeeper": "prose/gatekeeper"
   },
   "devDependencies": {}
 }
