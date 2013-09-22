@@ -10,20 +10,23 @@ define([
 
     var Sidebar = Backbone.View.extend({
         initialize: function () {
+            this.listenTo(this.collection, 'add', this.addFileToTree);
+
             var that = this;
             $.get('dir.json', function (response) {
-                that.parseDirJson(response);
-                that.dirStructure = response;
+                that.parseDirJson(response, 'Server');
                 that.render();
             });
 
             this.treeElement = this.$('#file-tree');
+            this.initTree();
         },
-        render: function () {
-            var that = this;
+
+        initTree: function() {
             this.treeElement.tree({
-                data: this.dirStructure.children
+                data: []
             });
+            var that = this;
             this.treeElement.bind(
                 'tree.click',
                 function (event) {
@@ -40,23 +43,21 @@ define([
                     }
                 }
             );
+        },
+        render: function () {
+            
             return this;
         },
-        parseDirJson: function (rawJson) {
-            // Change all instances of "path" to "label"
-            for (var property in rawJson) {
-                if (property === 'path') {
-                    // While we're at it, drop the "/" and anything before.
-                    var originalPath = rawJson[property];
-                    var lastSlash = originalPath.lastIndexOf('/') + 1;
-                    var fileName = originalPath.slice(lastSlash);
-                    rawJson.label = fileName;
-                }
-            }
+        parseDirJson: function (rawJson, source) {
+            // If this is a folder, add all its children.
             if (rawJson.children) {
-                for (var i = 0; i < rawJson.children.length; i++) {
-                    this.parseDirJson(rawJson.children[i]);
+                for (var index in rawJson.children) {
+                    this.parseDirJson(rawJson.children[index], source);
                 }
+            } else {
+                // Add this to the collection.
+                rawJson.source = source;
+                this.collection.add(rawJson);
             }
         },
         addFileToTree: function (file) {
@@ -67,14 +68,14 @@ define([
             var fileName = path.slice(lastSlash);
             var directoryPath = path.slice(0, lastSlash - 1);
 
-            this.addDirectoryPathToTree(directoryPath, source);
 
             var fileNode = {
                 id: path,
-                label: fileName
+                label: fileName,
+                path: path
             };
-
-            var parent = this.treeElement.tree('getNodeById', directoryPath);
+            
+            var parent = this.addDirectoryPathToTree(directoryPath, source);
             this.treeElement.tree('appendNode', fileNode, parent);
         },
         addDirectoryPathToTree: function (directoryPath, source) {
@@ -89,17 +90,28 @@ define([
                 sourceNode = this.treeElement.tree('getNodeById', source);
             }
 
-            var parentDirectory;
             if (directoryPath === '.') {
                 // We out.
                 return sourceNode;
             }
+
+            // Check if we're trying to add a directory that's already in.
+            var existing = this.treeElement.tree('getNodeById', directoryPath);
+            if (existing) {
+                return existing;
+            }
             
-            // Recursively add directories as needed.
             var lastSlash = directoryPath.lastIndexOf('/');
             var parentPath = directoryPath.slice(0, lastSlash);
+            
+            var parentDirectory;
+            if (parentPath === '.') {
+                parentPath = source;
+            }
+
             parentDirectory = this.treeElement.tree('getNodeById', parentPath);
             if (!parentDirectory) {
+                // Recursively add directories as needed.
                 parentDirectory = this.addDirectoryPathToTree(parentDirectory, source);
             }
 
@@ -107,7 +119,8 @@ define([
             var directoryName = directoryPath.slice(lastSlash + 1);
             var directoryNode = {
                 id: directoryPath,
-                label: directoryName
+                label: directoryName,
+                path: directoryPath
             };
             this.treeElement.tree('appendNode', directoryNode, parentDirectory);
 
