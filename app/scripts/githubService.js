@@ -1,13 +1,11 @@
 /*global define*/
 
-// TODO(benedict): shift this, not sure how to use this framework yet. :(
 define([
     'jquery',
     'underscore',
     'services/gitauthservice',
-    'views/githubmodal',
     'LSD'
-], function ($, _, GitAuthService, GithubModalView, LSD) {
+], function ($, _, GitAuthService, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -148,10 +146,6 @@ define([
 
         return gitHeaders;
     };
-
-    $('#add-from-github').click(function() {
-        gitAuthServiceInstance.ensureAuth(GithubModalView.showModal());
-    });
 
     var downloadRepository = function(username, repoName) {
         user = username;

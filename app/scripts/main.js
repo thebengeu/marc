@@ -95,6 +95,7 @@ require.config({
 require([
     'backbone',
     'views/sidebar',
+    'views/githubmodal',
     'collections/fileList',
     'routes/application',
     'snap',
@@ -104,7 +105,8 @@ require([
     'jqTree',
     'dropbox',
     'bootstrap-switch'
-], function (Backbone, Sidebar, FileList, ApplicationRouter, Snap, enquire, FastClick) {
+], function (Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
+        Snap, enquire, FastClick) {
     new ApplicationRouter;
     Backbone.history.start();
 
@@ -201,4 +203,8 @@ require([
     );
 
     FastClick.attach(document.body);
+
+    $('#add-from-github').click(function() {
+        GithubModalView.showModal();
+    });
 });

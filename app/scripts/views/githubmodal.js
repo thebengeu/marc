@@ -3,19 +3,25 @@
 define([
     'jquery',
     'backbone',
-    'githubService'
-], function ($, Backbone, GithubService) {
+    'githubService',
+    'services/gitauthservice'
+], function ($, Backbone, GithubService, GitAuthService) {
     'use strict';
+
+    var gitAuthServiceInstance = GitAuthService.getInstance();
 
     var GitHubModalView = Backbone.View.extend({
         events: {
-            'click .github-modal-download-btn': 'download'
+            'click .github-modal-download-btn': 'download',
+            'click #add-from-github': 'showModal'
         },
         showModal: function() {
-            $('#github-modal').modal({
-                show: true,
-                keyboard: true
-            });
+            gitAuthServiceInstance.ensureAuth(
+                $('#github-modal').modal({
+                    show: true,
+                    keyboard: true
+                })
+            );
         },
         download: function() {
             var githubUsername = $('.github-modal-username-input').val();
