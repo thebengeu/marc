@@ -157,3 +157,9 @@ ul.jqtree-tree {
 .github-modal-input-group {
     margin: 10px 0;
 }
+
+.github-modal-alert {
+    margin: 10px 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

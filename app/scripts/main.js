@@ -215,9 +215,16 @@ define([
             var githubUsername = $('.github-modal-username-input').val();
             var repoName = $('.github-modal-repo-input').val();
 
-            GithubService.downloadRepository(githubUsername, repoName);
+            if (!githubUsername || !repoName) {
+                $('.github-modal-alert').show();
+            }
+            else {
+                GithubService.downloadRepository(githubUsername, repoName);    
+            }
+        },
+        render: function() {
+            $('.github-modal-alert').hide();
         }
-
     });
 
     $('#github-modal').modal({
