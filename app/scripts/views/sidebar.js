@@ -11,6 +11,7 @@ define([
     var Sidebar = Backbone.View.extend({
         initialize: function () {
             this.listenTo(this.collection, 'add', this.addFileToTree);
+            this.listenTo(this.collection, 'remove', this.removeFileFromTree);
 
             var that = this;
             $.get('dir.json', function (response) {
@@ -121,6 +122,11 @@ define([
 
             var newDirectory = this.treeElement.tree('getNodeById', directoryPath);
             return newDirectory;
+        },
+        removeFileFromTree: function (file) {
+            var path = file.get('path');
+            var fileNode = this.treeElement.tree('getNodeById', path);
+            this.treeElement.tree('removeNode', fileNode);
         }
     });
 
