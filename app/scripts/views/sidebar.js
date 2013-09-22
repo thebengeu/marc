@@ -58,6 +58,61 @@ define([
                     this.parseDirJson(rawJson.children[i]);
                 }
             }
+        },
+        addFileToTree: function (file) {
+            var source = file.get('source');
+            var path = file.get('path');
+            var lastSlash = path.lastIndexOf('/') + 1;
+
+            var fileName = path.slice(lastSlash);
+            var directoryPath = path.slice(0, lastSlash - 1);
+
+            this.addDirectoryPathToTree(directoryPath, source);
+
+            var fileNode = {
+                id: path,
+                label: fileName
+            };
+
+            var parent = this.treeElement.tree('getNodeById', directoryPath);
+            this.treeElement.tree('appendNode', fileNode, parent);
+        },
+        addDirectoryPathToTree: function (directoryPath, source) {
+            // Check if we already have the source in the tree.
+            var sourceNode = this.treeElement.tree('getNodeById', source);
+            if (!sourceNode) {
+                // Create the source.
+                this.treeElement.tree('appendNode', {
+                    id: source,
+                    label: source
+                });
+                sourceNode = this.treeElement.tree('getNodeById', source);
+            }
+
+            var parentDirectory;
+            if (directoryPath === '.') {
+                // We out.
+                return sourceNode;
+            }
+            
+            // Recursively add directories as needed.
+            var lastSlash = directoryPath.lastIndexOf('/');
+            var parentPath = directoryPath.slice(0, lastSlash);
+            parentDirectory = this.treeElement.tree('getNodeById', parentPath);
+            if (!parentDirectory) {
+                parentDirectory = this.addDirectoryPathToTree(parentDirectory, source);
+            }
+
+            // Add this directory.
+            var directoryName = directoryPath.slice(lastSlash + 1);
+            var directoryNode = {
+                id: directoryPath,
+                label: directoryName
+            };
+            this.treeElement.tree('appendNode', directoryNode, parentDirectory);
+
+            var newDirectory = this.treeElement.tree('getNodeById', directoryPath);
+            return newDirectory;
         }
     });
 
