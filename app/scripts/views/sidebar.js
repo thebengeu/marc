@@ -51,9 +51,10 @@ define([
             var fileNode = {
                 id: path,
                 label: fileName,
-                path: path
+                path: path,
+                source: source
             };
-            
+
             var parent = this.addDirectoryPathToTree(directoryPath, source);
             this.treeElement.tree('appendNode', fileNode, parent);
         },
@@ -64,7 +65,8 @@ define([
                 // Create the source.
                 this.treeElement.tree('appendNode', {
                     id: source,
-                    label: source
+                    label: source,
+                    source: source
                 });
                 sourceNode = this.treeElement.tree('getNodeById', source);
             }
