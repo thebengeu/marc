@@ -81,10 +81,9 @@ define([
             if (existing) {
                 return existing;
             }
-            
-            var lastSlash = directoryPath.lastIndexOf('/');
-            var parentPath = directoryPath.slice(0, lastSlash);
-            
+
+            var parentPath = this.getParentPathFromString(directoryPath);
+
             var parentDirectory;
             if (parentPath === '.') {
                 parentPath = source;
@@ -97,6 +96,7 @@ define([
             }
 
             // Add this directory.
+            var lastSlash = directoryPath.lastIndexOf('/');
             var directoryName = directoryPath.slice(lastSlash + 1);
             var directoryNode = {
                 id: directoryPath,
@@ -112,6 +112,11 @@ define([
             var path = file.get('path');
             var fileNode = this.treeElement.tree('getNodeById', path);
             this.treeElement.tree('removeNode', fileNode);
+        },
+        getParentPathFromString: function(path) {
+            var lastSlashPosition = path.lastIndexOf('/');
+            var parentPath = path.slice(0, lastSlashPosition);
+            return parentPath;
         }
     });
 
