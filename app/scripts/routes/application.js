@@ -64,8 +64,6 @@ define([
             GitAuthService.getInstance().setOAuthWithCode(code, function() {
                 window.location = '/';
             });
-            // this.navigate('/', {trigger: true, replace: true});
-            // window.location = '/';
         }
     });
 

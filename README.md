@@ -23,10 +23,8 @@ $ grunt server
 
 ## Setup Gatekeeper
 ```bash
-$ bower install
 $ npm install
-$ cd app/bower_components/gatekeeper
-$ node server.js
+$ OAUTH_CLIENT_ID=56b5da733bb16fb8a5b9 OAUTH_CLIENT_SECRET=58b3e51cf6233d5b99f78a5ed398d512a4cd1c node node_modules/gatekeeper/server
 ```
 
 ### Setup on Windows

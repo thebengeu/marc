@@ -1,6 +1,5 @@
 /*global define*/
 
-// TODO(benedict): shift this, not sure how to use this framework yet. :(
 define([
     'jquery',
     'underscore',
@@ -148,7 +147,16 @@ define([
         return gitHeaders;
     };
 
-    $('#add-from-github').click(function() {
+    var downloadRepository = function(username, repoName) {
+        user = username;
+        repo = repoName;
         gitAuthServiceInstance.ensureAuth(getSha);
-    });
+    };
+
+    return {
+        downloadRepository: function(username, repoName) {
+            return downloadRepository(username, repoName);
+        }
+    };
+
 });

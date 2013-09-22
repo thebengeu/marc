@@ -15,7 +15,6 @@
     "enquire": "~2.1.0",
     "lodash": "~2.0.0",
     "fastclick": "~0.6.10",
-    "gatekeeper": "prose/gatekeeper",
     "dropbox": "~0.10.1",
     "bootstrap-switch": "*",
     "dropbox-build": "*"
