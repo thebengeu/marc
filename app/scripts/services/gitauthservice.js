@@ -16,7 +16,22 @@ define([
      * authentications to allow other services to connect to Github.
      */
     var gitAuthService = function() {
-        var oauth = LSD['oauthToken'] || null;
+        /**
+         * Hackish validation of the OAuth in localStorage. Returns null if
+         * the token is invalid.
+         * @return {?string} .
+         */
+        var getValidOAuth = function() {
+            var oauth = LSD['oauthToken'];
+
+            if (oauth == 'undefined') {
+                return null;
+            }
+
+            return oauth;
+        };
+
+        var oauth = getValidOAuth() || null;
         var clientId = '56b5da733bb16fb8a5b9';
         var redirectUri = 'http://localhost:9000/#/gitauth';
 
@@ -45,12 +60,15 @@ define([
          * token is saved to localStorage as well.
          * @param {string} code The authentication access code obtained from
          *      the first authentication step.
+         * @param {function} callback The callback function to execute once
+         *      the OAuth processing is completed.
          */
-        var setOAuthWithCode = function(code) {
+        var setOAuthWithCode = function(code, callback) {
             $.getJSON('http://localhost:9999/authenticate/' + code,
                 function(data) {
                     oauth = data.token;
                     LSD['oauthToken'] = oauth;
+                    callback();
                 }
             );
         };
@@ -68,8 +86,8 @@ define([
             ensureAuth: function(success) {
                 return ensureAuth(success);
             },
-            setOAuthWithCode: function(code) {
-                return setOAuthWithCode(code);
+            setOAuthWithCode: function(code, callback) {
+                return setOAuthWithCode(code, callback);
             },
             getOAuth: function() {
                 return getOAuth();

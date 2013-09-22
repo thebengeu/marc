@@ -61,8 +61,11 @@ define([
             var urlParams = window.location.search;
             var code = urlParams.split('=')[1];
 
-            GitAuthService.getInstance().setOAuthWithCode(code);
-            this.navigate('/', {trigger: true, replace: true});
+            GitAuthService.getInstance().setOAuthWithCode(code, function() {
+                window.location = '/';
+            });
+            // this.navigate('/', {trigger: true, replace: true});
+            // window.location = '/';
         }
     });
 
