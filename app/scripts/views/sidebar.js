@@ -15,7 +15,6 @@ define([
             var that = this;
             $.get('dir.json', function (response) {
                 that.parseDirJson(response, 'Server');
-                that.render();
             });
 
             this.treeElement = this.$('#file-tree');
@@ -43,10 +42,6 @@ define([
                     }
                 }
             );
-        },
-        render: function () {
-            
-            return this;
         },
         parseDirJson: function (rawJson, source) {
             // If this is a folder, add all its children.
