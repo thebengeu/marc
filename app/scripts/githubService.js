@@ -37,6 +37,9 @@ define([
             .done(function (e) {
                 // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
+            })
+            .fail(function(e) {
+                var errorMessage = JSON.parse(e['responseText'])['message'];
             });
     };
 
