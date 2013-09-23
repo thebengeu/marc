@@ -10,10 +10,11 @@ define([
     'LSD'
 ], function ($, _, Backbone, LSD) {
 
+    // TODO(benedict): Set max stack size.
     var storageRouteKey = 'route';
 
     var pushRoute = function(route) {
-        var routeStack = getRouteStack();
+        var routeStack = _getRouteStack();
 
         routeStack.push(route);
 
@@ -21,9 +22,9 @@ define([
     };
 
     var popRoute = function() {
-        var routeStack = getRouteStack();
+        var routeStack = _getRouteStack();
 
-        if (!isEmpty(routeStack)) {
+        if (!_isEmpty(routeStack)) {
             routeStack.pop();
         }
 
@@ -31,20 +32,20 @@ define([
     };
 
     var peekRoute = function() {
-        var routeStack = getRouteStack();
+        var routeStack = _getRouteStack();
 
-        if (!isEmpty(routeStack)) {
+        if (!_isEmpty(routeStack)) {
             return routeStack[routeStack.length - 1];
         }
 
         return null
     };
 
-    var isEmpty = function(stack) {
+    var _isEmpty = function(stack) {
         return stack.length == 0;
     };
 
-    var getRouteStack = function() {
+    var _getRouteStack = function() {
         var routeStack = LSD.getItem('route');
 
         if (routeStack) {
@@ -53,4 +54,16 @@ define([
 
         return [];
     };
+
+    return {
+        pushRoute: function(route) {
+            return pushRoute(route);
+        },
+        popRoute: function() {
+            return popRoute();
+        },
+        peekRoute: function() {
+            return peekRoute();
+        }
+    }
 });
