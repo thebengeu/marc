@@ -101,12 +101,13 @@ require([
     'snap',
     'enquire',
     'fastclick',
+    'utilities/filelistloader',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
 ], function (Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
-        Snap, enquire, FastClick) {
+        Snap, enquire, FastClick, FileListLoader) {
     new ApplicationRouter;
     Backbone.history.start();
 
@@ -163,41 +164,7 @@ require([
         collection: FileList
     });
 
-    var addGitHubFilesToFileList = function(storage, source) {
-        var storageKeys = _.keys(storage);
-        var filteredKeys = _.filter(storageKeys, function(key) {
-            return key.indexOf('./github/') == 0;
-        });
-
-        _.each(filteredKeys, function(key) {
-            var fileModel = {
-                path: key,
-                source: source
-            };
-            FileList.add(fileModel);
-        });
-    };
-
-    addGitHubFilesToFileList(localStorage, 'GitHub Source');
-
-    // TEMP. This should be moved elsewhere once we have other sources integrated.
-    // Grab the files on the server.
-    $.get('dir.json', function (response) {
-        function parseDirJson(rawJson, source) {
-            // If this is a folder, add all its children.
-            if (rawJson.children) {
-                for (var index in rawJson.children) {
-                    parseDirJson(rawJson.children[index], source);
-                }
-            } else {
-                // Add this to the collection.
-                rawJson.source = source;
-                FileList.add(rawJson);
-            }
-        }
-        parseDirJson(response, 'm(arc) Source');
-    });
-    // END TEMP.
+    FileListLoader.loadExistingFiles();
 
     var data = [{
         label: '/',
