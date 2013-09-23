@@ -2,20 +2,23 @@
 
 define([
     'jquery',
-    'underscore'
-], function ($, _) {
+    'underscore',
+    'collections/fileList'
+], function ($, _, FileList) {
     'use strict';
     
     var client;
     client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
     
     $('#add-from-dropbox').click(function() {
-        alert("add");
+        //alert("add");
         authenticate();
     });
     
     $('#dialog-dropbox-browser #select-folder').click(function() {
-        alert($('#dialog-dropbox-browser .modal-body strong').html());
+        var pathOfInterest = $('#dialog-dropbox-browser .modal-body strong').html();
+        addFolderContents(pathOfInterest);
+        $('#dialog-dropbox-browser').modal('hide');
     });
     
     var authenticate = function () {
@@ -78,7 +81,7 @@ define([
         });
     }
     
-    var getDeepFolderContents = function(path){
+    var addFolderContents = function(path){
         client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
@@ -87,17 +90,20 @@ define([
             console.log(path);
             console.log(dirContentInfo);
             
-            return _.map(dirContentInfo, function(item){
+            _.map(dirContentInfo, function(item){
                 console.log(item);
                 if (item.isFolder){
-                    return {
-                        path: item.path,
-                        children: getDeepFolderContents(item.path)
-                    }
+                    addFolderContents(item.path)
                 }else{
-                    return {
-                        path: item.path
-                    }
+                    var file = {
+                        path: '.' + item.path,
+                        source: 'Dropbox Source',
+                        metadata: {
+                            versionTag: item.versionTag,
+                            type: 'file'
+                        }
+                    };
+                    FileList.add(file);
                 }
             });
         });
