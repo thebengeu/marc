@@ -10,15 +10,17 @@ define([
     'services/serverService',
     'services/dropboxService',
     'services/githubService',
-    'services/gitauthservice'
+    'services/gitauthservice',
+    'services/recentservice'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService) {
+             dropboxService, githubService, GitAuthService, RecentService) {
     'use strict';
 
     var sourceToService = {
         server: serverService,
         dropbox: dropboxService,
-        github: githubService
+        github: githubService,
+        recent: RecentService
     };
 
     var updateCodeView = function(path, data) {

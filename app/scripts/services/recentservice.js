@@ -14,7 +14,7 @@ define([
     var storageRouteKey = 'route';
 
     var pushRoute = function(route) {
-        var routeStack = _getRouteStack();
+        var routeStack = getRouteStack();
 
         routeStack.push(route);
 
@@ -22,7 +22,7 @@ define([
     };
 
     var popRoute = function() {
-        var routeStack = _getRouteStack();
+        var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
             routeStack.pop();
@@ -32,7 +32,7 @@ define([
     };
 
     var peekRoute = function() {
-        var routeStack = _getRouteStack();
+        var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
             return routeStack[routeStack.length - 1];
@@ -45,11 +45,11 @@ define([
         return stack.length == 0;
     };
 
-    var _getRouteStack = function() {
+    var getRouteStack = function() {
         var routeStack = LSD.getItem('route');
 
         if (routeStack) {
-            return routeStack;
+            return routeStack.slice(0);
         }
 
         return [];
@@ -64,6 +64,9 @@ define([
         },
         peekRoute: function() {
             return peekRoute();
+        },
+        getRoutes: function() {
+            return getRouteStack();
         }
     }
 });
