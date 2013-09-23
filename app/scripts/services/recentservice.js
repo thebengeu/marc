@@ -16,7 +16,10 @@ define([
     var pushRoute = function(route) {
         var routeStack = getRouteStack();
 
-        routeStack.push(route);
+        var routeIndex = routeStack.indexOf(route);
+        if(routeIndex == -1) {
+            routeStack.push(route);    
+        }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
