@@ -3,8 +3,9 @@
 define([
     'jquery',
     'underscore',
+    'backbone',
     'collections/fileList'
-], function ($, _, FileList) {
+], function ($, _, Backbone, FileList) {
     'use strict';
     
     var client;
@@ -12,7 +13,9 @@ define([
     
     $('#add-from-dropbox').click(function() {
         //alert("add");
+        Backbone.history.stop();
         authenticate();
+        Backbone.history.start();
     });
     
     $('#dialog-dropbox-browser #select-folder').click(function() {
@@ -45,9 +48,6 @@ define([
             $('#dialog-dropbox-browser').modal('show');
             
             browseFolder('/');
-            console.log("hello");
-            
-            console.log(getDeepFolderContents("/CS3216 Proj 1"));
         });
     };
     
