@@ -100,10 +100,15 @@ define([
                         source: 'dropbox',
                         metadata: {
                             versionTag: item.versionTag,
-                            type: 'file'
+                            type: 'file',
+                            mimeType: item.mimeType,
+                            size: item.size
                         }
                     };
-                    FileList.add(file);
+                    
+                    if (item.mimeType.split("/")[0] == "text"){
+                        FileList.add(file);
+                    }
                 }
             });
         });
