@@ -6,9 +6,9 @@ define([
     'views/code',
     'extToMode',
     'LSD',
-    'serverService',
+    'services/serverService',
     'dropboxService',
-    'githubService',
+    'services/githubService',
     'services/gitauthservice'
 ], function ($, Backbone, CodeView, extToMode, LSD, serverService,
              dropboxService, githubService, GitAuthService) {

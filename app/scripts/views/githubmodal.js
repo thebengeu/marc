@@ -3,7 +3,7 @@
 define([
     'jquery',
     'backbone',
-    'githubService',
+    'services/githubService',
     'services/gitauthservice'
 ], function ($, Backbone, GithubService, GitAuthService) {
     'use strict';
