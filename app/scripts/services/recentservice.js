@@ -18,7 +18,7 @@ define([
 
         routeStack.push(route);
 
-        LSD.setItem(storageRouteKey, routeStack);
+        LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
 
     var popRoute = function() {
@@ -28,7 +28,7 @@ define([
             routeStack.pop();
         }
 
-        LSD.setItem(storageRouteKey, routeStack);
+        LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
 
     var peekRoute = function() {
@@ -46,7 +46,7 @@ define([
     };
 
     var getRouteStack = function() {
-        var routeStack = LSD.getItem('route');
+        var routeStack = JSON.parse(LSD.getItem('route'));
 
         if (routeStack) {
             return routeStack.slice(0);

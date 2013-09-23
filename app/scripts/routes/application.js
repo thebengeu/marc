@@ -49,7 +49,14 @@ define([
         },
         view: function (source, path) {
             var sourcePath = source + '/' + path;
-            LSD.setItem('route', 'view/' + sourcePath);
+            
+            if (source == 'recent') {
+                sourcePath = path;
+            }
+            else {
+                RecentService.pushRoute(sourcePath);    
+            }
+            
 
             var data = LSD.getItem(sourcePath);
             if (data) {
