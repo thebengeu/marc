@@ -51,6 +51,10 @@ define([
                     }
                 }
             );
+
+            this.collection.each(function(file) {
+                that.addFileToTree(file);
+            });
         },
         addFileToTree: function (file) {
             var source = file.get('source');
