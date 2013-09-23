@@ -26,7 +26,7 @@ define([
         splitString = _.map(splitString, function (s) {
             return atob(s);
         });
-        return splitString.join('\n');
+        return splitString.join('');
     };
 
     /**
