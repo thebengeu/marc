@@ -7,7 +7,7 @@ define([
 
 	var File = Backbone.Model.extend({
 		defaults: {
-			source: '',
+			source: '', // './' prefix needed for all file paths
 			path: '',
 			metadata: {}
 		}

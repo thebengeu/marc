@@ -4,8 +4,9 @@ define([
     'jquery',
     'underscore',
     'services/gitauthservice',
+    'collections/fileList',
     'LSD'
-], function ($, _, GitAuthService, LSD) {
+], function ($, _, GitAuthService, FileList, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -35,8 +36,12 @@ define([
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
                 '/branches/master', {'headers': getGitHeaders()})
             .done(function (e) {
-                // TODO(benedict): Check if message not found exists
                 handleGetShaSuccess(e['commit']['sha']);
+            })
+            .fail(function(e) {
+                var errorMessage = JSON.parse(e['responseText'])['message'];
+                // TODO(benedict): Show error message. Status butter maybe?
+                throw new Error('GitHub Error: ' + errorMessage);
             });
     };
 
@@ -54,10 +59,19 @@ define([
                 'headers': getGitHeaders()
             })
             .done(function (data) {
-                // TODO(benedict): Check if message not found exists
                 getFileContentsFromTree(data['tree'], data['sha']);
+            })
+            .fail(function(e) {
+                var errorMessage = JSON.parse(e['responseText'])['message'];
+                // TODO(benedict): Show error message. Status butter maybe?
+                throw new Error('GitHub Error: ' + errorMessage);
             });
     };
+
+            var clientId = '56b5da733bb16fb8a5b9';
+
+        // TODO(benedict): Move somewhere else.
+        var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
 
     /**
      * Gets and stores the file contents for each leaf in the repo tree.
@@ -73,38 +87,37 @@ define([
         var abspath = 'github/' + user + '/' + repo + '/' + relpath;
 
         if (type == 'tree') {
-            var dirData = {
-                'relpath': relpath,
-                'abspath': abspath,
-                'type': 'dir',
-                'sha': sha
-            };
-
-            // Adding to repoDict - Not used now
-            repoDict[sha] = dirData;
-
-            // Adding to localStorage through LSD
-            LSD[abspath] = JSON.stringify(dirData);
+            //Do nothing for now.
         }
         else if (type == 'blob') {
+            // TODO(benedict): Temporary addition of client_id and client_secret to
+            //      ensure successful downloads.
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + relpath, {
+                '/contents/' + relpath + '?client_id=' + clientId +
+                '&client_secret=' + clientSecret, {
                     'headers': getGitHeaders
                 })
                 .done(function (data) {
-                    // TODO(benedict): Check if message not found exists
-                    var fileData = {
-                        'relpath': relpath,
-                        'abspath': abspath,
-                        'sha': sha,
-                        'content': decodeBase64(data['content'])
+                    var file = {
+                        path: './' + abspath,
+                        source: 'GitHub Source',
+                        metadata: {
+                            sha: sha,
+                            type: 'file'
+                        }
                     };
+                    FileList.add(file);
 
                     // Adding to repoDict - Not used now
-                    repoDict[sha] = fileData;
+                    repoDict[sha] = file;
 
-                    // Adding to localStorage
-                    LSD[abspath] = JSON.stringify(fileData);
+                    // Adding file contents to localStorage
+                    LSD['./' + abspath] = decodeBase64(data['content'])
+                })
+                .fail(function(e) {
+                    var errorMessage = JSON.parse(e['responseText'])['message'];
+                    // TODO(benedict): Show error message. Status butter maybe?
+                    throw new Error('GitHub Error: ' + errorMessage);
                 });
         }
 
@@ -158,5 +171,4 @@ define([
             return downloadRepository(username, repoName);
         }
     };
-
 });

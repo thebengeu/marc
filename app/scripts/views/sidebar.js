@@ -51,6 +51,10 @@ define([
                     }
                 }
             );
+
+            this.collection.each(function(file) {
+                that.addFileToTree(file);
+            });
         },
         addFileToTree: function (file) {
             var source = file.get('source');
@@ -105,7 +109,7 @@ define([
             parentDirectory = this.treeElement.tree('getNodeById', parentPath);
             if (!parentDirectory) {
                 // Recursively add directories as needed.
-                parentDirectory = this.addDirectoryPathToTree(parentDirectory, source);
+                parentDirectory = this.addDirectoryPathToTree(parentPath, source);
             }
 
             // Add this directory.
