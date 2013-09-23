@@ -105,7 +105,7 @@ define([
             parentDirectory = this.treeElement.tree('getNodeById', parentPath);
             if (!parentDirectory) {
                 // Recursively add directories as needed.
-                parentDirectory = this.addDirectoryPathToTree(parentDirectory, source);
+                parentDirectory = this.addDirectoryPathToTree(parentPath, source);
             }
 
             // Add this directory.
