@@ -96,8 +96,8 @@ define([
                     addFolderContents(item.path)
                 }else{
                     var file = {
-                        path: '.' + item.path,
-                        source: 'Dropbox Source',
+                        path: (item.path).substr(1),
+                        source: 'dropbox',
                         metadata: {
                             versionTag: item.versionTag,
                             type: 'file'
@@ -111,7 +111,14 @@ define([
 
     return {
         get: function (path, callback) {
-          
+            console.log(path);
+            client.readFile(path, function(error, data) {
+                if (error) {
+                    return showError(error);  // Something went wrong.
+                }
+
+                callback(data);  // data has the file's contents
+            });
         }
     }
 });
