@@ -7,7 +7,7 @@ define([
     'extToMode',
     'LSD',
     'services/serverService',
-    'services/dropboxService',
+    'services/dropboxservice',
     'services/githubService',
     'services/gitauthservice'
 ], function ($, Backbone, CodeView, extToMode, LSD, serverService,
