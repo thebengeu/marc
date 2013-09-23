@@ -84,7 +84,7 @@ define([
         var type = leaf['type'];
         var relpath = leaf['path'];
         var sha = leaf['sha'];
-        var abspath = 'github/' + user + '/' + repo + '/' + relpath;
+        var abspath = user + '/' + repo + '/' + relpath;
 
         if (type == 'tree') {
             //Do nothing for now.
@@ -112,7 +112,7 @@ define([
                     repoDict[sha] = file;
 
                     // Adding file contents to localStorage
-                    LSD[abspath] = decodeBase64(data['content'])
+                    LSD['github/' + abspath] = decodeBase64(data['content'])
                 })
                 .fail(function(e) {
                     var errorMessage = JSON.parse(e['responseText'])['message'];
