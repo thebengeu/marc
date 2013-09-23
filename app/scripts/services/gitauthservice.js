@@ -33,11 +33,11 @@ define([
         };
 
         var oauth = getValidOAuth() || null;
-        var clientId = '56b5da733bb16fb8a5b9';
-        var redirectUri = 'http://localhost:9000/#/gitauth';
-
-        // TODO(benedict): Move somewhere else.
-        var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
+        var clientIds = {
+            'localhost:9000': '56b5da733bb16fb8a5b9',
+            'marc.beng.me': '3d69890ed49601b91326'
+        };
+        var clientId = clientIds[location.host];
 
         /**
          * If the user has not logged in, a redirect will be performed to

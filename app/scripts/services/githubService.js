@@ -68,10 +68,18 @@ define([
             });
     };
 
-            var clientId = '56b5da733bb16fb8a5b9';
+    var clientIds = {
+        'localhost:9000': '56b5da733bb16fb8a5b9',
+        'marc.beng.me': '3d69890ed49601b91326'
+    };
+    var clientId = clientIds[location.host];
 
-        // TODO(benedict): Move somewhere else.
-        var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
+    // TODO(benedict): Move somewhere else.
+    var clientSecrets = {
+        'localhost:9000': '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c',
+        'marc.beng.me': 'a2a9283ea886c84781caecc07999f5ec23ea224c'
+    };
+    var clientSecret = clientSecrets[location.host];
 
     /**
      * Gets and stores the file contents for each leaf in the repo tree.
