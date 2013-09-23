@@ -170,5 +170,4 @@ define([
             return downloadRepository(username, repoName);
         }
     };
-
 });

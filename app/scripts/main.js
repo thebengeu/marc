@@ -163,6 +163,24 @@ require([
         collection: FileList
     });
 
+    var addGitHubFilesToFileList = function(storage, source) {
+        var storageKeys = _.keys(storage);
+        var filteredKeys = _.filter(storageKeys, function(key) {
+            return key.indexOf('github/') == 0;
+        });
+
+        _.each(filteredKeys, function(key) {
+            var fileModel = {
+                path: key,
+                source: source
+            };
+            console.log(fileModel);
+            FileList.add(fileModel);
+        });
+    };
+
+    addGitHubFilesToFileList(localStorage, 'GitHub Source');
+
     // TEMP. This should be moved elsewhere once we have other sources integrated.
     // Grab the files on the server.
     $.get('dir.json', function (response) {
@@ -176,6 +194,7 @@ require([
                 // Add this to the collection.
                 rawJson.source = source;
                 FileList.add(rawJson);
+                console.log(rawJson);
             }
         }
         parseDirJson(response, 'm(arc) Source');
