@@ -4,8 +4,9 @@ define([
     'jquery',
     'underscore',
     'services/gitauthservice',
+    'collections/fileList',
     'LSD'
-], function ($, _, GitAuthService, LSD) {
+], function ($, _, GitAuthService, FileList, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -100,18 +101,20 @@ define([
                     'headers': getGitHeaders
                 })
                 .done(function (data) {
-                    var fileData = {
-                        'relpath': relpath,
-                        'abspath': abspath,
-                        'sha': sha,
-                        'content': decodeBase64(data['content'])
+                    var file = {
+                        path: abspath,
+                        source: 'GitHub Source',
+                        metadata: {
+                            sha: sha
+                        }
                     };
+                    // FileList.add()
 
                     // Adding to repoDict - Not used now
                     repoDict[sha] = fileData;
 
-                    // Adding to localStorage
-                    LSD[abspath] = JSON.stringify(fileData);
+                    // Adding file contents to localStorage
+                    LSD[abspath] = decodeBase64(data['content'])
                 })
                 .fail(function(e) {
                     var errorMessage = JSON.parse(e['responseText'])['message'];
