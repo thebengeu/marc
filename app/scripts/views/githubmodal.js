@@ -11,10 +11,16 @@ define([
     var gitAuthServiceInstance = GitAuthService.getInstance();
 
     var GitHubModalView = Backbone.View.extend({
+        /**
+         * The events associated with the modal.
+         */
         events: {
-            'click .github-modal-download-btn': 'download',
-            'click #add-from-github': 'showModal'
+            'click .github-modal-download-btn': 'download'
         },
+        /**
+         * Shows the github repository selection modal view. This is called
+         * after the user has authenticated.
+         */
         showModal: function() {
             gitAuthServiceInstance.ensureAuth(function() {
                 $('#github-modal').modal({
@@ -23,6 +29,11 @@ define([
                 })
             });
         },
+        /**
+         * Downloads the repository associated with the input username and
+         * repository. All fields are required. If any is empty, an error
+         * message will be shown to the user.
+         */
         download: function() {
             var githubUsername = $('.github-modal-username-input').val();
             var repoName = $('.github-modal-repo-input').val();
@@ -39,6 +50,10 @@ define([
                 $('.github-modal-repo-input').val('');
             }
         },
+        /**
+         * The view is implemented in index.html. This acts as an initialization
+         * step to hide the error message view.
+         */
         render: function() {
             $('.github-modal-alert').hide();
             return this;
