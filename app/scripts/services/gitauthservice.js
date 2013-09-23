@@ -66,7 +66,7 @@ define([
          *      the OAuth processing is completed.
          */
         var setOAuthWithCode = function(code, callback) {
-            $.getJSON('http://localhost:9999/authenticate/' + code,
+            $.getJSON('http://' + location.hostname + ':9999/authenticate/' + code,
                 function(data) {
                     oauth = data.token;
                     LSD['oauthToken'] = oauth;
