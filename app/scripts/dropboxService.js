@@ -14,6 +14,10 @@ define([
         authenticate();
     });
     
+    $('#dialog-dropbox-browser #select-folder').click(function() {
+        alert($('#dialog-dropbox-browser .modal-body strong').html());
+    });
+    
     var authenticate = function () {
         var receiveUrl = location.href;
         if (receiveUrl.split("#").length > 1){
@@ -39,19 +43,30 @@ define([
             
             browseFolder('/');
             console.log("hello");
+            
+            console.log(getDeepFolderContents("/CS3216 Proj 1"));
         });
     };
     
     var browseFolder = function(path){
+        if (typeof(path) == "object"){
+            path = path.data;
+        }
         client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
-            }           
+            }
             
-            $('#dialog-dropbox-browser .modal-body').html("");            
+            console.log(this);
+            
+            $('#dialog-dropbox-browser .modal-body').html("<strong>"+dirInfo.path+"</strong><br><br>");  
+            
             _.each(dirContentInfo, function(item){
                 if (item.isFolder){
-                    $('#dialog-dropbox-browser .modal-body').append("<a href='#'>"+item.name+"</a><br>");
+                    var element = $("<a href=\"#\">"+item.name+"</a>");
+                    element.click(item.path, browseFolder);
+                    $('#dialog-dropbox-browser .modal-body').append(element);
+                    $('#dialog-dropbox-browser .modal-body').append("<br>");
                 }else{
                     $('#dialog-dropbox-browser .modal-body').append(item.name+"<br>");
                 }
@@ -60,6 +75,31 @@ define([
             console.log(entries);
             console.log(dirInfo);
             console.log(dirContentInfo);
+        });
+    }
+    
+    var getDeepFolderContents = function(path){
+        client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
+            if (error) {
+                return showError(error);  // Something went wrong.
+            }
+            
+            console.log(path);
+            console.log(dirContentInfo);
+            
+            return _.map(dirContentInfo, function(item){
+                console.log(item);
+                if (item.isFolder){
+                    return {
+                        path: item.path,
+                        children: getDeepFolderContents(item.path)
+                    }
+                }else{
+                    return {
+                        path: item.path
+                    }
+                }
+            });
         });
     }
 
