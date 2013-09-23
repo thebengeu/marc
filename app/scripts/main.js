@@ -164,7 +164,6 @@ require([
         collection: FileList
     });
 
-    FileListLoader.loadExistingFiles();
 
     var data = [{
         label: '/',
@@ -190,5 +189,10 @@ require([
 
     $('#add-from-github').click(function() {
         GithubModalView.showModal();
+    });
+
+    // TEMP.
+    $('#add-from-server').click(function() {
+        FileListLoader.loadExistingFiles();
     });
 });
