@@ -38,7 +38,8 @@ define([
             'gitauth': 'gitauth'
         },
         home: function () {
-            var route = LSD.getItem('route');
+            // var route = LSD.getItem('route');
+            var route = RecentService.peekRoute();
             if (route) {
                 this.navigate(route, {trigger: true});
             } else {
@@ -53,10 +54,7 @@ define([
             if (source == 'recent') {
                 sourcePath = path;
             }
-            else {
-                RecentService.pushRoute(sourcePath);    
-            }
-            
+            RecentService.pushRoute(sourcePath);
 
             var data = LSD.getItem(sourcePath);
             if (data) {

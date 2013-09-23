@@ -17,11 +17,17 @@ define([
         var routeStack = getRouteStack();
 
         var routeIndex = routeStack.indexOf(route);
-        if(routeIndex == -1) {
+        if(routeIndex != -1) {
+            // Push to top
+            routeStack.splice(routeIndex, 1, route);
+        }
+        else {
             routeStack.push(route);    
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
+
+        console.log(LSD['route']);
     };
 
     var popRoute = function() {
