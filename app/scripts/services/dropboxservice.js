@@ -19,7 +19,7 @@ define([
     });
     
     $('#dialog-dropbox-browser #select-folder').click(function() {
-        var pathOfInterest = $('#dialog-dropbox-browser .modal-body strong').html();
+        var pathOfInterest = unescape($('#dialog-dropbox-browser .modal-body #path').html());
         addFolderContents(pathOfInterest);
         $('#dialog-dropbox-browser').modal('hide');
     });
@@ -60,9 +60,30 @@ define([
                 return showError(error);  // Something went wrong.
             }
             
-            console.log(this);
+            // hackish way of doing things...
+            $('#dialog-dropbox-browser .modal-body').html('<div id="path" style="display:none;">'+escape(dirInfo.path)+'</div>');
             
-            $('#dialog-dropbox-browser .modal-body').html("<strong>"+dirInfo.path+"</strong><br><br>");  
+            // Build navigable folder path
+            var element = $("<a href=\"#\"><strong>Dropbox Root</strong></a>");
+            element.click('/', browseFolder);
+            $('#dialog-dropbox-browser .modal-body').append(element);
+            
+            var pathElements = dirInfo.path.split("/");
+            pathElements = _.rest(pathElements);
+            var pathToCurrent = "/";
+            for(var i in pathElements){
+                var pathElement = pathElements[i];
+                var element = $("<a href=\"#\"><strong>"+pathElement+"</strong></a>");
+                var pathToCurrent = pathToCurrent + "/" + pathElement;
+                console.log("Path built: "+pathToCurrent);
+                element.click(pathToCurrent, browseFolder);
+                $('#dialog-dropbox-browser .modal-body').append(" / ");
+                $('#dialog-dropbox-browser .modal-body').append(element);
+            }
+            
+            $('#dialog-dropbox-browser .modal-body').append("<br><br>");
+            
+            // List items in folder
             
             _.each(dirContentInfo, function(item){
                 if (item.isFolder){
