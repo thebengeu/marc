@@ -28,7 +28,7 @@ define([
                     if (position === 'inside') {
                         return false;
                     }
-                    
+
                     var movedParent = that.getParentPathFromString(moved.path);
                     var targetParent = that.getParentPathFromString(target.path);
 
@@ -39,20 +39,20 @@ define([
                 'tree.click',
                 function (event) {
                     var node = event.node;
-                    Backbone.history.navigate(
-                        'view/' + node.source + '/' + node.path, {
-                            trigger: true
-                        }
-                    );
-
                     // Open or close the node.
-                    if (node.children) {
+                    if (node.children.length) {
                         that.$('#file-tree').tree('toggle', node);
+                    } else {
+                        Backbone.history.navigate(
+                            'view/' + node.source + '/' + node.path, {
+                                trigger: true
+                            }
+                        );
                     }
                 }
             );
 
-            this.collection.each(function(file) {
+            this.collection.each(function (file) {
                 that.addFileToTree(file);
             });
         },
@@ -124,7 +124,7 @@ define([
             var fileNode = this.treeElement.tree('getNodeById', path);
             this.treeElement.tree('removeNode', fileNode);
         },
-        getParentPathFromString: function(path) {
+        getParentPathFromString: function (path) {
             var lastSlashPosition = path.lastIndexOf('/');
             var parentPath = path.slice(0, lastSlashPosition);
             return parentPath;
