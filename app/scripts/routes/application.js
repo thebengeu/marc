@@ -4,13 +4,14 @@ define([
     'jquery',
     'backbone',
     'views/code',
+    'views/githubmodal',
     'extToMode',
     'LSD',
     'services/serverService',
     'services/dropboxService',
     'services/githubService',
     'services/gitauthservice'
-], function ($, Backbone, CodeView, extToMode, LSD, serverService,
+], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
              dropboxService, githubService, GitAuthService) {
     'use strict';
 
@@ -31,6 +32,7 @@ define([
         routes: {
             '': 'home',
             'view/:source/*path': 'view',
+            'githubmodalview': 'githubmodalview',
             'gitauth': 'gitauth'
         },
         home: function () {
@@ -57,6 +59,9 @@ define([
                     updateCodeView(path, data);
                 });
             }
+        },
+        githubmodalview: function() {
+            GithubModalView.showModal();
         },
         gitauth: function() {
             var urlParams = window.location.search;

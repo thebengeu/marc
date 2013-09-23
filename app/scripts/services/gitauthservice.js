@@ -52,6 +52,7 @@ define([
             }
             else {
                 Backbone.history.stop();
+                LSD.setItem('route', 'githubmodalview');
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }
