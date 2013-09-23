@@ -171,7 +171,7 @@ require([
 
         _.each(filteredKeys, function(key) {
             var fileModel = {
-                path: key,
+                path: './' + key,
                 source: source
             };
             console.log(fileModel);
