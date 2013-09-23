@@ -99,7 +99,7 @@ define([
                 })
                 .done(function (data) {
                     var file = {
-                        path: './' + abspath,
+                        path: abspath,
                         source: 'GitHub Source',
                         metadata: {
                             sha: sha,
@@ -112,7 +112,7 @@ define([
                     repoDict[sha] = file;
 
                     // Adding file contents to localStorage
-                    LSD['./' + abspath] = decodeBase64(data['content'])
+                    LSD[abspath] = decodeBase64(data['content'])
                 })
                 .fail(function(e) {
                     var errorMessage = JSON.parse(e['responseText'])['message'];

@@ -1,19 +1,17 @@
 var fs = require('fs');
 
-var dirToObj = function (dir, callback) {
-    var ignore = [
-        '.git',
-        'node_modules',
-        'dist',
-        'temp',
-        '.sass-cache',
-        'bower_components',
-        '.tmp'
-    ];
-    var results = {
-        path: dir,
-        children: []
-    };
+var ignore = [
+    '.git',
+    'node_modules',
+    'dist',
+    'temp',
+    '.sass-cache',
+    'bower_components',
+    '.tmp'
+];
+var results = [];
+
+var dirToPaths = function (dir, callback) {
     fs.readdir(dir, function (err, list) {
         if (err) {
             return callback(err);
@@ -31,14 +29,13 @@ var dirToObj = function (dir, callback) {
                     return;
                 }
                 if (stat && stat.isDirectory()) {
-                    dirToObj(dir + '/' + file, function (err, res) {
-                        results.children.push(res);
+                    dirToPaths(dir + '/' + file, function (err, res) {
                         if (!--pending) {
                             callback(null, results);
                         }
                     });
                 } else {
-                    results.children.push({path: dir + '/' + file});
+                    results.push(dir + '/' + file);
                     if (!--pending) {
                         callback(null, results);
                     }
@@ -48,6 +45,11 @@ var dirToObj = function (dir, callback) {
     });
 };
 
-dirToObj('.', function (err, res) {
-    fs.writeFileSync('dir.json', JSON.stringify(res, null, '\t'));
+dirToPaths('.', function (err, res) {
+    var files = res.map(function (file) {
+        return {
+            path: file.substring(2)
+        };
+    });
+    fs.writeFileSync('dir.json', JSON.stringify(files, null, '\t'));
 });

@@ -40,7 +40,7 @@ define([
                 function (event) {
                     var node = event.node;
                     Backbone.history.navigate(
-                        'view/server/' + node.path, {
+                        'view/' + node.source + '/' + node.path, {
                             trigger: true
                         }
                     );
@@ -61,9 +61,8 @@ define([
             var path = file.get('path');
             var lastSlash = path.lastIndexOf('/') + 1;
 
-            var fileName = path.slice(lastSlash);
-            var directoryPath = path.slice(0, lastSlash - 1);
-
+            var fileName = lastSlash ? path.slice(lastSlash) : path;
+            var directoryPath = lastSlash ? source + '/' + path.slice(0, lastSlash - 1) : source;
 
             var fileNode = {
                 id: path,
@@ -88,7 +87,7 @@ define([
                 sourceNode = this.treeElement.tree('getNodeById', source);
             }
 
-            if (directoryPath === '.') {
+            if (directoryPath === source) {
                 // We out.
                 return sourceNode;
             }
@@ -101,12 +100,7 @@ define([
 
             var parentPath = this.getParentPathFromString(directoryPath);
 
-            var parentDirectory;
-            if (parentPath === '.') {
-                parentPath = source;
-            }
-
-            parentDirectory = this.treeElement.tree('getNodeById', parentPath);
+            var parentDirectory = this.treeElement.tree('getNodeById', parentPath);
             if (!parentDirectory) {
                 // Recursively add directories as needed.
                 parentDirectory = this.addDirectoryPathToTree(parentPath, source);

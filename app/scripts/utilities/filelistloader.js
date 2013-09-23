@@ -10,7 +10,7 @@ define([
     var addGitHubFilesToFileList = function(storage, source) {
         var storageKeys = _.keys(storage);
         var filteredKeys = _.filter(storageKeys, function(key) {
-            return key.indexOf('./github/') == 0;
+            return key.indexOf('github/') == 0;
         });
 
         _.each(filteredKeys, function(key) {
@@ -28,20 +28,12 @@ define([
     // Grab the files on the server.
     var loadDirJson = function() {
         $.get('dir.json', function (response) {
-            function parseDirJson(rawJson, source) {
-                // If this is a folder, add all its children.
-                if (rawJson.children) {
-                    for (var index in rawJson.children) {
-                        parseDirJson(rawJson.children[index], source);
-                    }
-                } else {
-                    // Add this to the collection.
-                    rawJson.source = source;
-                    FileList.add(rawJson);
-                }
-            }
-            parseDirJson(response, 'm(arc) Source');
+            _.each(response, function(file) {
+                file.source = 'server';
+            });
+            FileList.add(response);
         });
+
     };
     // END TEMP.
 
