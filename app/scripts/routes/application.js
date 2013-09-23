@@ -44,15 +44,16 @@ define([
             }
         },
         view: function (source, path) {
-            LSD.setItem('route', ['view', source, path].join('/'));
+            var sourcePath = source + '/' + path;
+            LSD.setItem('route', 'view/' + sourcePath);
 
-            var data = LSD.getItem(path);
+            var data = LSD.getItem(sourcePath);
             if (data) {
-                console.log(path + ' loaded from localStorage');
+                console.log(sourcePath + ' loaded from localStorage');
                 updateCodeView(path, data);
             } else {
                 sourceToService[source].get(path, function (data) {
-                    LSD.setItem(path, data);
+                    LSD.setItem(sourcePath, data);
                     updateCodeView(path, data);
                 });
             }

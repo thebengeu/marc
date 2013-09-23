@@ -100,7 +100,7 @@ define([
                 .done(function (data) {
                     var file = {
                         path: abspath,
-                        source: 'GitHub Source',
+                        source: 'github',
                         metadata: {
                             sha: sha,
                             type: 'file'

@@ -15,14 +15,14 @@ define([
 
         _.each(filteredKeys, function(key) {
             var fileModel = {
-                path: key,
+                path: key.substring(7),
                 source: source
             };
             FileList.add(fileModel);
         });
     };
 
-    addGitHubFilesToFileList(LSD, 'GitHub Source');
+    addGitHubFilesToFileList(LSD, 'github');
 
     // TEMP. This should be moved elsewhere once we have other sources integrated.
     // Grab the files on the server.
