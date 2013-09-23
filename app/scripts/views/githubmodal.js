@@ -33,6 +33,10 @@ define([
             else {
                 GithubService.downloadRepository(githubUsername, repoName);
                 $('#github-modal').modal('hide');
+
+                // Clear input boxes
+                $('.github-modal-username-input').val('');
+                $('.github-modal-repo-input').val('');
             }
         },
         render: function() {
