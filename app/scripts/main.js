@@ -174,7 +174,6 @@ require([
                 path: key,
                 source: source
             };
-            console.log(fileModel);
             FileList.add(fileModel);
         });
     };
@@ -194,7 +193,6 @@ require([
                 // Add this to the collection.
                 rawJson.source = source;
                 FileList.add(rawJson);
-                console.log(rawJson);
             }
         }
         parseDirJson(response, 'm(arc) Source');
