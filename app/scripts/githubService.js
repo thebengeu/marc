@@ -40,6 +40,7 @@ define([
             .fail(function(e) {
                 var errorMessage = JSON.parse(e['responseText'])['message'];
                 // TODO(benedict): Show error message. Status butter maybe?
+                throw new Error('GitHub Error: ' + errorMessage);
             });
     };
 
@@ -62,6 +63,7 @@ define([
             .fail(function(e) {
                 var errorMessage = JSON.parse(e['responseText'])['message'];
                 // TODO(benedict): Show error message. Status butter maybe?
+                throw new Error('GitHub Error: ' + errorMessage);
             });
     };
 
@@ -114,6 +116,7 @@ define([
                 .fail(function(e) {
                     var errorMessage = JSON.parse(e['responseText'])['message'];
                     // TODO(benedict): Show error message. Status butter maybe?
+                    throw new Error('GitHub Error: ' + errorMessage);
                 });
         }
 
