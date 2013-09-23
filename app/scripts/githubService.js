@@ -68,6 +68,11 @@ define([
             });
     };
 
+            var clientId = '56b5da733bb16fb8a5b9';
+
+        // TODO(benedict): Move somewhere else.
+        var clientSecret = '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c';
+
     /**
      * Gets and stores the file contents for each leaf in the repo tree.
      * Directory types do not have content, but will store te file path
@@ -82,39 +87,32 @@ define([
         var abspath = 'github/' + user + '/' + repo + '/' + relpath;
 
         if (type == 'tree') {
-            var dirData = {
-                'relpath': relpath,
-                'abspath': abspath,
-                'type': 'dir',
-                'sha': sha
-            };
-
-            // Adding to repoDict - Not used now
-            repoDict[sha] = dirData;
-
-            // Adding to localStorage through LSD
-            LSD[abspath] = JSON.stringify(dirData);
+            //Do nothing for now.
         }
         else if (type == 'blob') {
+            // TODO(benedict): Temporary addition of client_id and client_secret to
+            //      ensure successful downloads.
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + relpath, {
+                '/contents/' + relpath + '?client_id=' + clientId +
+                '&client_secret=' + clientSecret, {
                     'headers': getGitHeaders
                 })
                 .done(function (data) {
                     var file = {
-                        path: abspath,
+                        path: './' + abspath,
                         source: 'GitHub Source',
                         metadata: {
-                            sha: sha
+                            sha: sha,
+                            type: 'file'
                         }
                     };
-                    // FileList.add()
+                    FileList.add(file);
 
                     // Adding to repoDict - Not used now
-                    repoDict[sha] = fileData;
+                    repoDict[sha] = file;
 
                     // Adding file contents to localStorage
-                    LSD[abspath] = decodeBase64(data['content'])
+                    LSD['./' + abspath] = decodeBase64(data['content'])
                 })
                 .fail(function(e) {
                     var errorMessage = JSON.parse(e['responseText'])['message'];

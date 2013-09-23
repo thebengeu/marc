@@ -166,7 +166,7 @@ require([
     var addGitHubFilesToFileList = function(storage, source) {
         var storageKeys = _.keys(storage);
         var filteredKeys = _.filter(storageKeys, function(key) {
-            return key.indexOf('github/') == 0;
+            return key.indexOf('./github/') == 0;
         });
 
         _.each(filteredKeys, function(key) {
