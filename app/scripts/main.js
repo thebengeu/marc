@@ -18,9 +18,9 @@ require.config({
         },
         '../bower_components/codemirror/mode/htmlmixed/htmlmixed': {
             deps: [
-                'codemirror_css',
-                'codemirror_javascript',
-                'codemirror_xml'
+                'codemirrorCss',
+                'codemirrorJavascript',
+                'codemirrorXml'
             ]
         },
         jqTree: {
@@ -61,6 +61,9 @@ require.config({
         },
         'bootstrap-switch': {
             deps: ['jquery']
+        },
+        'dropbox': {
+            exports: 'Dropbox'
         }
     },
     paths: {
@@ -68,9 +71,9 @@ require.config({
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/lodash/dist/lodash',
         codemirror: '../bower_components/codemirror/lib/codemirror',
-        codemirror_css: '../bower_components/codemirror/mode/css/css',
-        codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
-        codemirror_xml: '../bower_components/codemirror/mode/xml/xml',
+        codemirrorCss: '../bower_components/codemirror/mode/css/css',
+        codemirrorJavascript: '../bower_components/codemirror/mode/javascript/javascript',
+        codemirrorXml: '../bower_components/codemirror/mode/xml/xml',
         jqTree: '../bower_components/jqtree/tree.jquery',
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
@@ -93,6 +96,7 @@ require.config({
 });
 
 require([
+    'underscore',
     'backbone',
     'views/sidebar',
     'views/githubmodal',
@@ -106,9 +110,9 @@ require([
     'jqTree',
     'dropbox',
     'bootstrap-switch'
-], function (Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
+], function (_, Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
         Snap, enquire, FastClick, FileListLoader) {
-    new ApplicationRouter;
+    new ApplicationRouter();
     Backbone.history.start();
 
     enquire.register('screen and (min-width: 768px)', {
@@ -159,7 +163,7 @@ require([
         }
     });
 
-    var sidebar = new Sidebar({
+    new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
@@ -173,7 +177,7 @@ require([
         data: data,
         autoOpen: false,
         onLoadFailed: function (response) {
-            alert("boo!");
+            alert('boo!');
             console.log(response);
         }
     });

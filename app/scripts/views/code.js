@@ -37,7 +37,7 @@ define([
             this.$scrollToTop.toggle(scrollInfo.height > scrollInfo.clientHeight);
         },
         render: function () {
-            this.codeMirror = CodeMirror(this.el, {
+            this.codeMirror = new CodeMirror(this.el, {
                 lineNumbers: true,
                 lineWrapping: true,
                 readOnly: true,

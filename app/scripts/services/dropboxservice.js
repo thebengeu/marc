@@ -1,123 +1,108 @@
 /*global define*/
-
 define([
     'jquery',
     'underscore',
     'backbone',
+    'dropbox',
     'collections/fileList'
-], function ($, _, Backbone, FileList) {
+], function ($, _, Backbone, Dropbox, FileList) {
     'use strict';
-    
     var client;
-    client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
-    
-    $('#add-from-dropbox').click(function() {
-        //alert("add");
+    client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
+    $('#add-from-dropbox').click(function () {
+        //alert('add');
         Backbone.history.stop();
         authenticate();
         Backbone.history.start();
     });
-    
-    $('#dialog-dropbox-browser #select-folder').click(function() {
-        var pathOfInterest = unescape($('#dialog-dropbox-browser .modal-body #path').html());
+    $('#dialog-dropbox-browser #select-folder').click(function () {
+        var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
         addFolderContents(pathOfInterest);
         $('#dialog-dropbox-browser').modal('hide');
     });
-    
+
+    var showError = function (error) {
+        alert(error);
+    };
+
     var authenticate = function () {
         var receiveUrl = location.href;
-        if (receiveUrl.split("#").length > 1){
-            receiveUrl = receiveUrl.split("#")[0];
+        if (receiveUrl.split('#').length > 1) {
+            receiveUrl = receiveUrl.split('#')[0];
         }
-    
-        client.authenticate(function(error, client) {
+        client.authenticate(function (error) {
             if (error) {
                 // Replace with a call to your own error-handling code.
                 //
                 // Don't forget to return from the callback, so you don't execute the code
                 // that assumes everything went well.
-                alert (error);
                 return showError(error);
             }
-
             // Replace with a call to your own application code.
             //
             // The user authorized your app, and everything went well.
             // client is a Dropbox.Client instance that you can use to make API calls.
-            
             $('#dialog-dropbox-browser').modal('show');
-            
             browseFolder('/');
         });
     };
-    
-    var browseFolder = function(path){
-        if (typeof(path) == "object"){
+    var browseFolder = function (path) {
+        if (typeof path === 'object') {
             path = path.data;
         }
-        client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
+        client.readdir(path, function (error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
             }
-            
             // hackish way of doing things...
-            $('#dialog-dropbox-browser .modal-body').html('<div id="path" style="display:none;">'+escape(dirInfo.path)+'</div>');
-            
+            $('#dialog-dropbox-browser .modal-body').html('<div id="path" style="display:none;">' + encodeURIComponent(dirInfo.path) + '</div>');
             // Build navigable folder path
-            var element = $("<a href=\"#\"><strong>Dropbox Root</strong></a>");
+            var element = $('<a href=\'#\'><strong>Dropbox Root</strong></a>');
             element.click('/', browseFolder);
             $('#dialog-dropbox-browser .modal-body').append(element);
-            
-            var pathElements = dirInfo.path.split("/");
+            var pathElements = dirInfo.path.split('/');
             pathElements = _.rest(pathElements);
-            var pathToCurrent = "/";
-            for(var i in pathElements){
+            var pathToCurrent = '/';
+            for (var i in pathElements) {
                 var pathElement = pathElements[i];
-                var element = $("<a href=\"#\"><strong>"+pathElement+"</strong></a>");
-                var pathToCurrent = pathToCurrent + "/" + pathElement;
-                console.log("Path built: "+pathToCurrent);
+                element = $('<a href=\'#\'><strong>' + pathElement + '</strong></a>');
+                pathToCurrent = pathToCurrent + '/' + pathElement;
+                console.log('Path built: ' + pathToCurrent);
                 element.click(pathToCurrent, browseFolder);
-                $('#dialog-dropbox-browser .modal-body').append(" / ");
+                $('#dialog-dropbox-browser .modal-body').append(' / ');
                 $('#dialog-dropbox-browser .modal-body').append(element);
             }
-            
-            $('#dialog-dropbox-browser .modal-body').append("<br><br>");
-            
+            $('#dialog-dropbox-browser .modal-body').append('<br><br>');
             // List items in folder
-            
-            _.each(dirContentInfo, function(item){
-                if (item.isFolder){
-                    var element = $("<a href=\"#\">"+item.name+"</a>");
+            _.each(dirContentInfo, function (item) {
+                if (item.isFolder) {
+                    var element = $('<a href=\'#\'>' + item.name + '</a>');
                     element.click(item.path, browseFolder);
                     $('#dialog-dropbox-browser .modal-body').append(element);
-                    $('#dialog-dropbox-browser .modal-body').append("<br>");
-                }else{
-                    $('#dialog-dropbox-browser .modal-body').append(item.name+"<br>");
+                    $('#dialog-dropbox-browser .modal-body').append('<br>');
+                } else {
+                    $('#dialog-dropbox-browser .modal-body').append(item.name + '<br>');
                 }
             });
-            
             console.log(entries);
             console.log(dirInfo);
             console.log(dirContentInfo);
         });
-    }
-    
-    var addFolderContents = function(path){
-        client.readdir(path, function(error, entries, dirInfo, dirContentInfo) {
+    };
+    var addFolderContents = function (path) {
+        client.readdir(path, function (error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
             }
-            
             console.log(path);
             console.log(dirContentInfo);
-            
-            _.map(dirContentInfo, function(item){
+            _.map(dirContentInfo, function (item) {
                 console.log(item);
-                if (item.isFolder){
-                    addFolderContents(item.path)
-                }else{
+                if (item.isFolder) {
+                    addFolderContents(item.path);
+                } else {
                     var file = {
-                        path: (item.path).substr(1),
+                        path: item.path.substr(1),
                         source: 'dropbox',
                         metadata: {
                             versionTag: item.versionTag,
@@ -126,25 +111,22 @@ define([
                             size: item.size
                         }
                     };
-                    
-                    if (item.mimeType.split("/")[0] == "text"){
+                    if (item.mimeType.split('/')[0] === 'text') {
                         FileList.add(file);
                     }
                 }
             });
         });
-    }
-
+    };
     return {
         get: function (path, callback) {
             console.log(path);
-            client.readFile(path, function(error, data) {
+            client.readFile(path, function (error, data) {
                 if (error) {
                     return showError(error);  // Something went wrong.
                 }
-
                 callback(data);  // data has the file's contents
             });
         }
-    }
+    };
 });

@@ -26,7 +26,7 @@ define([
                 $('#github-modal').modal({
                     show: true,
                     keyboard: true
-                })
+                });
             });
         },
         /**

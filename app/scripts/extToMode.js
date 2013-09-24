@@ -1,3 +1,5 @@
+/*global define*/
+
 define({
     css: 'css',
     js: 'javascript',
