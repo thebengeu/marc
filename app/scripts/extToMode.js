@@ -1,8 +1,34 @@
+/*global define*/
+
 define({
     css: 'css',
+    c: 'clike',
+    cpp: 'clike',
+    cs: 'clike',
+    clj: 'clojure',
+    coffee: 'coffeescript',
+    d: 'd',
+    erl: 'erlang',
+    go: 'go',
+    groovy: 'groovy',
+    h: 'clike',
+    jade: 'jade',
+    java: 'clike',
     js: 'javascript',
     json: { name: 'javascript', json: true },
+    lisp: 'commonlisp',
+    hs: 'haskell',
     htm: 'htmlmixed',
     html: 'htmlmixed',
-    md: 'markdown'
+    m: 'clike',
+    md: 'markdown',
+    pl: 'perl',
+    php: 'php',
+    python: 'py',
+    rb: 'ruby',
+    scala: 'clike',
+    sh: 'shell',
+    ts: 'javascript',
+    xaml: 'xml',
+    xml: 'xml'
 });

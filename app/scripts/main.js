@@ -16,13 +16,6 @@ require.config({
         codemirror: {
             exports: 'CodeMirror'
         },
-        '../bower_components/codemirror/mode/htmlmixed/htmlmixed': {
-            deps: [
-                'codemirror_css',
-                'codemirror_javascript',
-                'codemirror_xml'
-            ]
-        },
         jqTree: {
             deps: ['jquery']
         },
@@ -61,16 +54,16 @@ require.config({
         },
         'bootstrap-switch': {
             deps: ['jquery']
+        },
+        'dropbox': {
+            exports: 'Dropbox'
         }
     },
     paths: {
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/lodash/dist/lodash',
-        codemirror: '../bower_components/codemirror/lib/codemirror',
-        codemirror_css: '../bower_components/codemirror/mode/css/css',
-        codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
-        codemirror_xml: '../bower_components/codemirror/mode/xml/xml',
+        codemirror: 'vendor/codemirror',
         jqTree: '../bower_components/jqtree/tree.jquery',
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
@@ -93,23 +86,28 @@ require.config({
 });
 
 require([
+    'underscore',
     'backbone',
     'views/sidebar',
-    'views/githubmodal',
     'collections/fileList',
     'routes/application',
+    'routes/services',
     'snap',
     'enquire',
     'fastclick',
-    'utilities/filelistloader',
+    'services/FileLoader',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
-], function (Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
-        Snap, enquire, FastClick, FileListLoader) {
-    new ApplicationRouter;
+], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
+        Snap, enquire, FastClick, FileLoader) {
+    new ApplicationRouter();
+    new ServicesRouter();
     Backbone.history.start();
+
+    FileLoader.listenTo(FileList, 'add', FileLoader.loadFileAsync);
+    $(document).on('online', FileLoader.appOnline);
 
     enquire.register('screen and (min-width: 768px)', {
         openSnapper: function (side) {
@@ -159,7 +157,7 @@ require([
         }
     });
 
-    var sidebar = new Sidebar({
+    new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
@@ -173,7 +171,7 @@ require([
         data: data,
         autoOpen: false,
         onLoadFailed: function (response) {
-            alert("boo!");
+            alert('boo!');
             console.log(response);
         }
     });
@@ -186,13 +184,4 @@ require([
     );
 
     FastClick.attach(document.body);
-
-    $('#add-from-github').click(function() {
-        GithubModalView.showModal();
-    });
-
-    // TEMP.
-    $('#add-from-server').click(function() {
-        FileListLoader.loadExistingFiles();
-    });
 });

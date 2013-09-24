@@ -1,3 +1,5 @@
+/*global define*/
+
 define([
 	'jquery',
 	'underscore',
@@ -9,7 +11,8 @@ define([
 		defaults: {
 			source: '',
 			path: '',
-			metadata: {}
+			metadata: {},
+			cached: false
 		}
 	});
 

@@ -1,9 +1,8 @@
 /*global define*/
-
 define([
     'jquery',
     'underscore',
-    'services/gitauthservice',
+    'services/gitAuth',
     'collections/fileList',
     'LSD'
 ], function ($, _, GitAuthService, FileList, LSD) {
@@ -12,8 +11,7 @@ define([
     var githubApiUrl = 'https://api.github.com';
     var user = 'ahbeng';
     var repo = 'NUSMods';
-    var gitHeaders = {'Authorization': 'token '};
-
+    var gitHeaders = { 'Authorization': 'token ' };
     var gitAuthServiceInstance = GitAuthService.getInstance();
 
     /**
@@ -22,7 +20,6 @@ define([
      */
     var decodeBase64 = function (string) {
         var splitString = string.split('\n');
-
         splitString = _.map(splitString, function (s) {
             return atob(s);
         });
@@ -33,13 +30,13 @@ define([
      * Gets the repo sha.
      */
     var getSha = function () {
-        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/branches/master', {'headers': getGitHeaders()})
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master',
+            { 'headers': _getGitHeaders() })
             .done(function (e) {
-                handleGetShaSuccess(e['commit']['sha']);
+                handleGetShaSuccess(e.commit.sha);
             })
-            .fail(function(e) {
-                var errorMessage = JSON.parse(e['responseText'])['message'];
+            .fail(function (e) {
+                var errorMessage = JSON.parse(e.responseText).message;
                 // TODO(benedict): Show error message. Status butter maybe?
                 throw new Error('GitHub Error: ' + errorMessage);
             });
@@ -53,21 +50,17 @@ define([
         if (!sha) {
             return null;
         }
-
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
-            sha + '?recursive=1', {
-                'headers': getGitHeaders()
-            })
+            sha + '?recursive=1', { 'headers': _getGitHeaders() })
             .done(function (data) {
-                getFileContentsFromTree(data['tree'], data['sha']);
+                getFileContentsFromTree(data.tree, data.sha);
             })
-            .fail(function(e) {
-                var errorMessage = JSON.parse(e['responseText'])['message'];
+            .fail(function (e) {
+                var errorMessage = JSON.parse(e.responseText).message;
                 // TODO(benedict): Show error message. Status butter maybe?
                 throw new Error('GitHub Error: ' + errorMessage);
             });
     };
-
     var clientIds = {
         'localhost:9000': '56b5da733bb16fb8a5b9',
         'marc.beng.me': '3d69890ed49601b91326'
@@ -89,22 +82,17 @@ define([
      * @param {Object} repoDict keys: file sha, value: dir path/file contents
      */
     var storeFileContentsFromLeaf = function (leaf, repoDict) {
-        var type = leaf['type'];
-        var relpath = leaf['path'];
-        var sha = leaf['sha'];
+        var type = leaf.type;
+        var relpath = leaf.path;
+        var sha = leaf.sha;
         var abspath = user + '/' + repo + '/' + relpath;
-
-        if (type == 'tree') {
-            //Do nothing for now.
-        }
-        else if (type == 'blob') {
+        if (type === 'tree') {
+        } else if (type === 'blob') {
             // TODO(benedict): Temporary addition of client_id and client_secret to
             //      ensure successful downloads.
-            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo +
-                '/contents/' + relpath + '?client_id=' + clientId +
-                '&client_secret=' + clientSecret, {
-                    'headers': getGitHeaders
-                })
+            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
+                relpath + '?client_id=' + clientId + '&client_secret=' +
+                clientSecret, { 'headers': _getGitHeaders })
                 .done(function (data) {
                     var file = {
                         path: abspath,
@@ -115,28 +103,24 @@ define([
                         }
                     };
                     FileList.add(file);
-
                     // Adding to repoDict - Not used now
                     repoDict[sha] = file;
-
                     // Adding file contents to localStorage
-                    LSD['github/' + abspath] = decodeBase64(data['content'])
+                    LSD['github/' + abspath] = decodeBase64(data.content);
                 })
-                .fail(function(e) {
-                    var errorMessage = JSON.parse(e['responseText'])['message'];
+                .fail(function (e) {
+                    var errorMessage = JSON.parse(e.responseText).message;
                     // TODO(benedict): Show error message. Status butter maybe?
                     throw new Error('GitHub Error: ' + errorMessage);
                 });
         }
-
     };
 
     /**
      * Gets the file contents from the repo tree.
      * @param {Object} tree The repo's tree.
-     * @param {number} sha The repo's sha.
      */
-    var getFileContentsFromTree = function (tree, sha) {
+    var getFileContentsFromTree = function (tree) {
         // create repo dictionary
         // keys: file sha, value: dir path/file contents
         var repoDictKeys = _.pluck(tree, 'sha');
@@ -144,38 +128,41 @@ define([
         _.each(repoDictKeys, function (key) {
             repoDict[key] = null;
         });
-
         // get file contents for each object in the tree
         _.map(tree, function (leaf) {
-            storeFileContentsFromLeaf(leaf, repoDict)
+            storeFileContentsFromLeaf(leaf, repoDict);
         });
     };
 
-    var getGitHeaders = function() {
+    /**
+     * Sets the appropriate headers for the GitHub API requests.
+     * @return {Object.<string, string>} The request headers.
+     */
+    var _getGitHeaders = function () {
         var oauth = gitAuthServiceInstance.getOAuth();
-
         if (!oauth) {
             throw new Error('Not signed in to Github.');
         }
-
-        var authorization = gitHeaders['Authorization'];
+        var authorization = gitHeaders.Authorization;
         var splitAuthHeader = authorization.split(' ');
-
-        if (splitAuthHeader[1] == '' || splitAuthHeader[1] != oauth) {
-            gitHeaders['Authorization'] = 'token ' + oauth;
+        if (splitAuthHeader[1] === '' || splitAuthHeader[1] !== oauth) {
+            gitHeaders.Authorization = 'token ' + oauth;
         }
-
         return gitHeaders;
     };
 
-    var downloadRepository = function(username, repoName) {
+    /**
+     * Downloads the repository given the input username and repository name.
+     * @param {string} username .
+     * @param {string} repoName .
+     */
+    var downloadRepository = function (username, repoName) {
         user = username;
         repo = repoName;
         gitAuthServiceInstance.ensureAuth(getSha);
     };
-
     return {
-        downloadRepository: function(username, repoName) {
+        downloadRepository: function (username, repoName) {
             return downloadRepository(username, repoName);
         }
     };

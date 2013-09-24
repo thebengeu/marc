@@ -4,21 +4,19 @@ define([
     'jquery',
     'backbone',
     'views/code',
+    'views/githubmodal',
     'extToMode',
     'LSD',
-    'services/serverService',
-    'services/dropboxservice',
-    'services/githubService',
-    'services/gitauthservice'
-], function ($, Backbone, CodeView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService) {
+    'services/server',
+    'services/dropbox',
+    'services/github',
+    'services/gitAuth',
+    'services/recent',
+    'collections/fileList',
+    'utilities/services'
+], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
+             dropboxService, githubService, GitAuthService, Recent, FileList, sourceToService) {
     'use strict';
-
-    var sourceToService = {
-        server: serverService,
-        dropbox: dropboxService,
-        github: githubService
-    };
 
     var updateCodeView = function(path, data) {
         var extension = path.split('.').pop();
@@ -31,10 +29,12 @@ define([
         routes: {
             '': 'home',
             'view/:source/*path': 'view',
+            'githubmodalview': 'githubmodalview',
             'gitauth': 'gitauth'
         },
         home: function () {
-            var route = LSD.getItem('route');
+            // var route = LSD.getItem('route');
+            var route = Recent.peekRoute();
             if (route) {
                 this.navigate(route, {trigger: true});
             } else {
@@ -45,16 +45,25 @@ define([
         },
         view: function (source, path) {
             var sourcePath = source + '/' + path;
-            LSD.setItem('route', 'view/' + sourcePath);
+            
+            if (source === 'recent') {
+                sourcePath = path;
+            }
+            Recent.pushRoute(sourcePath);
 
             var data = LSD.getItem(sourcePath);
             if (data) {
                 console.log(sourcePath + ' loaded from localStorage');
                 updateCodeView(path, data);
             } else {
+                var fileModel = FileList.get(sourcePath);
                 sourceToService[source].get(path, function (data) {
                     LSD.setItem(sourcePath, data);
                     updateCodeView(path, data);
+
+                    fileModel.set({
+                        cached: true
+                    });
                 });
             }
         },
