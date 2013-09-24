@@ -5,12 +5,18 @@ define([
     'underscore',
     'backbone',
     'LSD',
-    'collections/fileList'
-], function ($, _, Backbone, LSD, FileList) {
+    'collections/fileList',
+    'services/recent'
+], function ($, _, Backbone, LSD, FileList, RecentService) {
     'use strict';
 
+    /**
+     * Removes the file content and file from recents.
+     * @param {Backbone.Model} file .
+     */
     var removeFileContent = function(file) {
         LSD.removeItem(file.get('id'));
+        RecentService.removeRoute(file.get('id'));
     };
 
     var deleteFile = function(sideBar) {

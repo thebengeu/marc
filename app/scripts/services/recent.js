@@ -130,6 +130,24 @@ define([
     };
 
     /**
+     * Removes the route from the recent array. NO files are removed from the
+     * file list.
+     * @param {string} route The route to be removed.
+     */
+    var removeRoute = function(route) {
+        var routeStack = getRouteStack();
+
+        var routeIndex = routeStack.indexOf(route);
+
+        // Route exists
+        if(routeIndex !== -1) {
+            // Push to top
+            routeStack.splice(routeIndex, 1);
+            LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
+        }  
+    };
+
+    /**
      * Gets a cloned copy of the recent stack stored in the LSD.
      * @return {Array.<string>} The stack of routes.
      */
@@ -152,6 +170,9 @@ define([
         },
         peekRoute: function() {
             return peekRoute();
+        },
+        removeRoute: function(route) {
+            return removeRoute(route);
         },
         getRoutes: function() {
             return getRouteStack();
