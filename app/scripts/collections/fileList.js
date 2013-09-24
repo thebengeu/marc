@@ -49,6 +49,18 @@ define([
 					file.id.indexOf('recent/' + dirPath) === 0;
 			});
 			return files;
+		},
+		getFileWithSourceAndPath: function(source, path) {
+			var storedFiles = JSON.parse(LSD.getItem('FileList'));
+			var filteredFiles = this.filter(function(file) {
+				return file.id.indexOf(source + '/' + path) === 0;
+			});
+
+			if (filteredFiles[0]) {
+				return filteredFiles[0];
+			}
+
+			return null;
 		}
 	});
 

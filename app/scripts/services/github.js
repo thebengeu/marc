@@ -4,8 +4,9 @@ define([
     'underscore',
     'services/gitAuth',
     'collections/fileList',
+    'models/file',
     'LSD'
-], function ($, _, GitAuthService, FileList, LSD) {
+], function ($, _, GitAuthService, FileList, File, LSD) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -74,33 +75,46 @@ define([
         var relpath = leaf.path;
         var sha = leaf.sha;
         var abspath = user + '/' + repo + '/' + relpath;
+
         if (type === 'tree') {
         } else if (type === 'blob') {
-            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
-                relpath, { 'headers': _getGitHeaders() })
-                .done(function (data) {
-                    var file = {
-                        path: abspath,
-                        source: 'github',
-                        id: 'github/' + abspath,
-                        metadata: {
-                            sha: sha,
-                            type: 'file'
-                        }
-                    };
-                    FileList.add(file);
-                    // Adding to repoDict - Not used now
-                    repoDict[sha] = file;
-                    // Adding file contents to localStorage
-                    LSD['github/' + abspath] = decodeBase64(data.content);
-                })
-                .fail(function (e) {
-                    var errorMessage = JSON.parse(e.responseText).message;
-                    // TODO(benedict): Show error message. Status butter maybe?
-                    throw new Error('GitHub Error: ' + errorMessage);
-                });
+            var file = {
+                path: abspath,
+                source: 'github',
+                id: 'github/' + abspath,
+                metadata: {
+                    sha: sha,
+                    user: user,
+                    repo: repo,
+                    relpath: relpath
+                }
+            };
+            FileList.add(new File(file));
         }
     };
+
+    var getFileContent = function(githubFile, callback) {
+        var sha = githubFile.get('metadata').sha;
+        var relpath = githubFile.get('metadata').relpath;
+        var user = githubFile.get('metadata').user;
+        var repo = githubFile.get('metadata').repo;
+
+        if (!sha) {
+            throw new Error('This is not a file from GitHub.');
+        }
+
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
+                relpath, { 'headers': _getGitHeaders() })
+            .done(function (data) {
+                // Adding file contents to localStorage
+                callback(decodeBase64(data.content));
+            })
+            .fail(function (e) {
+                var errorMessage = JSON.parse(e.responseText).message;
+                // TODO(benedict): Show error message. Status butter maybe?
+                throw new Error('GitHub Error: ' + errorMessage);
+            });   
+    }
 
     /**
      * Gets the file contents from the repo tree.
@@ -152,7 +166,8 @@ define([
             return downloadRepository(username, repoName);
         },
         get: function(path, callback) {
-            console.log(path);
+            var file = FileList.getFileWithSourceAndPath('github', path);
+            return getFileContent(file, callback);
         }
     };
 });
