@@ -45,7 +45,6 @@ define([
             if (oauth) {
                 success();
             } else {
-                Backbone.history.stop();
                 window.location.href = 'https://github.com/login/oauth/authorize?' + 'client_id=' + clientId;
             }
         };

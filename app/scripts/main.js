@@ -99,20 +99,20 @@ require([
     'underscore',
     'backbone',
     'views/sidebar',
-    'views/githubmodal',
     'collections/fileList',
     'routes/application',
+    'routes/services',
     'snap',
     'enquire',
     'fastclick',
-    'utilities/filelistloader',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
-], function (_, Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
-        Snap, enquire, FastClick, FileListLoader) {
+], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
+        Snap, enquire, FastClick) {
     new ApplicationRouter();
+    new ServicesRouter();
     Backbone.history.start();
 
     enquire.register('screen and (min-width: 768px)', {
@@ -190,13 +190,4 @@ require([
     );
 
     FastClick.attach(document.body);
-
-    $('#add-from-github').click(function() {
-        GithubModalView.showModal();
-    });
-
-    // TEMP.
-    $('#add-from-server').click(function() {
-        FileListLoader.loadExistingFiles();
-    });
 });
