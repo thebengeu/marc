@@ -39,6 +39,8 @@ define([
             this.treeElement.bind(
                 'tree.click',
                 function (event) {
+                    /*jshint -W106 */
+
                     var node = event.node;
                     // Open or close the node.
                     if (node.children.length) {
