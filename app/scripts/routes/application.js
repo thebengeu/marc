@@ -6,10 +6,10 @@ define([
     'views/code',
     'extToMode',
     'LSD',
-    'services/serverService',
-    'services/dropboxservice',
-    'services/githubService',
-    'services/gitauthservice'
+    'services/server',
+    'services/dropbox',
+    'services/github',
+    'services/gitAuth'
 ], function ($, Backbone, CodeView, extToMode, LSD, serverService,
              dropboxService, githubService, GitAuthService) {
     'use strict';

@@ -2,7 +2,7 @@
 define([
     'jquery',
     'underscore',
-    'services/gitauthservice',
+    'services/gitAuth',
     'collections/fileList',
     'LSD'
 ], function ($, _, GitAuthService, FileList, LSD) {

@@ -9,12 +9,7 @@ define([
     'use strict';
     var client;
     client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
-    $('#add-from-dropbox').click(function () {
-        //alert('add');
-        Backbone.history.stop();
-        authenticate();
-        Backbone.history.start();
-    });
+
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
         addFolderContents(pathOfInterest);
@@ -119,6 +114,7 @@ define([
         });
     };
     return {
+        authenticate: authenticate,
         get: function (path, callback) {
             console.log(path);
             client.readFile(path, function (error, data) {
