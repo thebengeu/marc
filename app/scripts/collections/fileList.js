@@ -34,7 +34,8 @@ define([
 		removeFileFromStorage: function (file) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var filtered = _.filter(storedFiles, function (storedFile) {
-				return storedFile !== file.attributes;
+				return storedFile !== file.attributes &&
+					storedFile.id != file.get('id');
 			});
 			LSD.setItem('FileList', JSON.stringify(filtered));
 		},
