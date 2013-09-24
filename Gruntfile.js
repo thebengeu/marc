@@ -261,6 +261,20 @@ module.exports = function (grunt) {
                         'fonts/*'
                     ]
                 }]
+            },
+            src: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>',
+                    src: [
+                        'scripts/**',
+                        'styles/**',
+                        'index.html',
+                        'README.md',
+                        'robots.txt'
+                    ],
+                    dest: '<%= yeoman.dist %>/src'
+                }]
             }
         },
         bower: {
@@ -300,8 +314,44 @@ module.exports = function (grunt) {
                 ],
                 dest: '<%= yeoman.dist %>/manifest.appcache'
             }
+        },
+        dirToJson: {
+            dist: {
+                options: {
+                    basePath: '<%= yeoman.dist %>'
+                },
+                files: [{
+                    src: [
+                        'src/scripts/{,*/}*.js',
+                        'src/styles/*.css',
+                        'src/index.html',
+                        'src/README.md',
+                        'src/robots.txt'
+                    ],
+                    dest: '<%= yeoman.dist %>/dir.json',
+                    filter: 'isFile'
+                }]
+            },
+            app: {
+                options: {
+                    basePath: '<%= yeoman.app %>'
+                },
+                files: [{
+                    src: [
+                        'scripts/{,*/}*.js',
+                        'styles/*.css',
+                        'index.html',
+                        'README.md',
+                        'robots.txt'
+                    ],
+                    dest: '<%= yeoman.app %>/dir.json',
+                    filter: 'isFile'
+                }]
+            }
         }
     });
+
+    grunt.loadTasks('tasks');
 
     grunt.registerTask('createDefaultTemplate', function () {
         grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
@@ -356,10 +406,13 @@ module.exports = function (grunt) {
         'concat',
         'cssmin',
         'uglify',
-        'copy',
+        'copy:dist',
         'rev',
         'usemin',
-        'manifest'
+        'manifest',
+        'copy:src',
+        'dirToJson:dist'
+
     ]);
 
     grunt.registerTask('default', [

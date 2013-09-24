@@ -7,11 +7,13 @@ define([
     'LSD'
 ], function ($, _, GitAuthService, FileList, LSD) {
     'use strict';
+
     var githubApiUrl = 'https://api.github.com';
     var user = 'ahbeng';
     var repo = 'NUSMods';
     var gitHeaders = { 'Authorization': 'token ' };
     var gitAuthServiceInstance = GitAuthService.getInstance();
+
     /**
      * Decode base64 strings with newline characters.
      * @param {string} string The base64 string to be decoded.
@@ -23,18 +25,23 @@ define([
         });
         return splitString.join('');
     };
+
     /**
      * Gets the repo sha.
      */
     var getSha = function () {
-        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master', { 'headers': getGitHeaders() }).done(function (e) {
-            handleGetShaSuccess(e.commit.sha);
-        }).fail(function (e) {
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/branches/master',
+            { 'headers': _getGitHeaders() })
+            .done(function (e) {
+                handleGetShaSuccess(e.commit.sha);
+            })
+            .fail(function (e) {
                 var errorMessage = JSON.parse(e.responseText).message;
                 // TODO(benedict): Show error message. Status butter maybe?
                 throw new Error('GitHub Error: ' + errorMessage);
             });
     };
+
     /**
      * Recursively gets the files from the repo tree given the repo's sha.
      * @param {number} sha The repo's sha.
@@ -43,9 +50,12 @@ define([
         if (!sha) {
             return null;
         }
-        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' + sha + '?recursive=1', { 'headers': getGitHeaders() }).done(function (data) {
-            getFileContentsFromTree(data.tree, data.sha);
-        }).fail(function (e) {
+        $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
+            sha + '?recursive=1', { 'headers': _getGitHeaders() })
+            .done(function (data) {
+                getFileContentsFromTree(data.tree, data.sha);
+            })
+            .fail(function (e) {
                 var errorMessage = JSON.parse(e.responseText).message;
                 // TODO(benedict): Show error message. Status butter maybe?
                 throw new Error('GitHub Error: ' + errorMessage);
@@ -56,12 +66,14 @@ define([
         'marc.beng.me': '3d69890ed49601b91326'
     };
     var clientId = clientIds[location.host];
+
     // TODO(benedict): Move somewhere else.
     var clientSecrets = {
         'localhost:9000': '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c',
         'marc.beng.me': 'a2a9283ea886c84781caecc07999f5ec23ea224c'
     };
     var clientSecret = clientSecrets[location.host];
+
     /**
      * Gets and stores the file contents for each leaf in the repo tree.
      * Directory types do not have content, but will store te file path
@@ -78,27 +90,32 @@ define([
         } else if (type === 'blob') {
             // TODO(benedict): Temporary addition of client_id and client_secret to
             //      ensure successful downloads.
-            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' + relpath + '?client_id=' + clientId + '&client_secret=' + clientSecret, { 'headers': getGitHeaders }).done(function (data) {
-                var file = {
-                    path: abspath,
-                    source: 'github',
-                    metadata: {
-                        sha: sha,
-                        type: 'file'
-                    }
-                };
-                FileList.add(file);
-                // Adding to repoDict - Not used now
-                repoDict[sha] = file;
-                // Adding file contents to localStorage
-                LSD['github/' + abspath] = decodeBase64(data.content);
-            }).fail(function (e) {
+            $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
+                relpath + '?client_id=' + clientId + '&client_secret=' +
+                clientSecret, { 'headers': _getGitHeaders })
+                .done(function (data) {
+                    var file = {
+                        path: abspath,
+                        source: 'github',
+                        metadata: {
+                            sha: sha,
+                            type: 'file'
+                        }
+                    };
+                    FileList.add(file);
+                    // Adding to repoDict - Not used now
+                    repoDict[sha] = file;
+                    // Adding file contents to localStorage
+                    LSD['github/' + abspath] = decodeBase64(data.content);
+                })
+                .fail(function (e) {
                     var errorMessage = JSON.parse(e.responseText).message;
                     // TODO(benedict): Show error message. Status butter maybe?
                     throw new Error('GitHub Error: ' + errorMessage);
                 });
         }
     };
+
     /**
      * Gets the file contents from the repo tree.
      * @param {Object} tree The repo's tree.
@@ -116,7 +133,12 @@ define([
             storeFileContentsFromLeaf(leaf, repoDict);
         });
     };
-    var getGitHeaders = function () {
+
+    /**
+     * Sets the appropriate headers for the GitHub API requests.
+     * @return {Object.<string, string>} The request headers.
+     */
+    var _getGitHeaders = function () {
         var oauth = gitAuthServiceInstance.getOAuth();
         if (!oauth) {
             throw new Error('Not signed in to Github.');
@@ -128,6 +150,12 @@ define([
         }
         return gitHeaders;
     };
+
+    /**
+     * Downloads the repository given the input username and repository name.
+     * @param {string} username .
+     * @param {string} repoName .
+     */
     var downloadRepository = function (username, repoName) {
         user = username;
         repo = repoName;
