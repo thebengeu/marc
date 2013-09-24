@@ -12,17 +12,11 @@ define([
     'services/github',
     'services/gitAuth',
     'services/recent',
-    'collections/fileList'
+    'collections/fileList',
+    'utilities/services'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, Recent, FileList) {
+             dropboxService, githubService, GitAuthService, Recent, FileList, sourceToService) {
     'use strict';
-
-    var sourceToService = {
-        'm(arc) Source Code': serverService,
-        dropbox: dropboxService,
-        github: githubService,
-        recent: Recent
-    };
 
     var updateCodeView = function(path, data) {
         var extension = path.split('.').pop();
@@ -62,9 +56,14 @@ define([
                 console.log(sourcePath + ' loaded from localStorage');
                 updateCodeView(path, data);
             } else {
+                var fileModel = FileList.get(sourcePath);
                 sourceToService[source].get(path, function (data) {
                     LSD.setItem(sourcePath, data);
                     updateCodeView(path, data);
+
+                    fileModel.set({
+                        cached: true
+                    });
                 });
             }
         },
