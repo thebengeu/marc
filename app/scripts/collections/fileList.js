@@ -12,9 +12,9 @@ define([
 	var FileList = Backbone.Collection.extend({
 		model: File,
 		initialize: function () {
-			this.on('add', this.saveFileToStorage);
-			this.on('remove', this.removeFileFromStorage);
-			this.on('change', this.updateFileInStorage);
+			this.on('add', this.writeFileListToStorage);
+			this.on('remove', this.writeFileListToStorage);
+			this.on('change', this.writeFileListToStorage);
 
 			if (!LSD.getItem('FileList')) {
 				LSD.setItem('FileList', '[]');
@@ -22,17 +22,11 @@ define([
 
 			this.loadFilesFromStorage();
 		},
-		saveFileToStorage: function (file) {
-			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			storedFiles.push(file.attributes);
-			LSD.setItem('FileList', JSON.stringify(storedFiles));
-		},
-		removeFileFromStorage: function (file) {
-			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			var filtered = _.filter(storedFiles, function (storedFile) {
-				return storedFile !== file.attributes;
+		writeFileListToStorage: function() {
+			var fileAttributes = this.map(function(file) {
+				return file.attributes;
 			});
-			LSD.setItem('FileList', JSON.stringify(filtered));
+			LSD.setItem('FileList', JSON.stringify(fileAttributes));
 		},
 		loadFilesFromStorage: function () {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
@@ -43,18 +37,10 @@ define([
 				});
 			});
 		},
-		updateFileInStorage: function (file) {
-			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			var filesWithoutModified = _.filter(storedFiles, function (storedFile) {
-				return storedFile.id !== file.get('id');
-			});
-			filesWithoutModified.push(file.attributes);
-			LSD.setItem('FileList', JSON.stringify(filesWithoutModified));
-		},
 		removeDirectoryFromStorage: function (dirPath) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var filtered = _.filter(storedFiles, function (storedFile) {
-				return storedFile.id.indexOf(dirPath) == 0;
+				return storedFile.id.indexOf(dirPath) === 0;
 			});
 
 			var that = this;
