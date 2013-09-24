@@ -12,17 +12,11 @@ define([
     'services/github',
     'services/gitAuth',
     'services/recentservice',
-    'collections/fileList'
+    'collections/fileList',
+    'utilities/services'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, RecentService, FileList) {
+             dropboxService, githubService, GitAuthService, RecentService, FileList, sourceToService) {
     'use strict';
-
-    var sourceToService = {
-        'm(arc) Source Code': serverService,
-        dropbox: dropboxService,
-        github: githubService,
-        recent: RecentService
-    };
 
     var updateCodeView = function(path, data) {
         var extension = path.split('.').pop();
