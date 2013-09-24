@@ -101,9 +101,10 @@ require([
     'bootstrap',
     'jqTree',
     'dropbox',
-    'bootstrap-switch'
+    'bootstrap-switch',
+    'views/settingspane'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService) {
+    File, Snap, enquire, FastClick, FileLoader, FileService, SettingsPaneView) {
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
@@ -169,4 +170,5 @@ require([
     $('#delete-file-btn').click(function (e) {
         FileService.deleteFile(sideBar);
     });
+    
 });
