@@ -24,8 +24,12 @@ define([
 		},
 		saveFileToStorage: function (file) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			storedFiles.push(file.attributes);
-			LSD.setItem('FileList', JSON.stringify(storedFiles));
+
+			// File does not exist in storedFiles, store it.
+			if (storedFiles.indexOf(file) == -1) {
+				storedFiles.push(file.attributes);
+				LSD.setItem('FileList', JSON.stringify(storedFiles));
+			}
 		},
 		removeFileFromStorage: function (file) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
@@ -38,8 +42,9 @@ define([
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var that = this;
 			_.each(storedFiles, function (file) {
-				var model = new File(file);
-				that.models.push(model);
+				that.add(file, {
+					silent: true
+				});
 			});
 		},
 		updateFileInStorage: function (file) {
@@ -50,14 +55,16 @@ define([
 			filesWithoutModified.push(file.attributes);
 			LSD.setItem('FileList', JSON.stringify(filesWithoutModified));
 		},
-		removeDirectoryFromStorage: function(dirPath) {
+		removeDirectoryFromStorage: function (dirPath) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			var filtered = _.filter(storedFiles, function (storedFile) {
-				return storedFile.id.indexOf(dirPath) == 0;
+			var filesToRemove = _.filter(storedFiles, function (storedFile) {
+				return storedFile.id.indexOf(dirPath) == 0 ||
+					storedFile.id.indexOf('recent/' + dirPath) == 0;;
 			});
 
 			var that = this;
-			_.each(filtered, function(file) {
+
+			_.each(filesToRemove, function(file) {
 				that.trigger('remove', new File(file));
 			});
 		}

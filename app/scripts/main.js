@@ -102,7 +102,7 @@ require([
     'dropbox',
     'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-        File, Snap, enquire, FastClick, FileLoader) {
+    File, Snap, enquire, FastClick, FileLoader) {
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
@@ -165,9 +165,9 @@ require([
 
     FastClick.attach(document.body);
 
-    $('#delete-file-btn').click(function(e) {
+    $('#delete-file-btn').click(function (e) {
         var selectedFile = sideBar.getSelectedFile();
-        if (sideBar.getFileType(selectedFile) == sideBar.fileType.DIRECTORY) {
+        if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
             FileList.removeDirectoryFromStorage(selectedFile.path);
         }
         else {
@@ -176,7 +176,15 @@ require([
                 path: selectedFile.path,
                 source: selectedFile.source,
             }
+            var updatedPath = selectedFile.source + '/' + selectedFile.path;
+            var recentFile = {
+                id: 'recent/' + updatedPath,
+                path: updatedPath,
+                source: 'recent',
+            }
             FileList.trigger('remove', new File(file));
+            FileList.trigger('remove', new File(recentFile));
         }
     })
 });
+
