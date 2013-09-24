@@ -7,8 +7,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'LSD'
-], function ($, _, Backbone, LSD) {
+    'LSD',
+    'collections/fileList'
+], function ($, _, Backbone, LSD, FileList) {
 
     var MAX_STACK_SIZE = 10;
     var storageRouteKey = 'route';
@@ -24,6 +25,7 @@ define([
         else {
             makeSpaceInStack(routeStack);
             routeStack.push(route);
+            _addToFileList(route);
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
@@ -33,6 +35,8 @@ define([
 
     var makeSpaceInStack = function(routeStack) {
         if (routeStack.length >= MAX_STACK_SIZE) {
+            var route = routeStack[0];
+            _removeFromFileList(route);
             routeStack.splice(0, 1);
         }
     };
@@ -41,7 +45,8 @@ define([
         var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
-            routeStack.pop();
+            var route = routeStack.pop();
+            _removeFromFileList(route)
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
@@ -59,6 +64,26 @@ define([
 
     var _isEmpty = function(stack) {
         return stack.length == 0;
+    };
+
+    var _addToFileList = function(route) {
+        if (route != 'add-from-github') {
+            var fileModel = {
+                path: route,
+                source: 'recent',
+                id: 'recent' + route
+            };
+            FileList.add(fileModel);
+        }
+    };
+
+    var _removeFromFileList = function(route) {
+        var fileModel = {
+            path: route,
+            source: 'recent',
+            id: 'recent' + route
+        };
+        FileList.remove(fileModel);
     };
 
     var getRouteStack = function() {
