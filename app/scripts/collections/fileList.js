@@ -45,7 +45,7 @@ define([
 		updateFileInStorage: function (file) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var filesWithoutModified = _.filter(storedFiles, function (storedFile) {
-				return storedFile.id !== file.id;
+				return storedFile.id !== file.get('id');
 			});
 			filesWithoutModified.push(file.attributes);
 			LSD.setItem('FileList', JSON.stringify(filesWithoutModified));
