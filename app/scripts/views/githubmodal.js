@@ -60,5 +60,9 @@ define([
         }
     });
 
+    $('#github-modal').on('hidden.bs.modal', function() {
+        Backbone.history.navigate('');
+    });
+
     return (new GitHubModalView({ el: '#github-modal' })).render();
 });

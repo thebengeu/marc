@@ -4,9 +4,27 @@ define([
     'jquery',
     'underscore',
     'collections/fileList',
+    'services/recentservice',
     'LSD'
-], function ($, _, FileList, LSD) {
+], function ($, _, FileList, RecentService, LSD) {
     'use strict';
+
+    var addRecentFilesToFileList = function() {
+        var routes = RecentService.getRoutes();
+        var source = 'recent';
+
+        _.each(routes, function(route) {
+            if (route != 'githubmodalview') {
+                var fileModel = {
+                    path: route,
+                    source: source
+                };
+                FileList.add(fileModel);
+            }
+        });
+    };
+
+    addRecentFilesToFileList();
 
     var addGitHubFilesToFileList = function(storage, source) {
         var storageKeys = _.keys(storage);
