@@ -54,7 +54,7 @@ define([
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/git/trees/' +
             sha + '?recursive=1', { 'headers': _getGitHeaders() })
             .done(function (data) {
-                getFileContentsFromTree(data.tree, data.sha);
+                createFilesFromTree(data.tree, data.sha);
             })
             .fail(function (e) {
                 var errorMessage = JSON.parse(e.responseText).message;
@@ -64,13 +64,10 @@ define([
     };
 
     /**
-     * Gets and stores the file contents for each leaf in the repo tree.
-     * Directory types do not have content, but will store te file path
-     * instead.
+     * Creates the file from the given leaf. Directory types are ignored.
      * @param {Object} leaf .
-     * @param {Object} repoDict keys: file sha, value: dir path/file contents
      */
-    var storeFileContentsFromLeaf = function (leaf, repoDict) {
+    var createFileFromLeaf = function (leaf) {
         var type = leaf.type;
         var relpath = leaf.path;
         var sha = leaf.sha;
@@ -93,6 +90,12 @@ define([
         }
     };
 
+    /**
+     * Gets the file content from GitHub.
+     * @param {File} githubFile .
+     * @param {function} callback The callback function to execute if the
+     *      request is successful.
+     */
     var getFileContent = function(githubFile, callback) {
         var sha = githubFile.get('metadata').sha;
         var relpath = githubFile.get('metadata').relpath;
@@ -117,20 +120,13 @@ define([
     }
 
     /**
-     * Gets the file contents from the repo tree.
-     * @param {Object} tree The repo's tree.
+     * Creates files associated with the repository tree.
+     * @param {Object} tree The repository's tree.
      */
-    var getFileContentsFromTree = function (tree) {
-        // create repo dictionary
-        // keys: file sha, value: dir path/file contents
-        var repoDictKeys = _.pluck(tree, 'sha');
-        var repoDict = {};
-        _.each(repoDictKeys, function (key) {
-            repoDict[key] = null;
-        });
+    var createFilesFromTree = function (tree) {
         // get file contents for each object in the tree
         _.map(tree, function (leaf) {
-            storeFileContentsFromLeaf(leaf, repoDict);
+            createFileFromLeaf(leaf);
         });
     };
 
