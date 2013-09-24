@@ -11,11 +11,11 @@ define([
 
 	var FileLoader = _.extend({
 		loadFileAsync: function(file) {
-			if (file.get('cached')) {
+			var source = file.get('source');
+			if (file.get('cached') || source === 'recent') {
 				return;
 			}
 
-			var source = file.get('source');
 			var path = file.get('path');
 			var id = file.get('id');
 
