@@ -157,6 +157,9 @@ define([
         getSelectedFile: function() {
             return $('#file-tree').tree('getSelectedNode');
         },
+        removeNodeFromTree: function(node) {
+            $('#file-tree').tree('removeNode', node);
+        },
         getFileType: function(node) {
             if (node.children.length) {
                 return this.fileType.DIRECTORY;

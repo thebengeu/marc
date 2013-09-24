@@ -174,7 +174,7 @@ require([
             });
 
             // Remove the node from the tree.
-            $('#file-tree').tree('removeNode', selectedFile);
+            sideBar.removeNodeFromTree(selectedFile);
         } else {
             var fileId = selectedFile.source + '/' + selectedFile.path;
             var file = FileList.get(fileId);
