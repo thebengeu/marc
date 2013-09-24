@@ -168,7 +168,8 @@ require([
     $('#delete-file-btn').click(function (e) {
         var selectedFile = sideBar.getSelectedFile();
         if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
-            var filesToRemove = FileList.listFilesWithDirectoryPrefix(selectedFile.path);
+            var filesToRemove = FileList.listFilesWithDirectoryPrefix(
+                selectedFile.id);
             _.each(filesToRemove, function(file) {
                 FileList.remove(file);
             });
