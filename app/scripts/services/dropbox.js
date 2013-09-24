@@ -12,14 +12,17 @@ define([
     var client;
     client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
     
-    $('#add-from-dropbox').click(function() {
+    /*$('#add-from-dropbox').click(function() {
         //alert("add");
-        if (!client.isAuthenticated()){
-            Backbone.history.stop();        
+        //if (client.isAuthenticated()){
+        //    $('#dialog-dropbox-browser').modal('show');
+        //    browseFolder('/');
+        //}else{
+            Backbone.history.stop();
             authenticate();
             Backbone.history.start();
-        }
-    });
+        //}
+    });*/
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
@@ -31,8 +34,11 @@ define([
         alert(error);
     };
 
-    var authenticate = function () {
+    var authenticate = function (callback) {
         var receiveUrl = location.href;
+        if (receiveUrl.split('?').length > 1) {
+            receiveUrl = receiveUrl.split('?')[0];
+        }
         if (receiveUrl.split('#').length > 1) {
             receiveUrl = receiveUrl.split('#')[0];
         }
@@ -44,13 +50,9 @@ define([
                 // that assumes everything went well.
                 return showError(error);
             }
-            // Replace with a call to your own application code.
-            //
-            // The user authorized your app, and everything went well.
-            // client is a Dropbox.Client instance that you can use to make API calls.
-            $('#dialog-dropbox-browser').modal('show');
-            browseFolder('/');
-        });
+            
+            callback();
+        });       
     };
     var browseFolder = function (path) {
         if (typeof path === 'object') {
@@ -95,6 +97,14 @@ define([
             console.log(dirContentInfo);
         });
     };
+    var showModal = function(){
+        if (client.isAuthenticated()){
+            browseFolder('/');
+            $('#dialog-dropbox-browser').modal('show');
+        }else{
+            authenticate(showModal);
+        }
+    }
     var addFolderContents = function (path) {
         client.readdir(path, function (error, entries, dirInfo, dirContentInfo) {
             if (error) {
@@ -124,8 +134,27 @@ define([
             });
         });
     };
+    
+    // receive token after redirect authentication
+    // not sure if this is the cleanest way to do things though.
+    if (location.href.split('#').length > 1) {
+        var urlFragment = location.href.split('#')[1];
+        if (urlFragment.indexOf("access_token=") == 0) {
+            client.authenticate(function (error) {
+                if (error) {
+                    // Replace with a call to your own error-handling code.
+                    //
+                    // Don't forget to return from the callback, so you don't execute the code
+                    // that assumes everything went well.
+                    return showError(error);
+                }
+            });
+        }
+    }
+    
     return {
         authenticate: authenticate,
+        showModal: showModal,
         get: function (path, callback) {
             console.log(path);
             client.readFile(path, function (error, data) {
