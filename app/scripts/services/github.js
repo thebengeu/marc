@@ -97,6 +97,7 @@ define([
                     var file = {
                         path: abspath,
                         source: 'github',
+                        id: 'github/' + abspath,
                         metadata: {
                             sha: sha,
                             type: 'file'
