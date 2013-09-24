@@ -10,7 +10,7 @@ define([
     'LSD'
 ], function ($, _, Backbone, LSD) {
 
-    // TODO(benedict): Set max stack size.
+    var MAX_STACK_SIZE = 10;
     var storageRouteKey = 'route';
 
     var pushRoute = function(route) {
@@ -22,12 +22,19 @@ define([
             routeStack.splice(routeIndex, 1, route);
         }
         else {
-            routeStack.push(route);    
+            makeSpaceInStack(routeStack);
+            routeStack.push(route);
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
 
         console.log(LSD['route']);
+    };
+
+    var makeSpaceInStack = function(routeStack) {
+        if (routeStack.length >= MAX_STACK_SIZE) {
+            routeStack.splice(0, 1);
+        }
     };
 
     var popRoute = function() {
