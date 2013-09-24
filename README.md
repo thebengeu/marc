@@ -18,13 +18,13 @@
 $ npm install -g bower grunt-cli
 $ npm install
 $ bower install
-$ grunt server
 ```
 
-## Setup Gatekeeper
+##  Running During Development
 ```bash
-$ npm install
-$ OAUTH_CLIENT_ID=56b5da733bb16fb8a5b9 OAUTH_CLIENT_SECRET=58b3e51cf6233d5b99f78a5ed398d512a4cd1c node node_modules/gatekeeper/server
+$ grunt server
+# With MongoDB running:
+$ node server
 ```
 
 ### Setup on Windows
