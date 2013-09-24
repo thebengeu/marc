@@ -13,9 +13,11 @@ define([
     
     $('#add-from-dropbox').click(function() {
         //alert("add");
-        Backbone.history.stop();
-        authenticate();
-        Backbone.history.start();
+        if (!client.isAuthenticated()){
+            Backbone.history.stop();        
+            authenticate();
+            Backbone.history.start();
+        }
     });
     
     $('#dialog-dropbox-browser #select-folder').click(function() {
