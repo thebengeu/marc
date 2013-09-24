@@ -1,4 +1,5 @@
 /*global define*/
+
 define([
     'jquery',
     'underscore',
@@ -7,8 +8,18 @@ define([
     'collections/fileList'
 ], function ($, _, Backbone, Dropbox, FileList) {
     'use strict';
+    
     var client;
-    client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
+    client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
+    
+    $('#add-from-dropbox').click(function() {
+        //alert("add");
+        if (!client.isAuthenticated()){
+            Backbone.history.stop();        
+            authenticate();
+            Backbone.history.start();
+        }
+    });
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());

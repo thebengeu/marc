@@ -8,7 +8,7 @@
     "requirejs-text": "~2.0.5",
     "modernizr": "~2.6.2",
     "jqtree": "~0.18.0",
-    "codemirror": "~3.16.0",
+    "codemirror": "~3.18.0",
     "Backbone.localStorage": "~1.1.6",
     "bootstrap": "~3.0.0",
     "snapjs": "*",

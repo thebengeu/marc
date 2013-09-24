@@ -16,13 +16,6 @@ require.config({
         codemirror: {
             exports: 'CodeMirror'
         },
-        '../bower_components/codemirror/mode/htmlmixed/htmlmixed': {
-            deps: [
-                'codemirrorCss',
-                'codemirrorJavascript',
-                'codemirrorXml'
-            ]
-        },
         jqTree: {
             deps: ['jquery']
         },
@@ -70,10 +63,7 @@ require.config({
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/lodash/dist/lodash',
-        codemirror: '../bower_components/codemirror/lib/codemirror',
-        codemirrorCss: '../bower_components/codemirror/mode/css/css',
-        codemirrorJavascript: '../bower_components/codemirror/mode/javascript/javascript',
-        codemirrorXml: '../bower_components/codemirror/mode/xml/xml',
+        codemirror: 'vendor/codemirror',
         jqTree: '../bower_components/jqtree/tree.jquery',
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',

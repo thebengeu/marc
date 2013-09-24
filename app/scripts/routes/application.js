@@ -46,7 +46,7 @@ define([
         view: function (source, path) {
             var sourcePath = source + '/' + path;
             
-            if (source == 'recent') {
+            if (source === 'recent') {
                 sourcePath = path;
             }
             Recent.pushRoute(sourcePath);
