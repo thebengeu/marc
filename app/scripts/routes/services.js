@@ -4,9 +4,10 @@ define([
     'jquery',
     'backbone',
     'services/dropbox',
+    'services/recentservice',
     'views/githubmodal',
     'utilities/filelistloader'
-], function ($, Backbone, dropboxService, GithubModalView, FileListLoader) {
+], function ($, Backbone, dropboxService, RecentService, GithubModalView, FileListLoader) {
     'use strict';
 
     var ServicesRouter = Backbone.Router.extend({
@@ -20,6 +21,11 @@ define([
         },
         addFromGithub: function() {
             GithubModalView.showModal();
+
+            // Prevent duplicate removal of routes.
+            if (RecentService.peekRoute() == 'add-from-github') {
+                RecentService.popRoute();
+            }
         },
         addFromServer: function() {
             FileListLoader.loadExistingFiles();

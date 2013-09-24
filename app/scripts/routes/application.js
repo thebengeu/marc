@@ -68,14 +68,6 @@ define([
                 });
             }
         },
-        githubmodalview: function() {
-            GithubModalView.showModal();
-
-            // Prevent duplicate removal of routes.
-            if (RecentService.peekRoute() == 'githubmodalview') {
-                RecentService.popRoute();
-            }
-        },
         gitauth: function() {
             var urlParams = window.location.search;
             var code = urlParams.split('=')[1];

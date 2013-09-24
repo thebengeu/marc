@@ -48,7 +48,7 @@ define([
             }
             else {
                 Backbone.history.stop();
-                RecentService.pushRoute('githubmodalview');
+                RecentService.pushRoute('add-from-github');
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }

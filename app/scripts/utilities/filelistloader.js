@@ -12,9 +12,10 @@ define([
     var addRecentFilesToFileList = function() {
         var routes = RecentService.getRoutes();
         var source = 'recent';
-
+        console.log(routes);
         _.each(routes, function(route) {
-            if (route != 'githubmodalview') {
+            console.log(route);
+            if (route != 'add-from-github') {
                 var fileModel = {
                     path: route,
                     source: source
@@ -23,8 +24,6 @@ define([
             }
         });
     };
-
-    addRecentFilesToFileList();
 
     var addGitHubFilesToFileList = function(storage, source) {
         var storageKeys = _.keys(storage);
@@ -41,8 +40,6 @@ define([
         });
     };
 
-    addGitHubFilesToFileList(LSD, 'github');
-
     // TEMP. This should be moved elsewhere once we have other sources integrated.
     // Grab the files on the server.
     var loadDirJson = function() {
@@ -57,7 +54,8 @@ define([
     // END TEMP.
 
     var loadExistingFiles = function() {
-        addGitHubFilesToFileList();
+        addGitHubFilesToFileList(LSD, 'github');
+        addRecentFilesToFileList();
         loadDirJson();
     };
 
