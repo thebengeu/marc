@@ -17,7 +17,8 @@
     "fastclick": "~0.6.10",
     "dropbox": "~0.10.1",
     "bootstrap-switch": "*",
-    "dropbox-build": "*"
+    "dropbox-build": "*",
+    "spin.js": "~1.3.2"
   },
   "devDependencies": {},
   "resolutions": {
