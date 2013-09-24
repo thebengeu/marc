@@ -56,9 +56,14 @@ define([
                 console.log(sourcePath + ' loaded from localStorage');
                 updateCodeView(path, data);
             } else {
+                var fileModel = FileList.get(sourcePath);
                 sourceToService[source].get(path, function (data) {
                     LSD.setItem(sourcePath, data);
                     updateCodeView(path, data);
+
+                    fileModel.set({
+                        cached: true
+                    });
                 });
             }
         },
