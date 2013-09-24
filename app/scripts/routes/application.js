@@ -70,7 +70,11 @@ define([
         },
         githubmodalview: function() {
             GithubModalView.showModal();
-            RecentService.popRoute();
+
+            // Prevent duplicate removal of routes.
+            if (RecentService.peekRoute() == 'githubmodalview') {
+                RecentService.popRoute();
+            }
         },
         gitauth: function() {
             var urlParams = window.location.search;
