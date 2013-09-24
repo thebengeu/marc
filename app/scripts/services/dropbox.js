@@ -1,4 +1,5 @@
 /*global define*/
+
 define([
     'jquery',
     'underscore',
@@ -7,8 +8,8 @@ define([
     'collections/fileList'
 ], function ($, _, Backbone, Dropbox, FileList) {
     'use strict';
+    
     var client;
-<<<<<<< HEAD:app/scripts/services/dropboxservice.js
     client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
     
     $('#add-from-dropbox').click(function() {
@@ -19,15 +20,9 @@ define([
             Backbone.history.start();
         }
     });
-    
-    $('#dialog-dropbox-browser #select-folder').click(function() {
-        var pathOfInterest = unescape($('#dialog-dropbox-browser .modal-body #path').html());
-=======
-    client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
->>>>>>> 492834b8b7df6a0ed1720e4ab7f4a185a6a73d95:app/scripts/services/dropbox.js
         addFolderContents(pathOfInterest);
         $('#dialog-dropbox-browser').modal('hide');
     });
