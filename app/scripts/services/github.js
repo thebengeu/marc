@@ -165,6 +165,9 @@ define([
     return {
         downloadRepository: function (username, repoName) {
             return downloadRepository(username, repoName);
+        },
+        get: function(path, callback) {
+            console.log(path);
         }
     };
 });
