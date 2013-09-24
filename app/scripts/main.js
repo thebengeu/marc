@@ -172,6 +172,9 @@ require([
             _.each(filesToRemove, function(file) {
                 FileList.remove(file);
             });
+
+            // Remove the node from the tree.
+            $('#file-tree').tree('removeNode', selectedFile);
         } else {
             var fileId = selectedFile.source + '/' + selectedFile.path;
             var file = FileList.get(fileId);
