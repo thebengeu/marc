@@ -163,37 +163,28 @@ require([
         collection: FileList
     });
 
-
-    var data = [{
-        label: '/',
-        id: '/'
-    }];
-    $('#dropbox-tree-view').tree({
-        data: data,
-        autoOpen: false,
-        onLoadFailed: function (response) {
-            alert('boo!');
-            console.log(response);
-        }
-    });
-
-    $('#dropbox-tree-view').bind(
-        'tree.open',
-        function (e) {
-            console.log(e.node);
-        }
-    );
-
     FastClick.attach(document.body);
 
     $('#delete-file-btn').click(function (e) {
         var selectedFile = sideBar.getSelectedFile();
         if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
             FileList.removeDirectoryFromStorage(selectedFile.path);
-        } else {
-            var id = selectedFile.source + '/' + selectedFile.path;
-            var file = FileList.get(id);
-            FileList.remove(file);
         }
-    });
+        else {
+            var file = {
+                id: selectedFile.source + '/' + selectedFile.path,
+                path: selectedFile.path,
+                source: selectedFile.source,
+            }
+            var updatedPath = selectedFile.source + '/' + selectedFile.path;
+            var recentFile = {
+                id: 'recent/' + updatedPath,
+                path: updatedPath,
+                source: 'recent',
+            }
+            FileList.trigger('remove', new File(file));
+            FileList.trigger('remove', new File(recentFile));
+        }
+    })
 });
+
