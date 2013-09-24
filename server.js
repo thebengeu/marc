@@ -17,6 +17,10 @@ var User = mongoose.model('User', userSchema);
 
 var app = express();
 
+app.configure(function () {
+    app.use(express.bodyParser());
+});
+
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -56,6 +60,25 @@ db.once('open', function () {
                     });
             });
         });
+    });
+
+    app.get('/user', function (req, res) {
+        var authorization = req.get('Authorization');
+        var token = authorization.split(' ')[1];
+        User.findOne({ githubTokens: token }, 'preferences',
+            { lean: true }, function (err, user) {
+                console.log(user)
+                user ? res.json(user) : res.send(401);
+            });
+    });
+
+    app.patch('/user', function (req, res) {
+        var authorization = req.get('Authorization');
+        var token = authorization.split(' ')[1];
+        User.findOneAndUpdate({ githubTokens: token },
+            { preferences: req.body.preferences }, function (err, user) {
+                user ? res.send(204) : res.send(401);
+            });
     });
 });
 
