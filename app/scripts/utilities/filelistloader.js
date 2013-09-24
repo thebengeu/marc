@@ -18,7 +18,8 @@ define([
             if (route != 'add-from-github') {
                 var fileModel = {
                     path: route,
-                    source: source
+                    source: source,
+                    id: source + route
                 };
                 FileList.add(fileModel);
             }
@@ -33,6 +34,7 @@ define([
 
         _.each(filteredKeys, function(key) {
             var fileModel = {
+                id: source + key.substring(7),
                 path: key.substring(7),
                 source: source
             };
@@ -45,7 +47,8 @@ define([
     var loadDirJson = function() {
         $.get('dir.json', function (response) {
             _.each(response, function(file) {
-                file.source = 'server';
+                file.source = 'm(arc) Source Code';
+                file.id = file.source + file.path;
             });
             FileList.add(response);
         });

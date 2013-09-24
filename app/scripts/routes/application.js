@@ -18,7 +18,7 @@ define([
     'use strict';
 
     var sourceToService = {
-        server: serverService,
+        'm(arc) Source Code': serverService,
         dropbox: dropboxService,
         github: githubService,
         recent: RecentService
