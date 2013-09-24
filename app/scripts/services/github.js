@@ -106,7 +106,7 @@ define([
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
                 relpath, { 'headers': _getGitHeaders() })
             .done(function (data) {
-                // Adding file contents to localStorage
+                // Return decoded file content to callback.
                 callback(decodeBase64(data.content));
             })
             .fail(function (e) {
