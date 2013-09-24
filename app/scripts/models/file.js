@@ -11,7 +11,8 @@ define([
 		defaults: {
 			source: '',
 			path: '',
-			metadata: {}
+			metadata: {},
+			cached: false
 		}
 	});
 
