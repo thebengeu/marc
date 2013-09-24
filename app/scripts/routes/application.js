@@ -11,9 +11,10 @@ define([
     'services/dropboxService',
     'services/githubService',
     'services/gitauthservice',
-    'services/recentservice'
+    'services/recentservice',
+    'collections/fileList'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, RecentService) {
+             dropboxService, githubService, GitAuthService, RecentService, FileList) {
     'use strict';
 
     var sourceToService = {
@@ -69,6 +70,9 @@ define([
         },
         githubmodalview: function() {
             GithubModalView.showModal();
+            RecentService.popRoute();
+            // TODO(benedict): remove from filelist
+            // FileList.
         },
         gitauth: function() {
             var urlParams = window.location.search;
