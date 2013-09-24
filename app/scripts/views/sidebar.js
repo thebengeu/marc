@@ -139,7 +139,15 @@ define([
         removeFileFromTree: function (file) {
             var path = file.get('path');
             var fileNode = this.treeElement.tree('getNodeById', path);
+            var parent = fileNode.parent;
+
             this.treeElement.tree('removeNode', fileNode);
+
+            // If this directory is now empty, remove it.
+            // (As long as we're not the root.)
+            if (!parent.children.length && parent.id !== parent.source) {
+                this.treeElement.tree('removeNode', parent);
+            }
         },
         getParentPathFromString: function (path) {
             var lastSlashPosition = path.lastIndexOf('/');
