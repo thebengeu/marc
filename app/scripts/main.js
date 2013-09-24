@@ -168,23 +168,20 @@ require([
     $('#delete-file-btn').click(function (e) {
         var selectedFile = sideBar.getSelectedFile();
         if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
-            FileList.removeDirectoryFromStorage(selectedFile.path);
-        }
-        else {
-            var file = {
-                id: selectedFile.source + '/' + selectedFile.path,
-                path: selectedFile.path,
-                source: selectedFile.source,
-            }
-            var updatedPath = selectedFile.source + '/' + selectedFile.path;
-            var recentFile = {
-                id: 'recent/' + updatedPath,
-                path: updatedPath,
-                source: 'recent',
-            }
-            FileList.trigger('remove', new File(file));
-            FileList.trigger('remove', new File(recentFile));
-        }
-    })
-});
+            var filesToRemove = FileList.listFilesWithDirectoryPrefix(selectedFile.path);
+            _.each(filesToRemove, function(file) {
+                FileList.remove(file);
+            });
+        } else {
+            var fileId = selectedFile.source + '/' + selectedFile.path;
+            var file = FileList.get(fileId);
 
+            var recentFileId = 'recent/' + fileId;
+
+            var recentFile = FileList.get(recentFileId);
+
+            FileList.remove(file);
+            FileList.remove(recentFile);
+        }
+    });
+});
