@@ -41,7 +41,7 @@ define([
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var filesToRemove = _.filter(storedFiles, function (storedFile) {
 				return storedFile.id.indexOf(dirPath) === 0 ||
-					storedFile.id.indexOf('recent/' + dirPath) === 0;;
+					storedFile.id.indexOf('recent/' + dirPath) === 0;
 			});
 
 			var that = this;
