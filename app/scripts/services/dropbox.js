@@ -34,7 +34,7 @@ define([
         alert(error);
     };
 
-    var authenticate = function () {
+    var authenticate = function (callback) {
         var receiveUrl = location.href;
         if (receiveUrl.split('?').length > 1) {
             receiveUrl = receiveUrl.split('?')[0];
@@ -50,7 +50,9 @@ define([
                 // that assumes everything went well.
                 return showError(error);
             }
-        });
+            
+            callback();
+        });       
     };
     var browseFolder = function (path) {
         if (typeof path === 'object') {
@@ -100,7 +102,7 @@ define([
             browseFolder('/');
             $('#dialog-dropbox-browser').modal('show');
         }else{
-            authenticate();
+            authenticate(showModal);
         }
     }
     var addFolderContents = function (path) {
