@@ -71,8 +71,6 @@ define([
         githubmodalview: function() {
             GithubModalView.showModal();
             RecentService.popRoute();
-            // TODO(benedict): remove from filelist
-            // FileList.
         },
         gitauth: function() {
             var urlParams = window.location.search;

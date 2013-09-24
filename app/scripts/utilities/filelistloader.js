@@ -14,11 +14,13 @@ define([
         var source = 'recent';
 
         _.each(routes, function(route) {
-            var fileModel = {
-                path: route,
-                source: source
-            };
-            FileList.add(fileModel);
+            if (route != 'githubmodalview') {
+                var fileModel = {
+                    path: route,
+                    source: source
+                };
+                FileList.add(fileModel);
+            }
         });
     };
 
