@@ -14,6 +14,7 @@ define([
 		initialize: function () {
 			this.on('add', this.saveFileToStorage);
 			this.on('remove', this.removeFileFromStorage);
+			this.on('change', this.updateFileInStorage);
 
 			if (!LSD.getItem('FileList')) {
 				LSD.setItem('FileList', '[]');
@@ -40,6 +41,14 @@ define([
 				var model = new File(file);
 				that.models.push(model);
 			});
+		},
+		updateFileInStorage: function (file) {
+			var storedFiles = JSON.parse(LSD.getItem('FileList'));
+			var filesWithoutModified = _.filter(storedFiles, function (storedFile) {
+				return storedFile.id !== file.id;
+			});
+			filesWithoutModified.push(file.attributes);
+			LSD.setItem('FileList', JSON.stringify(filesWithoutModified));
 		}
 	});
 
