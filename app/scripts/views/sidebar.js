@@ -10,6 +10,10 @@ define([
     'use strict';
 
     var Sidebar = Backbone.View.extend({
+        fileType: {
+            DIRECTORY: 'directory-file-type',
+            FILE: 'file-file-type'
+        },
         initialize: function () {
             this.listenTo(this.collection, 'add', this.addFileToTree);
             this.listenTo(this.collection, 'remove', this.removeFileFromTree);
@@ -17,7 +21,6 @@ define([
             this.treeElement = this.$('#file-tree');
             this.initTree();
         },
-
         initTree: function () {
             var that = this;
             this.treeElement.tree({
@@ -142,6 +145,17 @@ define([
             var lastSlashPosition = path.lastIndexOf('/');
             var parentPath = path.slice(0, lastSlashPosition);
             return parentPath;
+        },
+        getSelectedFile: function() {
+            return $('#file-tree').tree('getSelectedNode');
+        },
+        getFileType: function(node) {
+            if (node.children.length) {
+                return this.fileType.DIRECTORY;
+            }
+            else {
+                return this.fileType.FILE;   
+            }
         }
     });
 

@@ -167,7 +167,7 @@ require([
         }
     });
 
-    new Sidebar({
+    var sideBar = new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
@@ -194,4 +194,19 @@ require([
     );
 
     FastClick.attach(document.body);
+
+    $('#delete-file-btn').click(function(e) {
+        var selectedFile = sideBar.getSelectedFile();
+        if (sideBar.getFileType(selectedFile) == sideBar.fileType.DIRECTORY) {
+            FileList.removeDirectoryFromStorage(selectedFile.path);
+        }
+        else {
+            var file = {
+                id: selectedFile.source + '/' + selectedFile.path,
+                path: selectedFile.path,
+                source: selectedFile.source,
+            }
+            this.trigger('remove', new File(file));
+        }
+    })
 });
