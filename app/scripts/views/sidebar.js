@@ -52,7 +52,10 @@ define([
                     }
 
                     // Save our state.
+                    // We need to override the selected node value, since
+                    // at this point the tree's state hasn't actually been updated yet.
                     var treeState = that.$('#file-tree').tree('getState');
+                    treeState.selected_node = node.id;
                     LSD.setItem('treeState', JSON.stringify(treeState));
                 }
             );
