@@ -11,9 +11,23 @@ define([
     'collections/fileList'
 ], function ($, _, Backbone, LSD, FileList) {
 
+    /**
+     * The maximum stack size used in the stack.
+     * @type {number}
+     */
     var MAX_STACK_SIZE = 10;
+
+    /**
+     * The key used to in the LSD. The route stack will be its corresponding
+     * value.
+     * @type {string}
+     */
     var storageRouteKey = 'route';
 
+    /**
+     * Pushes the given route to the top of the stack.
+     * @param {string} route .
+     */
     var pushRoute = function(route) {
         var routeStack = getRouteStack();
 
@@ -23,7 +37,7 @@ define([
             routeStack.splice(routeIndex, 1, route);
         }
         else {
-            makeSpaceInStack(routeStack);
+            _makeSpaceInStack(routeStack);
             routeStack.push(route);
             _addToFileList(route);
         }
@@ -31,7 +45,13 @@ define([
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
 
-    var makeSpaceInStack = function(routeStack) {
+    /**
+     * Ensures that the stack only has the maximum size at any given point.
+     * It will remove the least recent route on the stack to make space
+     * otherwise.
+     * @param {Array.<string>} routeStack
+     */
+    var _makeSpaceInStack = function(routeStack) {
         if (routeStack.length >= MAX_STACK_SIZE) {
             var route = routeStack[0];
             _removeFromFileList(route);
@@ -39,17 +59,26 @@ define([
         }
     };
 
+    /**
+     * Pops the most recent route off the stack.
+     * @return {string} The most recent route.
+     */
     var popRoute = function() {
         var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
             var route = routeStack.pop();
             _removeFromFileList(route)
+            return route;
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
 
+    /**
+     * See what is the most recent route in the stack without returning
+     * anything.
+     */
     var peekRoute = function() {
         var routeStack = getRouteStack();
 
@@ -60,10 +89,20 @@ define([
         return null
     };
 
-    var _isEmpty = function(stack) {
-        return stack.length == 0;
+    /**
+     * Checks if the stack is empty.
+     * @param {Array.<string>} routeStack .
+     * @return {Boolean} True if the stack is empty, false otherwise.
+     */
+    var _isEmpty = function(routeStack) {
+        return routeStack.length == 0;
     };
 
+    /**
+     * Creates a file object and adds it to the file list. This will allow the
+     * file to show up in the sidebar's file tree.
+     * @param {string} route The route to be added.
+     */
     var _addToFileList = function(route) {
         if (route != 'add-from-github') {
             var fileModel = {
@@ -75,6 +114,11 @@ define([
         }
     };
 
+    /**
+     * Creates a file object and removes it from the file list. This file will
+     * be removed from the sidebar's file tree.
+     * @param {string} route The route to be removed.
+     */
     var _removeFromFileList = function(route) {
         var fileModel = {
             path: route,
@@ -84,6 +128,10 @@ define([
         FileList.remove(fileModel);
     };
 
+    /**
+     * Gets a cloned copy of the recent stack stored in the LSD.
+     * @return {Array.<string>} The stack of routes.
+     */
     var getRouteStack = function() {
         var routeStack = JSON.parse(LSD.getItem('route'));
 
