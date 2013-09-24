@@ -20,16 +20,7 @@ define([
 
     var CodeView = Backbone.View.extend({
         setMode: function (mode) {
-            if (mode) {
-                var modeName = mode.name || mode;
-                require(['../bower_components/codemirror/mode/' + modeName +
-                    '/' + modeName],
-                    _.bind(function () {
-                        this.codeMirror.setOption('mode', mode);
-                    }, this));
-            } else {
-                this.codeMirror.setOption('mode', 'text');
-            }
+            this.codeMirror.setOption('mode', mode || 'text');
         },
         setValue: function (value) {
             this.codeMirror.setValue(value);
