@@ -97,12 +97,13 @@ require([
     'enquire',
     'fastclick',
     'services/FileLoader',
+    'services/file',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader) {
+    File, Snap, enquire, FastClick, FileLoader, FileService) {
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
@@ -166,26 +167,6 @@ require([
     FastClick.attach(document.body);
 
     $('#delete-file-btn').click(function (e) {
-        var selectedFile = sideBar.getSelectedFile();
-        if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
-            var filesToRemove = FileList.listFilesWithDirectoryPrefix(
-                selectedFile.id);
-            _.each(filesToRemove, function(file) {
-                FileList.remove(file);
-            });
-
-            // Remove the node from the tree.
-            sideBar.removeNodeFromTree(selectedFile);
-        } else {
-            var fileId = selectedFile.source + '/' + selectedFile.path;
-            var file = FileList.get(fileId);
-
-            var recentFileId = 'recent/' + fileId;
-
-            var recentFile = FileList.get(recentFileId);
-
-            FileList.remove(file);
-            FileList.remove(recentFile);
-        }
+        FileService.deleteFile(sideBar);
     });
 });

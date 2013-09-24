@@ -13,7 +13,7 @@ define([
 		model: File,
 		initialize: function () {
 			this.on('add', this.writeFileListToStorage);
-			this.on('remove', this.writeFileListToStorage);
+			this.on('remove', this.writeFileListToStorageRemove);
 			this.on('change', this.writeFileListToStorage);
 
 			if (!LSD.getItem('FileList')) {
@@ -23,6 +23,12 @@ define([
 			this.loadFilesFromStorage();
 		},
 		writeFileListToStorage: function() {
+			var fileAttributes = this.map(function(file) {
+				return file.attributes;
+			});
+			LSD.setItem('FileList', JSON.stringify(fileAttributes));
+		},
+		writeFileListToStorageRemove: function() {
 			var fileAttributes = this.map(function(file) {
 				return file.attributes;
 			});
