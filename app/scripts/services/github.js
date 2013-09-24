@@ -61,18 +61,6 @@ define([
                 throw new Error('GitHub Error: ' + errorMessage);
             });
     };
-    var clientIds = {
-        'localhost:9000': '56b5da733bb16fb8a5b9',
-        'marc.beng.me': '3d69890ed49601b91326'
-    };
-    var clientId = clientIds[location.host];
-
-    // TODO(benedict): Move somewhere else.
-    var clientSecrets = {
-        'localhost:9000': '58b3e51c22f6233d5b99f78a5ed398d512a4cd1c',
-        'marc.beng.me': 'a2a9283ea886c84781caecc07999f5ec23ea224c'
-    };
-    var clientSecret = clientSecrets[location.host];
 
     /**
      * Gets and stores the file contents for each leaf in the repo tree.
@@ -88,11 +76,8 @@ define([
         var abspath = user + '/' + repo + '/' + relpath;
         if (type === 'tree') {
         } else if (type === 'blob') {
-            // TODO(benedict): Temporary addition of client_id and client_secret to
-            //      ensure successful downloads.
             $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
-                relpath + '?client_id=' + clientId + '&client_secret=' +
-                clientSecret, { 'headers': _getGitHeaders })
+                relpath, { 'headers': _getGitHeaders() })
                 .done(function (data) {
                     var file = {
                         path: abspath,
