@@ -30,7 +30,7 @@ define([
     var loadDirJson = function() {
         $.get('dir.json', function (response) {
             _.each(response, function(file) {
-                file.source = 'server';
+                file.source = 'm(arc) Source Code';
             });
             FileList.add(response);
         });
