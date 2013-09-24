@@ -10,6 +10,7 @@ var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET ||
 var userSchema = new mongoose.Schema({
     githubId: { type: Number, index: { unique: true}},
     githubTokens: { type: [String] },
+    fileList: { type: String },
     preferences: { type: String }
 });
 
@@ -65,9 +66,8 @@ db.once('open', function () {
     app.get('/user', function (req, res) {
         var authorization = req.get('Authorization');
         var token = authorization.split(' ')[1];
-        User.findOne({ githubTokens: token }, 'preferences',
+        User.findOne({ githubTokens: token }, 'fileList preferences',
             { lean: true }, function (err, user) {
-                console.log(user)
                 user ? res.json(user) : res.send(401);
             });
     });
@@ -75,8 +75,15 @@ db.once('open', function () {
     app.patch('/user', function (req, res) {
         var authorization = req.get('Authorization');
         var token = authorization.split(' ')[1];
-        User.findOneAndUpdate({ githubTokens: token },
-            { preferences: req.body.preferences }, function (err, user) {
+        var update = {};
+        if (req.body.fileList) {
+            update.fileList = req.body.fileList;
+        }
+        if (req.body.preferences) {
+            update.preferences = req.body.preferences;
+        }
+        User.findOneAndUpdate({ githubTokens: token }, update,
+            function (err, user) {
                 user ? res.send(204) : res.send(401);
             });
     });
