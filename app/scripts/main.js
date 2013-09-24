@@ -105,15 +105,18 @@ require([
     'snap',
     'enquire',
     'fastclick',
+    'services/FileLoader',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-        Snap, enquire, FastClick) {
+        Snap, enquire, FastClick, FileLoader) {
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
+
+    FileLoader.listenTo(FileList, 'add', FileLoader.loadFileAsync);
 
     enquire.register('screen and (min-width: 768px)', {
         openSnapper: function (side) {
