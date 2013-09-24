@@ -154,7 +154,7 @@ define([
                 return this.fileType.DIRECTORY;
             }
             else {
-                return this.fileType.FILE;   
+                return this.fileType.FILE;
             }
         }
     });
