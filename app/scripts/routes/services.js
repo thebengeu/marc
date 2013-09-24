@@ -29,6 +29,7 @@ define([
         },
         addFromServer: function() {
             FileListLoader.loadExistingFiles();
+            Backbone.history.navigate('');
         }
     });
 
