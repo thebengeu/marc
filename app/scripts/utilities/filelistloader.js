@@ -46,11 +46,14 @@ define([
     // Grab the files on the server.
     var loadDirJson = function() {
         $.get('dir.json', function (response) {
-            _.each(response, function(file) {
-                file.source = 'm(arc) Source Code';
-                file.id = file.source + '/' + file.path;
-            });
-            FileList.add(response);
+            var source = 'm(arc) Source Code';
+            FileList.add(_.map(response, function(path) {
+                return {
+                    path: path,
+                    source: 'm(arc) Source Code',
+                    id: source + '/' + path
+                }
+            }));
         });
 
     };
