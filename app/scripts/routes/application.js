@@ -11,17 +11,17 @@ define([
     'services/dropbox',
     'services/github',
     'services/gitAuth',
-    'services/recentservice',
+    'services/recent',
     'collections/fileList'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, RecentService, FileList) {
+             dropboxService, githubService, GitAuthService, Recent, FileList) {
     'use strict';
 
     var sourceToService = {
         'm(arc) Source Code': serverService,
         dropbox: dropboxService,
         github: githubService,
-        recent: RecentService
+        recent: Recent
     };
 
     var updateCodeView = function(path, data) {
@@ -40,7 +40,7 @@ define([
         },
         home: function () {
             // var route = LSD.getItem('route');
-            var route = RecentService.peekRoute();
+            var route = Recent.peekRoute();
             if (route) {
                 this.navigate(route, {trigger: true});
             } else {
@@ -55,7 +55,7 @@ define([
             if (source == 'recent') {
                 sourcePath = path;
             }
-            RecentService.pushRoute(sourcePath);
+            Recent.pushRoute(sourcePath);
 
             var data = LSD.getItem(sourcePath);
             if (data) {

@@ -4,13 +4,13 @@ define([
     'jquery',
     'underscore',
     'collections/fileList',
-    'services/recentservice',
+    'services/recent',
     'LSD'
-], function ($, _, FileList, RecentService, LSD) {
+], function ($, _, FileList, Recent, LSD) {
     'use strict';
 
     var addRecentFilesToFileList = function() {
-        var routes = RecentService.getRoutes();
+        var routes = Recent.getRoutes();
         var source = 'recent';
         console.log(routes);
         _.each(routes, function(route) {

@@ -4,8 +4,8 @@ define([
     'underscore',
     'backbone',
     'LSD',
-    'services/recentservice'
-], function ($, _, Backbone, LSD, RecentService) {
+    'services/recent'
+], function ($, _, Backbone, LSD, Recent) {
     'use strict';
 
     /**
@@ -48,7 +48,7 @@ define([
             }
             else {
                 Backbone.history.stop();
-                RecentService.pushRoute('add-from-github');
+                Recent.pushRoute('add-from-github');
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }

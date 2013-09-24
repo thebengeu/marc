@@ -29,8 +29,6 @@ define([
         }
 
         LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
-
-        console.log(LSD['route']);
     };
 
     var makeSpaceInStack = function(routeStack) {
