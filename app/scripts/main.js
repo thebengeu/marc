@@ -197,7 +197,14 @@ require([
                 path: selectedFile.path,
                 source: selectedFile.source,
             }
+            var updatedPath = selectedFile.source + '/' + selectedFile.path;
+            var recentFile = {
+                id: 'recent/' + updatedPath,
+                path: updatedPath,
+                source: 'recent',
+            }
             FileList.trigger('remove', new File(file));
+            FileList.trigger('remove', new File(recentFile));
         }
     })
 });

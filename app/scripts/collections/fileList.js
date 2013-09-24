@@ -52,12 +52,13 @@ define([
 		},
 		removeDirectoryFromStorage: function(dirPath) {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
-			var filtered = _.filter(storedFiles, function (storedFile) {
-				return storedFile.id.indexOf(dirPath) == 0;
+			var filesToRemove = _.filter(storedFiles, function (storedFile) {
+				return storedFile.id.indexOf(dirPath) == 0 ||
+					storedFile.id.indexOf('recent/' + dirPath) == 0;;
 			});
 
 			var that = this;
-			_.each(filtered, function(file) {
+			_.each(filesToRemove, function(file) {
 				that.trigger('remove', new File(file));
 			});
 		}
