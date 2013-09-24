@@ -108,7 +108,7 @@ define([
             var fileModel = {
                 path: route,
                 source: 'recent',
-                id: 'recent' + route
+                id: 'recent/' + route
             };
             FileList.add(fileModel);
         }
@@ -123,7 +123,7 @@ define([
         var fileModel = {
             path: route,
             source: 'recent',
-            id: 'recent' + route
+            id: 'recent/' + route
         };
         FileList.remove(fileModel);
     };
