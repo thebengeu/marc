@@ -18,7 +18,7 @@ define([
                 var fileModel = {
                     path: route,
                     source: source,
-                    id: source + route
+                    id: source + '/' + route
                 };
                 FileList.add(fileModel);
             }
@@ -35,7 +35,7 @@ define([
 
         _.each(filteredKeys, function(key) {
             var fileModel = {
-                id: source + key.substring(7),
+                id: source + '/' + key.substring(7),
                 path: key.substring(7),
                 source: source
             };
@@ -51,7 +51,7 @@ define([
         $.get('dir.json', function (response) {
             _.each(response, function(file) {
                 file.source = 'm(arc) Source Code';
-                file.id = file.source + file.path;
+                file.id = file.source + '/' + file.path;
             });
             FileList.add(response);
         });
