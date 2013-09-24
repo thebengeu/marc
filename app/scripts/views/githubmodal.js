@@ -3,8 +3,8 @@
 define([
     'jquery',
     'backbone',
-    'services/githubService',
-    'services/gitauthservice'
+    'services/github',
+    'services/gitAuth'
 ], function ($, Backbone, GithubService, GitAuthService) {
     'use strict';
 
@@ -26,7 +26,7 @@ define([
                 $('#github-modal').modal({
                     show: true,
                     keyboard: true
-                })
+                });
             });
         },
         /**

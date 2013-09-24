@@ -18,9 +18,9 @@ require.config({
         },
         '../bower_components/codemirror/mode/htmlmixed/htmlmixed': {
             deps: [
-                'codemirror_css',
-                'codemirror_javascript',
-                'codemirror_xml'
+                'codemirrorCss',
+                'codemirrorJavascript',
+                'codemirrorXml'
             ]
         },
         jqTree: {
@@ -61,6 +61,9 @@ require.config({
         },
         'bootstrap-switch': {
             deps: ['jquery']
+        },
+        'dropbox': {
+            exports: 'Dropbox'
         }
     },
     paths: {
@@ -68,9 +71,9 @@ require.config({
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/lodash/dist/lodash',
         codemirror: '../bower_components/codemirror/lib/codemirror',
-        codemirror_css: '../bower_components/codemirror/mode/css/css',
-        codemirror_javascript: '../bower_components/codemirror/mode/javascript/javascript',
-        codemirror_xml: '../bower_components/codemirror/mode/xml/xml',
+        codemirrorCss: '../bower_components/codemirror/mode/css/css',
+        codemirrorJavascript: '../bower_components/codemirror/mode/javascript/javascript',
+        codemirrorXml: '../bower_components/codemirror/mode/xml/xml',
         jqTree: '../bower_components/jqtree/tree.jquery',
         localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
@@ -93,22 +96,23 @@ require.config({
 });
 
 require([
+    'underscore',
     'backbone',
     'views/sidebar',
-    'views/githubmodal',
     'collections/fileList',
     'routes/application',
+    'routes/services',
     'snap',
     'enquire',
     'fastclick',
-    'utilities/filelistloader',
     'bootstrap',
     'jqTree',
     'dropbox',
     'bootstrap-switch'
-], function (Backbone, Sidebar, GithubModalView, FileList, ApplicationRouter,
-        Snap, enquire, FastClick, FileListLoader) {
-    new ApplicationRouter;
+], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
+        Snap, enquire, FastClick) {
+    new ApplicationRouter();
+    new ServicesRouter();
     Backbone.history.start();
 
     enquire.register('screen and (min-width: 768px)', {
@@ -159,12 +163,11 @@ require([
         }
     });
 
-    var sidebar = new Sidebar({
+    new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
 
-    FileListLoader.loadExistingFiles();
 
     var data = [{
         label: '/',
@@ -174,7 +177,7 @@ require([
         data: data,
         autoOpen: false,
         onLoadFailed: function (response) {
-            alert("boo!");
+            alert('boo!');
             console.log(response);
         }
     });
@@ -187,8 +190,4 @@ require([
     );
 
     FastClick.attach(document.body);
-
-    $('#add-from-github').click(function() {
-        GithubModalView.showModal();
-    });
 });

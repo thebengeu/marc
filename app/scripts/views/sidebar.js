@@ -4,8 +4,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'LSD',
     'jqTree'
-], function ($, _, Backbone) {
+], function ($, _, Backbone, LSD) {
     'use strict';
 
     var Sidebar = Backbone.View.extend({
@@ -49,12 +50,23 @@ define([
                             }
                         );
                     }
+
+                    // Save our state.
+                    // We need to override the selected node value, since
+                    // at this point the tree's state hasn't actually been updated yet.
+                    var treeState = that.$('#file-tree').tree('getState');
+                    treeState.selected_node = node.id;
+                    LSD.setItem('treeState', JSON.stringify(treeState));
                 }
             );
 
             this.collection.each(function (file) {
                 that.addFileToTree(file);
             });
+            var state = LSD.getItem('treeState');
+            if (state) {
+                this.treeElement.tree('setState', JSON.parse(state));
+            }
         },
         addFileToTree: function (file) {
             var source = file.get('source');
