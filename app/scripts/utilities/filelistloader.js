@@ -15,7 +15,7 @@ define([
         console.log(routes);
         _.each(routes, function(route) {
             console.log(route);
-            if (route != 'add-from-github') {
+            if (route !== 'add-from-github') {
                 var fileModel = {
                     path: route,
                     source: source,
@@ -52,7 +52,7 @@ define([
                     path: path,
                     source: 'm(arc) Source Code',
                     id: source + '/' + path
-                }
+                };
             }));
         });
 

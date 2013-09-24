@@ -23,7 +23,7 @@ define([
             GithubModalView.showModal();
 
             // Prevent duplicate removal of routes.
-            if (Recent.peekRoute() == 'add-from-github') {
+            if (Recent.peekRoute() === 'add-from-github') {
                 Recent.popRoute();
             }
         },

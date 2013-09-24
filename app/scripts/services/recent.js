@@ -10,6 +10,7 @@ define([
     'LSD',
     'collections/fileList'
 ], function ($, _, Backbone, LSD, FileList) {
+    'use strict';
 
     /**
      * The maximum stack size used in the stack.
@@ -32,7 +33,7 @@ define([
         var routeStack = getRouteStack();
 
         var routeIndex = routeStack.indexOf(route);
-        if(routeIndex != -1) {
+        if(routeIndex !== -1) {
             // Push to top
             routeStack.splice(routeIndex, 1, route);
         }
@@ -68,7 +69,7 @@ define([
 
         if (!_isEmpty(routeStack)) {
             var route = routeStack.pop();
-            _removeFromFileList(route)
+            _removeFromFileList(route);
             return route;
         }
 
@@ -86,7 +87,7 @@ define([
             return routeStack[routeStack.length - 1];
         }
 
-        return null
+        return null;
     };
 
     /**
@@ -95,7 +96,7 @@ define([
      * @return {Boolean} True if the stack is empty, false otherwise.
      */
     var _isEmpty = function(routeStack) {
-        return routeStack.length == 0;
+        return routeStack.length === 0;
     };
 
     /**
@@ -104,7 +105,7 @@ define([
      * @param {string} route The route to be added.
      */
     var _addToFileList = function(route) {
-        if (route != 'add-from-github') {
+        if (route !== 'add-from-github') {
             var fileModel = {
                 path: route,
                 source: 'recent',
@@ -155,5 +156,5 @@ define([
         getRoutes: function() {
             return getRouteStack();
         }
-    }
+    };
 });
