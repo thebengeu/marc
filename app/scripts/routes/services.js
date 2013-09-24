@@ -17,7 +17,7 @@ define([
             'add-from-server': 'addFromServer'
         },
         addFromDropbox: function () {
-            dropboxService.authenticate();
+            dropboxService.showModal();
         },
         addFromGithub: function() {
             GithubModalView.showModal();

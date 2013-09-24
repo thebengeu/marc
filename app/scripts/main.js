@@ -162,26 +162,5 @@ require([
         collection: FileList
     });
 
-
-    var data = [{
-        label: '/',
-        id: '/'
-    }];
-    $('#dropbox-tree-view').tree({
-        data: data,
-        autoOpen: false,
-        onLoadFailed: function (response) {
-            alert('boo!');
-            console.log(response);
-        }
-    });
-
-    $('#dropbox-tree-view').bind(
-        'tree.open',
-        function (e) {
-            console.log(e.node);
-        }
-    );
-
     FastClick.attach(document.body);
 });
