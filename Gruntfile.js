@@ -289,6 +289,17 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        manifest: {
+            generate: {
+                options: {
+                    basePath: '<%= yeoman.dist %>'
+                },
+                src: [
+                    '**'
+                ],
+                dest: '<%= yeoman.dist %>/manifest.appcache'
+            }
         }
     });
 
@@ -347,7 +358,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'rev',
-        'usemin'
+        'usemin',
+        'manifest'
     ]);
 
     grunt.registerTask('default', [

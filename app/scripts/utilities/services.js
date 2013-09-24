@@ -1,16 +1,18 @@
+/*global define*/
+
 define([
 	'services/server',
 	'services/dropbox',
 	'services/github',
-	'services/recentservice'
-], function (serverService, dropboxService, githubService, RecentService) {
+	'services/recent'
+], function (serverService, dropboxService, githubService, Recent) {
 	'use strict';
-	
+
 	var sourceToService = {
 		'm(arc) Source Code': serverService,
 		dropbox: dropboxService,
 		github: githubService,
-		recent: RecentService
+		recent: Recent
 	};
 	return sourceToService;
 });

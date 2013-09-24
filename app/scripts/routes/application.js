@@ -11,11 +11,11 @@ define([
     'services/dropbox',
     'services/github',
     'services/gitAuth',
-    'services/recentservice',
+    'services/recent',
     'collections/fileList',
     'utilities/services'
 ], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, RecentService, FileList, sourceToService) {
+             dropboxService, githubService, GitAuthService, Recent, FileList, sourceToService) {
     'use strict';
 
     var updateCodeView = function(path, data) {
@@ -34,7 +34,7 @@ define([
         },
         home: function () {
             // var route = LSD.getItem('route');
-            var route = RecentService.peekRoute();
+            var route = Recent.peekRoute();
             if (route) {
                 this.navigate(route, {trigger: true});
             } else {
@@ -49,7 +49,7 @@ define([
             if (source == 'recent') {
                 sourcePath = path;
             }
-            RecentService.pushRoute(sourcePath);
+            Recent.pushRoute(sourcePath);
 
             var data = LSD.getItem(sourcePath);
             if (data) {
@@ -65,14 +65,6 @@ define([
                         cached: true
                     });
                 });
-            }
-        },
-        githubmodalview: function() {
-            GithubModalView.showModal();
-
-            // Prevent duplicate removal of routes.
-            if (RecentService.peekRoute() == 'githubmodalview') {
-                RecentService.popRoute();
             }
         },
         gitauth: function() {
