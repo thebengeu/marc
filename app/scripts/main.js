@@ -92,6 +92,7 @@ require([
     'collections/fileList',
     'routes/application',
     'routes/services',
+    'models/file',
     'snap',
     'enquire',
     'fastclick',
@@ -101,7 +102,7 @@ require([
     'dropbox',
     'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-        Snap, enquire, FastClick, FileLoader) {
+        File, Snap, enquire, FastClick, FileLoader) {
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
@@ -196,7 +197,7 @@ require([
                 path: selectedFile.path,
                 source: selectedFile.source,
             }
-            this.trigger('remove', new File(file));
+            FileList.trigger('remove', new File(file));
         }
     })
 });
