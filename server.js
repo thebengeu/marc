@@ -1,4 +1,6 @@
 var express = require('express');
+var fs = require('fs');
+var https = require('https');
 var mongoose = require('mongoose');
 var qs = require('querystring');
 var request = require('request');
@@ -99,4 +101,12 @@ db.once('open', function () {
     });
 });
 
-app.listen(9999);
+try {
+    var options = {
+        cert: fs.readFileSync('/etc/ssl/beng.me.crt'),
+        key: fs.readFileSync('/etc/ssl/beng.me.key')
+    };
+    https.createServer(options, app).listen(9999);
+} catch (e) {
+    app.listen(9999);
+}
