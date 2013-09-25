@@ -114,6 +114,7 @@ require([
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
         LSD.clear();
         LSD.setItem('v', SCHEMA_VERSION);
+        location.hash = '';
     }
 
     new ApplicationRouter();
