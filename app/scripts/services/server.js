@@ -13,7 +13,7 @@ define(['jquery'], function ($) {
             }, 'text');
         },
         updateFolder: function(path, callback, file) {
-            Backbone.history.navigate('add-from-server');
+            Backbone.history.navigate('add-from-server', {trigger: true});
         }
     };
 });
