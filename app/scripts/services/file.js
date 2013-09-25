@@ -27,15 +27,20 @@ define([
 
         var selectedFile = sidebar.getSelectedFile();
         if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
-            var filesToRemove = FileList.listFilesWithDirectoryPrefix(
-                selectedFile.id);
-            _.each(filesToRemove, function(file) {
-                FileList.remove(file);
-            });
+            var path = selectedFile.id;
+            var childFile = getChildFile(selectedFile.children);
 
-            // Remove the node from the tree.
-            sidebar.removeNodeFromTree(selectedFile);
-        } else {
+            if (!childFile) {
+                throw new Error('Folder is empty.');
+            }
+
+            var source = childFile.get('source');
+
+            sourceToService[source].updateFolder(path, function() {
+                console.log('updated');
+            }, childFile);
+        }
+        else {
             var file = FileList.getFileWithSourceAndPath(selectedFile.source,
                 selectedFile.path);
             var source = file.get('source');
@@ -44,6 +49,17 @@ define([
             });
         }
     };
+
+    var getChildFile = function(children) {
+        var sidebar = Context.getInstance().getSidebar();
+
+        for (var i = 0, child; child = children[i]; i++) {
+            if (sidebar.getFileType(child) === sidebar.fileType.FILE) {
+                return FileList.getFileWithSourceAndPath(child.source,
+                    child.path);
+            }
+        }
+    }
 
     /**
      * Deletes the currently selected file/folder in the side bar.
