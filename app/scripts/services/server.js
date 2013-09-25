@@ -10,7 +10,7 @@ define(['jquery'], function ($) {
         updateFile: function(file, callback) {
 
         },
-        updateFolder: function(path, callback) {
+        updateFolder: function(path, callback, file) {
             
         }
     };
