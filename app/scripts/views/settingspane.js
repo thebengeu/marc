@@ -17,7 +17,7 @@ define([
         Setting.set(elementId, value);
     });
     
-    $('#settings-pane #codeview-theme').on('change', function (e) {
+    $('#settings-pane #theme').on('change', function (e) {
         Setting.set('theme', e.target.value);
     });
     
