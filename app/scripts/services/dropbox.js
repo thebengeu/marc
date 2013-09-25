@@ -156,7 +156,7 @@ define([
     return {
         authenticate: authenticate,
         showModal: showModal,
-        get: function (path, callback) {
+        get: function (path, callback) {        
             console.log(path);
             client.readFile(path, function (error, data) {
                 if (error) {
@@ -166,10 +166,16 @@ define([
             });
         },
         updateFile: function(file, callback) {
-
+            console.log("Dropbox UpdateFile", file, callback);
+            var path = file.id;
+            path = path.substr(path.indexOf("/"));
+            console.log("Path", path);
+            this.get(path, callback);
         },
         updateFolder: function(path, callback, file) {
-            
+            console.log("Dropbox UpdateFolder", path, callback, file);
+            path = path.substr(path.indexOf("/"));
+            addFolderContents(path);
         }
     };
 });
