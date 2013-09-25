@@ -27,6 +27,7 @@ define([
 				return file.attributes;
 			});
 			LSD.setItem('FileList', JSON.stringify(fileAttributes));
+			this.updatedTime = Date.now();
 			if (navigator.onLine) {
 				this.persistToServer();
 			}
@@ -77,7 +78,7 @@ define([
 						fileList: JSON.stringify(fileAttributes)
 					},
 					success: function (response) {
-						that.persistedTime = response.updatedAt;
+						that.updatedTime = response.updatedAt;
 					}
 				});
 			}
