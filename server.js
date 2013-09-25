@@ -11,7 +11,8 @@ var userSchema = new mongoose.Schema({
     githubId: { type: Number, index: { unique: true}},
     githubTokens: { type: [String] },
     fileList: { type: String },
-    preferences: { type: String }
+    preferences: { type: String },
+    updatedAt: { type: Date, default: Date.now }
 });
 
 var User = mongoose.model('User', userSchema);
@@ -66,7 +67,7 @@ db.once('open', function () {
     app.get('/user', function (req, res) {
         var authorization = req.get('Authorization');
         var token = authorization.split(' ')[1];
-        User.findOne({ githubTokens: token }, 'fileList preferences',
+        User.findOne({ githubTokens: token }, 'fileList preferences updatedAt',
             { lean: true }, function (err, user) {
                 user ? res.json(user) : res.send(401);
             });
@@ -76,11 +77,14 @@ db.once('open', function () {
         var authorization = req.get('Authorization');
         var token = authorization.split(' ')[1];
         var update = {};
-        if (req.body.fileList) {
-            update.fileList = req.body.fileList;
-        }
-        if (req.body.preferences) {
-            update.preferences = req.body.preferences;
+        if (req.body.fileList || req.body.preferences) {
+            update.updatedAt = Date.now();
+            if (req.body.fileList) {
+                update.fileList = req.body.fileList;
+            }
+            if (req.body.preferences) {
+                update.preferences = req.body.preferences;
+            }
         }
         User.findOneAndUpdate({ githubTokens: token }, update,
             function (err, user) {
