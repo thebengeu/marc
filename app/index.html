@@ -7,12 +7,37 @@
         <meta name="description" content="">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/style.css -->
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="bower_components/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
         <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/3024-day.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/3024-night.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/ambiance.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/base16-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/base16-light.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/blackboard.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/cobalt.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/eclipse.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/elegant.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/erlang-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/lesser-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/midnight.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/monokai.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/neat.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/night.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/paraiso-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/paraiso-light.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/rubyblue.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/solarized.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/the-matrix.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/tomorrow-night-eighties.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/twilight.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/vibrant-ink.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/xq-dark.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/xq-light.css">
         <link rel="stylesheet" href="bower_components/jqtree/jqtree.css">
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
@@ -104,49 +129,73 @@
                 </div>
                 <div id="file-tree"></div>
             </div>
-            <div class="snap-drawer snap-drawer-right">
+            <div class="snap-drawer snap-drawer-right" id="settings-pane">
                 <form role="form">
                     <div class="control-group">
                         <label class="control-label">Code Folding</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="code-folding">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Highlight Active Line</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="highlight-active-line">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Highlight Same Word</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="highlight-same-word">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Line Numbers</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="line-numbers">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Line Wrapping</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="line-wrapping">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Match Brackets</label>
-                        <div class="make-switch">
+                        <div class="make-switch" id="match-brackets">
                             <input type="checkbox" checked>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label">Match Tags</label>
-                        <div class="make-switch">
+                        <div class="make-switch boolean-value" id="match-tags">
                             <input type="checkbox" checked>
                         </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Font Face</label>
+                        <select name="select" id="font-face">
+                            <option value="Monospace" selected>Monospace</option> 
+                            <option value="Consolas">Consolas</option>
+                            <option value="Lucida Console">Lucida</option>
+                        </select>
+                    </div>                    
+                    <div class="control-group">
+                        <label class="control-label">Font Size</label>
+                        <select name="select" id="font-size">
+                            <option value="10" selected>10</option> 
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                        </select>
                     </div>
                 </form>
             </div>

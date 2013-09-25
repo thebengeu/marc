@@ -85,6 +85,8 @@ require.config({
     }
 });
 
+var SCHEMA_VERSION = '0.0.0';
+
 require([
     'underscore',
     'backbone',
@@ -98,12 +100,20 @@ require([
     'fastclick',
     'services/FileLoader',
     'services/file',
+    'LSD',
     'bootstrap',
     'jqTree',
     'dropbox',
-    'bootstrap-switch'
+    'bootstrap-switch',
+    'views/settingspane'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService) {
+    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, SettingsPaneView) {
+    // Clear local storage if schema has breaking changes.
+    if (LSD.getItem('v') !== SCHEMA_VERSION) {
+        LSD.clear();
+        LSD.setItem('v', SCHEMA_VERSION);
+    }
+
     new ApplicationRouter();
     new ServicesRouter();
     Backbone.history.start();
@@ -169,4 +179,5 @@ require([
     $('#delete-file-btn').click(function (e) {
         FileService.deleteFile(sideBar);
     });
+    
 });

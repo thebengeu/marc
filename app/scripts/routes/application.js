@@ -33,13 +33,13 @@ define([
             'gitauth': 'gitauth'
         },
         home: function () {
-            // var route = LSD.getItem('route');
             var route = Recent.peekRoute();
             if (route) {
                 this.navigate(route, {trigger: true});
             } else {
-                $.get('README.md', function (data) {
-                    CodeView.setValue(data);
+                var path = 'README.md';
+                $.get(path, function (data) {
+                    updateCodeView(path, data);
                 });
             }
         },

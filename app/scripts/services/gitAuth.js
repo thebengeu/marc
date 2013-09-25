@@ -23,7 +23,7 @@ define([
          * @return {?string} .
          */
         var getValidOAuth = function () {
-            var oauth = LSD.oauthToken;
+            var oauth = LSD.getItem('oauthToken');
             if (oauth === 'undefined') {
                 return null;
             }
@@ -64,7 +64,7 @@ define([
         var setOAuthWithCode = function (code, callback) {
             $.getJSON('http://' + location.hostname + ':9999/authenticate/' + code, function (data) {
                 oauth = data.token;
-                LSD.oauthToken = oauth;
+                LSD.setItem('oauthToken', oauth);
                 callback();
             });
         };
