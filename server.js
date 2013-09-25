@@ -25,6 +25,7 @@ app.configure(function () {
 
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PATCH');
     next();
 });
 
