@@ -37,7 +37,8 @@ define([
                 gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
                 highlightSelectionMatches: {showToken: /\w/},
                 matchTags: {bothTags: true},
-                styleActiveLine: true
+                styleActiveLine: true,
+                theme: 'solarized light'
             });
 
             // Add a "Scroll to Top" button to make the ugly space at the bottom
