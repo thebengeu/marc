@@ -101,13 +101,14 @@ require([
     'services/FileLoader',
     'services/file',
     'LSD',
+    'views/settingspane',
+    'services/gitAuth',
     'bootstrap',
     'jqTree',
     'dropbox',
-    'bootstrap-switch',
-    'views/settingspane'
+    'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, SettingsPaneView) {
+    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, SettingsPaneView, GitAuthService) {
     // Clear local storage if schema has breaking changes.
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
         LSD.clear();
@@ -176,8 +177,14 @@ require([
 
     FastClick.attach(document.body);
 
-    $('#delete-file-btn').click(function (e) {
+    $('#delete-file-btn').click(function () {
         FileService.deleteFile(sideBar);
     });
-    
+
+    $('#github-log-in').click(function () {
+        GitAuthService.getInstance().ensureAuth(function () {
+
+        });
+    });
+
 });
