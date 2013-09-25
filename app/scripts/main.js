@@ -102,13 +102,14 @@ require([
     'services/file',
     'LSD',
     'context',
+    'views/settingspane',
+    'services/gitAuth',
     'bootstrap',
     'jqTree',
     'dropbox',
-    'bootstrap-switch',
-    'views/settingspane'
+    'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView) {
+    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView, GitAuthService) {
     // Clear local storage if schema has breaking changes.
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
         LSD.clear();
@@ -186,5 +187,11 @@ require([
     $('#update-file-btn').click(function(e) {
         FileService.updateFile();
     });
-    
+
+    $('#github-log-in').click(function () {
+        GitAuthService.getInstance().ensureAuth(function () {
+            alert('You\'re now logged in with GitHub!');
+        });
+    });
+
 });
