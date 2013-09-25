@@ -1,0 +1,54 @@
+<script>
+    //allowed domains
+    var whitelist = ['localhost'];
+
+    function verifyOrigin(origin) {
+        var domain = origin.replace(/^https?:\/\/|:\d{1,4}$/g, '').toLowerCase(),
+            i = 0,
+            len = whitelist.length;
+
+        while (i < len) {
+            if (whitelist[i] == domain) {
+                return true;
+            }
+            i++;
+        }
+
+        return false;
+    }
+
+    function handleRequest(event) {
+        console.log(event.origin);
+//        if (verifyOrigin(event.origin)){
+        if (true) {
+            var data = JSON.parse(event.data);
+            switch (data.method) {
+                case 'get':
+                    var value = localStorage.getItem(data.key);
+                    event.source.postMessage(JSON.stringify({id: data.id, method: data.method, key: data.key, value: value}), event.origin);
+                    break;
+                case 'set':
+                    localStorage.setItem(data.key, data.value);
+                    event.source.postMessage(JSON.stringify({id: data.id, method: data.method, key: data.key}), event.origin);
+                    break;
+                case 'remove':
+                    localStorage.removeItem(data.key);
+                    event.source.postMessage(JSON.stringify({id: data.id, method: data.method, key: data.key}), event.origin);
+                    break;
+                case 'clear':
+                    localStorage.clear();
+                    event.source.postMessage(JSON.stringify({id: data.id, method: data.method}), event.origin);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+
+    if (window.addEventListener) {
+        window.addEventListener('message', handleRequest, false);
+    } else if (window.attachEvent) {
+        window.attachEvent('onmessage', handleRequest);
+    }
+</script>
