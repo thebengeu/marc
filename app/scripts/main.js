@@ -101,6 +101,7 @@ require([
     'services/FileLoader',
     'services/file',
     'LSD',
+    'context',
     'views/settingspane',
     'services/gitAuth',
     'bootstrap',
@@ -108,7 +109,7 @@ require([
     'dropbox',
     'bootstrap-switch'
 ], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, SettingsPaneView, GitAuthService) {
+    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView, GitAuthService) {
     // Clear local storage if schema has breaking changes.
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
         LSD.clear();
@@ -170,15 +171,21 @@ require([
         }
     });
 
-    var sideBar = new Sidebar({
+    var sidebar = new Sidebar({
         el: '.snap-drawer-left',
         collection: FileList
     });
 
+    Context.getInstance().setSidebar(sidebar);
+
     FastClick.attach(document.body);
 
-    $('#delete-file-btn').click(function () {
-        FileService.deleteFile(sideBar);
+    $('#delete-file-btn').click(function (e) {
+        FileService.deleteFile();
+    });
+
+    $('#update-file-btn').click(function(e) {
+        FileService.updateFile();
     });
 
     $('#github-log-in').click(function () {
