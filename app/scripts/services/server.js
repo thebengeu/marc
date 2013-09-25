@@ -8,10 +8,12 @@ define(['jquery'], function ($) {
             }, 'text');
         },
         updateFile: function(file, callback) {
-
+            $.get(file.get('path'), function (data) {
+                callback(data);
+            }, 'text');
         },
-        updateFolder: function(path, callback) {
-            
+        updateFolder: function(path, callback, file) {
+            Backbone.history.navigate('add-from-server');
         }
     };
 });

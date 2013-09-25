@@ -158,9 +158,9 @@ define([
         gitAuthServiceInstance.ensureAuth(getSha);
     };
 
-    var updateFolder = function(path, callback, file) {
-        var user = githubFile.get('metadata').user;
-        var repo = githubFile.get('metadata').repo;
+    var updateRepo = function(file, callback) {
+        var user = file.get('metadata').user;
+        var repo = file.get('metadata').repo;
 
         downloadRepository(user, repo);
     };
@@ -174,10 +174,10 @@ define([
             return getFileContent(file, callback);
         },
         updateFile: function(file, callback) {
-
+            return updateRepo(file, callback);
         },
         updateFolder: function(path, callback, file) {
-            return updateFolder(path, callback, file);
+            return updateRepo(file, callback);
         }
     };
 });

@@ -25,6 +25,7 @@ app.configure(function () {
 
 app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PATCH');
     next();
 });
 
@@ -66,6 +67,7 @@ db.once('open', function () {
 
     app.get('/user', function (req, res) {
         var authorization = req.get('Authorization');
+        if (!authorization) return res.send(401);
         var token = authorization.split(' ')[1];
         User.findOne({ githubTokens: token }, 'fileList preferences updatedAt',
             { lean: true }, function (err, user) {
@@ -75,6 +77,7 @@ db.once('open', function () {
 
     app.patch('/user', function (req, res) {
         var authorization = req.get('Authorization');
+        if (!authorization) return res.send(401);
         var token = authorization.split(' ')[1];
         var update = {};
         if (req.body.fileList || req.body.preferences) {
@@ -86,10 +89,12 @@ db.once('open', function () {
                 update.preferences = req.body.preferences;
             }
         }
-        User.findOneAndUpdate({ githubTokens: token }, update,
-            function (err, user) {
-                user ? res.send(204) : res.send(401);
-            });
+        User
+            .findOneAndUpdate({ githubTokens: token }, update)
+            .select('updatedAt')
+            .exec(function (err, user) {
+                user ? res.send(200, user) : res.send(401);
+            })
     });
 });
 

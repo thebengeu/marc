@@ -4,9 +4,8 @@ define([
 	'services/server',
 	'services/dropbox',
 	'services/github',
-	'services/recent',
-	'services/file'
-], function (serverService, dropboxService, githubService, Recent, FileService) {
+	'services/recent'
+], function (serverService, dropboxService, githubService, Recent) {
 	'use strict';
 
 	var sourceToService = {

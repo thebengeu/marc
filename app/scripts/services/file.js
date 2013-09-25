@@ -5,9 +5,11 @@ define([
     'underscore',
     'backbone',
     'LSD',
+    'context',
     'collections/fileList',
-    'services/recent'
-], function ($, _, Backbone, LSD, FileList, RecentService) {
+    'services/recent',
+    'utilities/services'
+], function ($, _, Backbone, LSD, Context, FileList, RecentService, sourceToService) {
     'use strict';
 
     /**
@@ -20,17 +22,54 @@ define([
         Backbone.history.navigate('');
     };
 
-    var updateFile = function(sideBar) {
+    var updateFile = function() {
+        var sidebar = Context.getInstance().getSidebar();
 
+        var selectedFile = sidebar.getSelectedFile();
+        if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
+            var path = selectedFile.id;
+            var childFile = getChildFile(selectedFile.children);
+
+            if (!childFile) {
+                throw new Error('Folder is empty.');
+            }
+
+            var source = childFile.get('source');
+
+            sourceToService[source].updateFolder(path, function() {
+                console.log('updated');
+            }, childFile);
+        }
+        else {
+            var file = FileList.getFileWithSourceAndPath(selectedFile.source,
+                selectedFile.path);
+            var source = file.get('source');
+            sourceToService[source].updateFile(file, function() {
+                console.log('updated');
+            });
+        }
     };
+
+    var getChildFile = function(children) {
+        var sidebar = Context.getInstance().getSidebar();
+
+        for (var i = 0, child; child = children[i]; i++) {
+            if (sidebar.getFileType(child) === sidebar.fileType.FILE) {
+                return FileList.getFileWithSourceAndPath(child.source,
+                    child.path);
+            }
+        }
+    }
 
     /**
      * Deletes the currently selected file/folder in the side bar.
-     * @param {SideBar} sideBar The application's side bar.
+     * @param {sidebar} sidebar The application's side bar.
      */
-    var deleteFile = function(sideBar) {
-        var selectedFile = sideBar.getSelectedFile();
-        if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
+    var deleteFile = function() {
+        var sidebar = Context.getInstance().getSidebar();
+
+        var selectedFile = sidebar.getSelectedFile();
+        if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var filesToRemove = FileList.listFilesWithDirectoryPrefix(
                 selectedFile.id);
             _.each(filesToRemove, function(file) {
@@ -38,7 +77,7 @@ define([
             });
 
             // Remove the node from the tree.
-            sideBar.removeNodeFromTree(selectedFile);
+            sidebar.removeNodeFromTree(selectedFile);
         } else {
             var fileId = selectedFile.source + '/' + selectedFile.path;
             var file = FileList.get(fileId);
@@ -53,11 +92,11 @@ define([
     }
 
     var FileService = {
-        deleteFile: function(sideBar) {
-            deleteFile(sideBar);
+        deleteFile: function() {
+            deleteFile();
         },
-        updateFile: function(sideBar) {
-            updateFile(sideBar);
+        updateFile: function() {
+            updateFile();
         }
     };
 
