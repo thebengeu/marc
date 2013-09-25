@@ -28,19 +28,18 @@ define([
         setTheme: function (theme) {
             this.codeMirror.setOption('theme', theme);
 
-            var rulesArray = document.styleSheets[0].rules ? document.styleSheets[0].rules : document.styleSheets[0].cssRules;
-
-            document.styleSheets[0].insertRule(
+            var sheet = document.styleSheets[0];
+            sheet.insertRule(
                 'ul.jqtree-tree .jqtree-title { color: ' +
                     this.$CodeMirror.css('color') +
                     ' !important; }',
-                rulesArray.length
+                sheet.cssRules.length
             );
-            document.styleSheets[0].insertRule(
+            sheet.insertRule(
                 '.snap-drawer-left { background-color: ' +
                     this.$CodeMirror.css('background-color') +
                     ' !important; }',
-                rulesArray.length
+                sheet.cssRules.length
             );
         },
         setValue: function (value) {
