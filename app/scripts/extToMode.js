@@ -21,6 +21,7 @@ define({
     htm: 'htmlmixed',
     html: 'htmlmixed',
     m: 'clike',
+    ml: 'ocaml',
     md: 'markdown',
     pl: 'perl',
     php: 'php',
