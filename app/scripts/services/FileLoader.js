@@ -6,7 +6,7 @@ define([
 	'collections/fileList',
 	'LSD',
 	'utilities/services',
-	'models/File'
+	'models/file'
 ], function ($, Backbone, FileList, LSD, sourceToService, File) {
 	'use strict';
 
