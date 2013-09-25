@@ -22,6 +22,9 @@ define([
         setMode: function (mode) {
             this.codeMirror.setOption('mode', mode || 'text');
         },
+        setOption: function (option, value) {
+            this.codeMirror.setOption(option, value);
+        },
         setValue: function (value) {
             this.codeMirror.setValue(value);
             var scrollInfo = this.codeMirror.getScrollInfo();
