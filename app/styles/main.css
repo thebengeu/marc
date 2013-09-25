@@ -87,14 +87,24 @@
 .CodeMirror-foldgutter-folded {
     color: #555;
     cursor: pointer;
+    font-family: monospace;
+    font-size: 0.8em;
+    margin-top: 0.3em;
+    margin-left: -0.2em;
+}
+
+.cm-s-solarized .CodeMirror-foldgutter-open,
+.cm-s-solarized .CodeMirror-foldgutter-folded {
+    margin-top: 0.1em;
+    margin-left: 0.1em;
 }
 
 .CodeMirror-foldgutter-open:after {
-    content: "\25BE";
+    content: "\25BC";
 }
 
 .CodeMirror-foldgutter-folded:after {
-    content: "\25B8";
+    content: "\25BA";
 }
 
 .CodeMirror-focused .cm-matchhighlight {

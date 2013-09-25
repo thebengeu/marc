@@ -120,6 +120,7 @@ define([
                     var file = {
                         path: item.path.substr(1),
                         source: 'dropbox',
+                        id: 'dropbox/' + item.path.substr(1),
                         metadata: {
                             versionTag: item.versionTag,
                             type: 'file',
