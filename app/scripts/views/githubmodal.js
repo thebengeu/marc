@@ -4,8 +4,9 @@ define([
     'jquery',
     'backbone',
     'services/github',
-    'services/gitAuth'
-], function ($, Backbone, GithubService, GitAuthService) {
+    'services/gitAuth',
+    'services/recent'
+], function ($, Backbone, GithubService, GitAuthService, RecentService) {
     'use strict';
 
     var gitAuthServiceInstance = GitAuthService.getInstance();
@@ -62,6 +63,7 @@ define([
 
     $('#github-modal').on('hidden.bs.modal', function() {
         Backbone.history.navigate('');
+        RecentService.popRoute();
     });
 
     return (new GitHubModalView({ el: '#github-modal' })).render();
