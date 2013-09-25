@@ -45,7 +45,6 @@ define([
 			return files;
 		},
 		getFileWithSourceAndPath: function(source, path) {
-			var storedFiles = JSON.parse(LSD.getItem('FileList'));
 			var filteredFiles = this.filter(function(file) {
 				return file.id.indexOf(source + '/' + path) === 0;
 			});
