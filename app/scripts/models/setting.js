@@ -4,8 +4,9 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-    'views/code'
-], function ($, _, Backbone, CodeView) {
+    'views/code',
+    'LSD'
+], function ($, _, Backbone, CodeView, LSD) {
 	'use strict';
 
 	var Setting = Backbone.Model.extend({
@@ -24,9 +25,19 @@ define([
         
         initialize: function(){
             console.log('Setting model has been initialized.');
+            
+            if (!LSD.getItem('Settings')) {
+				LSD.setItem('Settings', JSON.stringify(this.toJSON()));
+			}else{
+                console.log(LSD.getItem('Settings'));
+            }
+            
             this.on('change:code-folding', function(){
                 console.log('Code folding value for this model has changed.');
                 CodeView.setOption('foldGutter', this.get('code-folding'));
+                if (this.get('code-folding')){
+                    CodeView.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+                }
             });
             this.on('change:highlight-active-line', function(){
                 console.log('Highlight active line value for this model has changed.');
@@ -43,6 +54,14 @@ define([
             this.on('change:line-numbers', function(){
                 console.log('line-numbers value for this model has changed.');
                 CodeView.setOption('lineNumbers', this.get('line-numbers'));
+                // We disable and re-enable code folding if it was already enabled
+                // otherwise the line numbers will appear after the code folding arrows
+                if (this.get('line-numbers')){
+                    if (this.get('code-folding')){
+                        this.set('code-folding', false);
+                        this.set('code-folding', true);
+                    }
+                }
             });
             this.on('change:line-wrapping', function(){
                 console.log('line-wrapping value for this model has changed.');

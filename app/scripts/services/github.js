@@ -157,6 +157,14 @@ define([
         repo = repoName;
         gitAuthServiceInstance.ensureAuth(getSha);
     };
+
+    var updateFolder = function(path, callback, file) {
+        var user = githubFile.get('metadata').user;
+        var repo = githubFile.get('metadata').repo;
+
+        downloadRepository(user, repo);
+    };
+
     return {
         downloadRepository: function (username, repoName) {
             return downloadRepository(username, repoName);
@@ -164,6 +172,12 @@ define([
         get: function(path, callback) {
             var file = FileList.getFileWithSourceAndPath('github', path);
             return getFileContent(file, callback);
+        },
+        updateFile: function(file, callback) {
+
+        },
+        updateFolder: function(path, callback, file) {
+            return updateFolder(path, callback, file);
         }
     };
 });

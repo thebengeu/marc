@@ -70,10 +70,9 @@ define([
         if (!_isEmpty(routeStack)) {
             var route = routeStack.pop();
             _removeFromFileList(route);
+            LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
             return route;
         }
-
-        LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
     };
 
     /**
