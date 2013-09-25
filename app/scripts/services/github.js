@@ -164,6 +164,12 @@ define([
         get: function(path, callback) {
             var file = FileList.getFileWithSourceAndPath('github', path);
             return getFileContent(file, callback);
+        },
+        updateFile: function(file, callback) {
+
+        },
+        updateFolder: function(path, callback) {
+            // return updateFolder(path, callback);
         }
     };
 });

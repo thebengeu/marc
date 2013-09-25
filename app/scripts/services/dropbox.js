@@ -163,6 +163,12 @@ define([
                 }
                 callback(data);  // data has the file's contents
             });
+        },
+        updateFile: function(file, callback) {
+
+        },
+        updateFolder: function(path, callback) {
+            
         }
     };
 });

@@ -6,6 +6,12 @@ define(['jquery'], function ($) {
             $.get(path, function (data) {
                 callback(data);
             }, 'text');
+        },
+        updateFile: function(file, callback) {
+
+        },
+        updateFolder: function(path, callback) {
+            
         }
     };
 });

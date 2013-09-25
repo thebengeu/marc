@@ -20,6 +20,14 @@ define([
         Backbone.history.navigate('');
     };
 
+    var updateFile = function(sideBar) {
+
+    };
+
+    /**
+     * Deletes the currently selected file/folder in the side bar.
+     * @param {SideBar} sideBar The application's side bar.
+     */
     var deleteFile = function(sideBar) {
         var selectedFile = sideBar.getSelectedFile();
         if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
@@ -47,6 +55,9 @@ define([
     var FileService = {
         deleteFile: function(sideBar) {
             deleteFile(sideBar);
+        },
+        updateFile: function(sideBar) {
+            updateFile(sideBar);
         }
     };
 
