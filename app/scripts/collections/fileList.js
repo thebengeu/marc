@@ -74,7 +74,7 @@ define([
 						'Authorization' : 'token ' + token
 					},
 					data: {
-						fileList: fileAttributes
+						fileList: JSON.stringify(fileAttributes)
 					},
 					success: function (response) {
 						that.persistedTime = response.updatedAt;
