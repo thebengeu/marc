@@ -59,22 +59,28 @@ define([
 			return null;
 		},
 		persistToServer: function () {
-			var fileAttributes = this.map(function (file) {
-				return file.attributes;
-			});
-			var targetUrl = '//' + location.hostname + ':9999/user';
+			var token = LSD.getItem('oauthToken');
+			if (typeof (token) !== 'undefined') {
+				var fileAttributes = this.map(function (file) {
+					return file.attributes;
+				});
+				var targetUrl = '//' + location.hostname + ':9999/user';
 
-			var that = this;
-			$.ajax({
-				url: targetUrl,
-				type: 'patch',
-				data: {
-					fileList: fileAttributes
-				},
-				success: function (response) {
-					that.persistedTime = response.updatedAt;
-				}
-			});
+				var that = this;
+				$.ajax({
+					url: targetUrl,
+					type: 'patch',
+					headers: {
+						'Authorization' : 'token ' + token
+					},
+					data: {
+						fileList: fileAttributes
+					},
+					success: function (response) {
+						that.persistedTime = response.updatedAt;
+					}
+				});
+			}
 		}
 	});
 
