@@ -24,8 +24,8 @@ define([
 
     var updateFile = function() {
         var sidebar = Context.getInstance().getSidebar();
-
         var selectedFile = sidebar.getSelectedFile();
+        
         if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var path = selectedFile.id;
             var childFile = getChildFile(selectedFile.children);
@@ -36,6 +36,8 @@ define([
 
             var source = childFile.get('source');
 
+            deleteFile();
+
             sourceToService[source].updateFolder(path, function() {
                 console.log('updated');
             }, childFile);
@@ -44,6 +46,9 @@ define([
             var file = FileList.getFileWithSourceAndPath(selectedFile.source,
                 selectedFile.path);
             var source = file.get('source');
+
+            deleteFile();
+
             sourceToService[source].updateFile(file, function() {
                 console.log('updated');
             });
