@@ -42,10 +42,11 @@ define([
 					success: function (response) {
 						var updateTime = new Date(response.updatedAt);
 						var localPersistedTime = new Date(FileList.updatedTime);
-						if (updateTime - localPersistedTime > 0) {
+						if (typeof(FileList.updatedTime) === 'undefined' || updateTime - localPersistedTime > 0) {
 							// We should dump the local FileList and use the server
 							// one.
-							var newModels = _.map(response.fileList, function (fileJson) {
+							var receivedList = JSON.parse(response.fileList);
+							var newModels = _.map(receivedList, function (fileJson) {
 								var newFile = new File(fileJson);
 								// Check if the file's contents are already cached.
 								newFile.cached = typeof (LSD.getItem(newFile.id)) !== 'undefined';
