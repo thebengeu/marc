@@ -81,13 +81,15 @@ require.config({
         matchtags: '../bower_components/codemirror/addon/edit/matchtags',
         'active-line': '../bower_components/codemirror/addon/selection/active-line',
         dropbox: 'vendor/dropbox.min',
-        'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch'
+        'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch',
+        'bootstrap-select': '../bower_components/bootstrap-select/bootstrap-select'
     }
 });
 
 var SCHEMA_VERSION = '0.0.0';
 
 require([
+    'jquery',
     'underscore',
     'backbone',
     'views/sidebar',
@@ -107,8 +109,9 @@ require([
     'bootstrap',
     'jqTree',
     'dropbox',
-    'bootstrap-switch'
-], function (_, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
+    'bootstrap-switch',
+    'bootstrap-select'
+], function ($, _, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
     File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView, GitAuthService) {
     // Clear local storage if schema has breaking changes.
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
@@ -194,5 +197,8 @@ require([
             alert('You\'re now logged in with GitHub!');
         });
     });
+    
+    // Enable bootstrap select
+    $('.selectpicker').selectpicker('mobile');
 
 });
