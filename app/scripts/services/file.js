@@ -5,9 +5,10 @@ define([
     'underscore',
     'backbone',
     'LSD',
+    'context',
     'collections/fileList',
     'services/recent'
-], function ($, _, Backbone, LSD, FileList, RecentService) {
+], function ($, _, Backbone, LSD, Context, FileList, RecentService) {
     'use strict';
 
     /**
@@ -20,17 +21,19 @@ define([
         Backbone.history.navigate('');
     };
 
-    var updateFile = function(sideBar) {
-
+    var updateFile = function() {
+        var sidebar = Context.getInstance().getSidebar();
     };
 
     /**
      * Deletes the currently selected file/folder in the side bar.
-     * @param {SideBar} sideBar The application's side bar.
+     * @param {sidebar} sidebar The application's side bar.
      */
-    var deleteFile = function(sideBar) {
-        var selectedFile = sideBar.getSelectedFile();
-        if (sideBar.getFileType(selectedFile) === sideBar.fileType.DIRECTORY) {
+    var deleteFile = function() {
+        var sidebar = Context.getInstance().getSidebar();
+
+        var selectedFile = sidebar.getSelectedFile();
+        if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var filesToRemove = FileList.listFilesWithDirectoryPrefix(
                 selectedFile.id);
             _.each(filesToRemove, function(file) {
@@ -38,7 +41,7 @@ define([
             });
 
             // Remove the node from the tree.
-            sideBar.removeNodeFromTree(selectedFile);
+            sidebar.removeNodeFromTree(selectedFile);
         } else {
             var fileId = selectedFile.source + '/' + selectedFile.path;
             var file = FileList.get(fileId);
@@ -53,11 +56,11 @@ define([
     }
 
     var FileService = {
-        deleteFile: function(sideBar) {
-            deleteFile(sideBar);
+        deleteFile: function() {
+            deleteFile();
         },
-        updateFile: function(sideBar) {
-            updateFile(sideBar);
+        updateFile: function() {
+            updateFile();
         }
     };
 
