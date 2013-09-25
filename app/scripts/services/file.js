@@ -17,6 +17,7 @@ define([
     var removeFileContent = function(file) {
         LSD.removeItem(file.get('id'));
         RecentService.removeRoute(file.get('id'));
+        Backbone.history.navigate('');
     };
 
     var deleteFile = function(sideBar) {
