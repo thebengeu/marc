@@ -158,9 +158,9 @@ define([
         gitAuthServiceInstance.ensureAuth(getSha);
     };
 
-    var updateRepo = function(path, callback, file) {
-        var user = githubFile.get('metadata').user;
-        var repo = githubFile.get('metadata').repo;
+    var updateRepo = function(file, callback) {
+        var user = file.get('metadata').user;
+        var repo = file.get('metadata').repo;
 
         downloadRepository(user, repo);
     };

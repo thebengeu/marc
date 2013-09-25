@@ -7,8 +7,9 @@ define([
     'LSD',
     'context',
     'collections/fileList',
-    'services/recent'
-], function ($, _, Backbone, LSD, Context, FileList, RecentService) {
+    'services/recent',
+    'utilities/services'
+], function ($, _, Backbone, LSD, Context, FileList, RecentService, sourceToService) {
     'use strict';
 
     /**
@@ -23,6 +24,25 @@ define([
 
     var updateFile = function() {
         var sidebar = Context.getInstance().getSidebar();
+
+        var selectedFile = sidebar.getSelectedFile();
+        if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
+            var filesToRemove = FileList.listFilesWithDirectoryPrefix(
+                selectedFile.id);
+            _.each(filesToRemove, function(file) {
+                FileList.remove(file);
+            });
+
+            // Remove the node from the tree.
+            sidebar.removeNodeFromTree(selectedFile);
+        } else {
+            var file = FileList.getFileWithSourceAndPath(selectedFile.source,
+                selectedFile.path);
+            var source = file.get('source');
+            sourceToService[source].updateFile(file, function() {
+                console.log('updated');
+            });
+        }
     };
 
     /**

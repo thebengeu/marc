@@ -182,5 +182,9 @@ require([
     $('#delete-file-btn').click(function (e) {
         FileService.deleteFile();
     });
+
+    $('#update-file-btn').click(function(e) {
+        FileService.updateFile();
+    });
     
 });
