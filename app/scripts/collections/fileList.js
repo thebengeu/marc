@@ -22,8 +22,8 @@ define([
 
 			this.loadFilesFromStorage();
 		},
-		writeFileListToStorage: function() {
-			var fileAttributes = this.map(function(file) {
+		writeFileListToStorage: function () {
+			var fileAttributes = this.map(function (file) {
 				return file.attributes;
 			});
 			LSD.setItem('FileList', JSON.stringify(fileAttributes));
@@ -37,15 +37,15 @@ define([
 				});
 			});
 		},
-		listFilesWithDirectoryPrefix: function(dirPath) {
-			var files = this.filter(function(file) {
+		listFilesWithDirectoryPrefix: function (dirPath) {
+			var files = this.filter(function (file) {
 				return file.id.indexOf(dirPath) === 0 ||
 					file.id.indexOf('recent/' + dirPath) === 0;
 			});
 			return files;
 		},
-		getFileWithSourceAndPath: function(source, path) {
-			var filteredFiles = this.filter(function(file) {
+		getFileWithSourceAndPath: function (source, path) {
+			var filteredFiles = this.filter(function (file) {
 				return file.id.indexOf(source + '/' + path) === 0;
 			});
 
