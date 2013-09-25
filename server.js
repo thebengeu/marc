@@ -88,10 +88,12 @@ db.once('open', function () {
                 update.preferences = req.body.preferences;
             }
         }
-        User.findOneAndUpdate({ githubTokens: token }, update,
-            function (err, user) {
-                user ? res.send(204) : res.send(401);
-            });
+        User
+            .findOneAndUpdate({ githubTokens: token }, update)
+            .select('updatedAt')
+            .exec(function (err, user) {
+                user ? res.send(200, user) : res.send(401);
+            })
     });
 });
 
