@@ -80,7 +80,7 @@ require.config({
         'xml-fold': '../bower_components/codemirror/addon/fold/xml-fold',
         matchtags: '../bower_components/codemirror/addon/edit/matchtags',
         'active-line': '../bower_components/codemirror/addon/selection/active-line',
-        dropbox: '../bower_components/dropbox-build/dropbox',
+        dropbox: 'vendor/dropbox.min',
         'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch'
     }
 });

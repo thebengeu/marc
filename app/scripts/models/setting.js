@@ -18,23 +18,20 @@ define([
             'line-wrapping': true,
             'match-brackets': true,
             'match-tags': true,
-            'font-size': 11, // what unit to use?
+            'show-cursor': true,
+            'font-size': 14, // what unit to use?
             'font-face': 'Monospace',
-            'theme': 'default'
+            'theme': 'solarized light'
 		},
         
         initialize: function(){
             console.log('Setting model has been initialized.');
-            
-            if (!LSD.getItem('Settings')) {
-				LSD.setItem('Settings', JSON.stringify(this.toJSON()));
-			}else{
-                console.log(LSD.getItem('Settings'));
-            }
+     
             
             this.on('change:code-folding', function(){
                 console.log('Code folding value for this model has changed.');
                 CodeView.setOption('foldGutter', this.get('code-folding'));
+                
                 if (this.get('code-folding')){
                     CodeView.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
                 }
@@ -79,18 +76,58 @@ define([
                     CodeView.setOption('matchTags', {});
                 }
             });
+            this.on('change:show-cursor', function(){
+                console.log('show-cursor value for this model has changed.');
+                if (this.get('show-cursor')){
+                    CodeView.setOption('readOnly', false);
+                }else{
+                    CodeView.setOption('readOnly', 'nocursor');
+                }
+            });
             this.on('change:font-size', function(){
                 console.log('font-size value for this model has changed.');
                 $('.CodeMirror').css('font-size', this.get('font-size') + "px");
+                
+                //
+                $('#settings-pane #font-size').val(this.get('font-size'));    
             });
             this.on('change:font-face', function(){
                 console.log('font-face value for this model has changed.');
                 $('.CodeMirror').css('font-family', this.get('font-face'));
+                
+                //
+                $('#settings-pane #font-face').val(this.get('font-face'));      
             });
             this.on('change:theme', function(){
                 console.log('theme value for this model has changed.');
                 CodeView.setTheme(this.get('theme'));
+                
+                //
+                $('#settings-pane #theme').val(this.get('theme'));                
             });
+            
+            this.on('change', function(){
+                console.log('some element changed!');
+                LSD.setItem('Settings', JSON.stringify(this.toJSON()));
+                
+                // hackish way to get the switches to reflect the actual value in the model
+                _.each(this.toJSON(), function(value, key){
+                    if (typeof value === 'boolean'){
+                        $('#settings-pane .make-switch#'+key).bootstrapSwitch('setState', value);
+                    }
+                });
+            });
+            
+            
+            // load settings from localstorage
+            if (!LSD.getItem('Settings')) {
+				LSD.setItem('Settings', JSON.stringify(this.toJSON()));
+			}            
+            _.each($.parseJSON(LSD.getItem('Settings')), function(value, key){
+                console.log(key, value, typeof value);
+                this.set(key, value);
+                console.log(this.toJSON());
+            }, this);
         },
 	});
 
