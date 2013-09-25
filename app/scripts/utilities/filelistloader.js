@@ -66,8 +66,6 @@ define([
     };
 
     return {
-        loadExistingFiles: function() {
-            return loadExistingFiles();
-        }
+        loadExistingFiles: loadDirJson
     };
 });
