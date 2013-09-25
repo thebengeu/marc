@@ -25,6 +25,21 @@ define([
         setOption: function (option, value) {
             this.codeMirror.setOption(option, value);
         },
+        setTheme: function (theme) {
+            this.codeMirror.setOption('theme', theme);
+            document.styleSheets[0].insertRule(
+                'ul.jqtree-tree .jqtree-title { color: ' +
+                    this.$CodeMirror.css('color') +
+                    ' !important; }',
+                document.styleSheets[0].rules.length
+            );
+            document.styleSheets[0].insertRule(
+                '.snap-drawer-left { background-color: ' +
+                    this.$CodeMirror.css('background-color') +
+                    ' !important; }',
+                document.styleSheets[0].rules.length
+            );
+        },
         setValue: function (value) {
             this.codeMirror.setValue(value);
             var scrollInfo = this.codeMirror.getScrollInfo();
@@ -40,9 +55,10 @@ define([
                 gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
                 highlightSelectionMatches: {showToken: /\w/},
                 matchTags: {bothTags: true},
-                styleActiveLine: true,
-                theme: 'solarized light'
+                styleActiveLine: true
             });
+            this.$CodeMirror = $('.CodeMirror');
+            this.setTheme('solarized light');
 
             // Add a "Scroll to Top" button to make the ugly space at the bottom
             // less obvious, since it may be needed:
