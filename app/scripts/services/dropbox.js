@@ -26,7 +26,7 @@ define([
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
-        addFolderContents(pathOfInterest);
+        addFolderContents(pathOfInterest, [], function(){console.log("folder recursion done");});
         $('#dialog-dropbox-browser').modal('hide');
     });
 
@@ -54,6 +54,7 @@ define([
             callback();
         });       
     };
+    
     var browseFolder = function (path) {
         if (typeof path === 'object') {
             path = path.data;
@@ -105,7 +106,12 @@ define([
             authenticate(showModal);
         }
     }
-    var addFolderContents = function (path) {
+    
+    
+    var addFolderContents = function (path, folderMonitor, callback) {
+        console.log(folderMonitor);
+        folderMonitor[path] = false;
+        
         client.readdir(path, function (error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
@@ -115,7 +121,7 @@ define([
             _.map(dirContentInfo, function (item) {
                 console.log(item);
                 if (item.isFolder) {
-                    addFolderContents(item.path);
+                    addFolderContents(item.path, folderMonitor, callback);
                 } else {
                     var file = {
                         path: item.path.substr(1),
@@ -133,6 +139,22 @@ define([
                     }
                 }
             });
+            
+            folderMonitor[path] = true;
+            console.log(folderMonitor);
+            
+            // Check if folderMonitor is clear
+            // Meaning all folders recursively completed
+            var allFoldersDone = true;
+            for (path in folderMonitor){
+                console.log(path, folderMonitor[path]);
+                if (folderMonitor[path] == false){
+                    allFoldersDone = false;
+                }
+            }
+            if (allFoldersDone){
+                callback();
+            }
         });
     };
     
@@ -156,7 +178,7 @@ define([
     return {
         authenticate: authenticate,
         showModal: showModal,
-        get: function (path, callback) {        
+        get: function (path, callback) {
             console.log(path);
             client.readFile(path, function (error, data) {
                 if (error) {
@@ -166,16 +188,21 @@ define([
             });
         },
         updateFile: function(file, callback) {
-            console.log("Dropbox UpdateFile", file, callback);
-            var path = file.id;
-            path = path.substr(path.indexOf("/"));
-            console.log("Path", path);
-            this.get(path, callback);
+            authenticate(function(){
+                console.log("Dropbox UpdateFile", file, callback);
+                /*var path = file.id;
+                path = path.substr(path.indexOf("/"));
+                console.log("Path", path);
+                this.get(path, callback);*/
+                FileList.add(file);
+            });
         },
         updateFolder: function(path, callback, file) {
-            console.log("Dropbox UpdateFolder", path, callback, file);
-            path = path.substr(path.indexOf("/"));
-            addFolderContents(path);
+            authenticate(function(){
+                console.log("Dropbox UpdateFolder", path, callback, file);
+                path = path.substr(path.indexOf("/"));
+                addFolderContents(path, [], callback);
+            });
         }
     };
 });
