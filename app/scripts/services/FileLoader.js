@@ -29,34 +29,46 @@ define([
 		},
 		appOnline: function () {
 			// Check if we're logged in.
-			if (LSD.getItem('oauthToken')) {
+			var token = LSD.getItem('oauthToken');
+			if (typeof (token) !== 'undefined') {
+				var targetUrl = '//' + location.hostname + ':9999/user';
 				// Retrieve our FileList from the server.
-				$.get('/user', function(response) {
-					var updateTime = new Date(response.updatedAt);
-					var localPersistedTime = new Date(FileList.persistedTime);
-					if (updateTime - localPersistedTime > 0) {
-						// We should dump the local FileList and use the server
-						// one.
-						var newModels = _.map(response.fileList, function(fileJson) {
-							var newFile = new File(fileJson);
-							// Check if the file's contents are already cached.
-							newFile.cached = typeof(LSD.getItem(newFile.id)) !== 'undefined';
-							return newFile;
-						});
-						FileList.reset(newModels);
+				$.ajax({
+					url: targetUrl,
+					type: 'get',
+					headers: {
+						'Authorization': 'token ' + token
+					},
+					success: function (response) {
+						var updateTime = new Date(response.updatedAt);
+						var localPersistedTime = new Date(FileList.updatedTime);
+						if (updateTime - localPersistedTime > 0) {
+							// We should dump the local FileList and use the server
+							// one.
+							var newModels = _.map(response.fileList, function (fileJson) {
+								var newFile = new File(fileJson);
+								// Check if the file's contents are already cached.
+								newFile.cached = typeof (LSD.getItem(newFile.id)) !== 'undefined';
+								return newFile;
+							});
+							FileList.reset(newModels);
+						} else {
+							// We should be uploading to the server instead.
+							FileList.persistToServer();
+						}
 					}
 				});
 			} else {
 				this.updateCachedFiles();
 			}
 		},
-		updateCachedFiles: function() {
+		updateCachedFiles: function () {
 			var uncachedFiles = FileList.where({
 				cached: false
 			});
 
 			var that = this;
-			_.each(uncachedFiles, function(file) {
+			_.each(uncachedFiles, function (file) {
 				that.loadFileAsync(file);
 			});
 		}
