@@ -41,14 +41,25 @@ define([
          * token. The OAuth token will be obtained at a later stage.
          * @param {function} success The callback to execute if the
          *      authentication is successful.
+         * @param {=Boolean} showModal This optional argument will determine
+         *      if the modal is shown upon logging in after the GitHub
+         *      redirect. The default value is true.
          */
-        var ensureAuth = function (success) {
+        var ensureAuth = function (success, showModal) {
             if (oauth) {
                 success();
             }
             else {
+                if (showModal == null) {
+                    showModal = true;
+                }
+
                 Backbone.history.stop();
-                Recent.pushRoute('add-from-github');
+
+                if (showModal) {
+                    Recent.pushRoute('add-from-github');    
+                }
+                
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }
@@ -77,8 +88,8 @@ define([
             return oauth;
         };
         return {
-            ensureAuth: function (success) {
-                return ensureAuth(success);
+            ensureAuth: function (success, showModal) {
+                return ensureAuth(success, showModal);
             },
             setOAuthWithCode: function (code, callback) {
                 return setOAuthWithCode(code, callback);

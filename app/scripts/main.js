@@ -197,7 +197,7 @@ require([
     $('#github-log-in').click(function () {
         GitAuthService.getInstance().ensureAuth(function () {
             alert('You\'re now logged in with GitHub!');
-        });
+        }, false);
     });
     
     // Enable bootstrap select
