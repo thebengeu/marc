@@ -4,9 +4,8 @@ define([
     'underscore',
     'services/gitAuth',
     'collections/fileList',
-    'models/file',
-    'LSD'
-], function ($, _, GitAuthService, FileList, File, LSD) {
+    'models/file'
+], function ($, _, GitAuthService, FileList, File) {
     'use strict';
 
     var githubApiUrl = 'https://api.github.com';
@@ -116,8 +115,8 @@ define([
                 var errorMessage = JSON.parse(e.responseText).message;
                 // TODO(benedict): Show error message. Status butter maybe?
                 throw new Error('GitHub Error: ' + errorMessage);
-            });   
-    }
+            });
+    };
 
     /**
      * Creates files associated with the repository tree.
@@ -158,7 +157,7 @@ define([
         gitAuthServiceInstance.ensureAuth(getSha);
     };
 
-    var updateRepo = function(file, callback) {
+    var updateRepo = function(file) {
         var user = file.get('metadata').user;
         var repo = file.get('metadata').repo;
 

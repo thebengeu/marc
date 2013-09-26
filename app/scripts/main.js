@@ -184,11 +184,11 @@ require([
 
     FastClick.attach(document.body);
 
-    $('#delete-file-btn').click(function (e) {
+    $('#delete-file-btn').click(function () {
         FileService.deleteFile();
     });
 
-    $('#update-file-btn').click(function(e) {
+    $('#update-file-btn').click(function() {
         FileService.updateFile();
     });
 

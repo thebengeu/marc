@@ -2,7 +2,7 @@
 
 // LSD.js - localStorage, Distributed.
 //
-// Starting point from Nicholas C. Zakas' "Learning from XAuth: Cross-domain localStorage"
+// Starting point from Nicholas C. Zakas' 'Learning from XAuth: Cross-domain localStorage'
 // http://www.nczonline.net/blog/2010/09/07/learning-from-xauth-cross-domain-localstorage/
 
 (function (root, factory) {
@@ -43,27 +43,27 @@
             var that = this;
             if (!this._iframe) {
                 if (window.postMessage && window.JSON && window.localStorage) {
-                    this._iframe = document.createElement("iframe");
-                    this._iframe.style.cssText = "position:absolute;width:1px;height:1px;left:-9999px;";
+                    this._iframe = document.createElement('iframe');
+                    this._iframe.style.cssText = 'position:absolute;width:1px;height:1px;left:-9999px;';
                     document.body.appendChild(this._iframe);
 
                     if (window.addEventListener) {
-                        this._iframe.addEventListener("load", function () {
+                        this._iframe.addEventListener('load', function () {
                             that._iframeLoaded();
                         }, false);
-                        window.addEventListener("message", function (event) {
+                        window.addEventListener('message', function (event) {
                             that._handleMessage(event);
                         }, false);
                     } else if (this._iframe.attachEvent) {
-                        this._iframe.attachEvent("onload", function () {
+                        this._iframe.attachEvent('onload', function () {
                             that._iframeLoaded();
                         }, false);
-                        window.attachEvent("onmessage", function (event) {
+                        window.attachEvent('onmessage', function (event) {
                             that._handleMessage(event);
                         });
                     }
                 } else {
-                    throw new Error("Unsupported browser.");
+                    throw new Error('Unsupported browser.');
                 }
             }
 
@@ -107,7 +107,7 @@
                 request: request,
                 callback: callback || function () {
                 }
-            }
+            };
 
             if (this._iframeReady) {
                 this._sendRequest(data);
@@ -137,7 +137,7 @@
         },
 
         _handleMessage: function (event) {
-            if (event.origin == this.origin) {
+            if (event.origin === this.origin) {
                 var data = JSON.parse(event.data);
                 this._requests[data.id].callback(data);
                 delete this._requests[data.id];
@@ -185,7 +185,7 @@
                     }
                 }
                 if (!domain) {
-                    domain = 'http://' + (_.size(freeChars) + 10).toString(36) + '.' + location.host;
+                    domain = 'http://' + (Object.keys(freeChars).length + 10).toString(36) + '.' + location.host;
                     freeChars[domain] = CHAR_LIMIT;
                     cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
                 }
@@ -220,7 +220,7 @@
             localStorage.removeItem(key);
         },
         clear: function () {
-            for (domain in cds) {
+            for (var domain in cds) {
                 cds[domain].clear();
             }
             localStorage.clear();

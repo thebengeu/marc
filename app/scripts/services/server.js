@@ -1,5 +1,8 @@
 /*global define*/
-define(['jquery'], function ($) {
+define([
+    'jquery',
+    'Backbone'
+], function ($, Backbone) {
     'use strict';
     return {
         get: function (path, callback) {
@@ -12,7 +15,7 @@ define(['jquery'], function ($) {
                 callback(data);
             }, 'text');
         },
-        updateFolder: function(path, callback, file) {
+        updateFolder: function() {
             Backbone.history.navigate('add-from-server', {trigger: true});
         }
     };

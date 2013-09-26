@@ -143,7 +143,7 @@ define([
             // Push to top
             routeStack.splice(routeIndex, 1);
             LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
-        }  
+        }
     };
 
     /**
