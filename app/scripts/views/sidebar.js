@@ -26,19 +26,19 @@ define([
             var that = this;
             this.treeElement.tree({
                 data: []
-//                dragAndDrop: true,
-//                onCanMoveTo: function (moved, target, position) {
-//                    // We only support rearranging files and folders within the same directory.
-//                    // We hence need to check if moved and target have the same parent path.
-//                    if (position === 'inside') {
-//                        return false;
-//                    }
-//
-//                    var movedParent = that.getParentPathFromString(moved.path);
-//                    var targetParent = that.getParentPathFromString(target.path);
-//
-//                    return movedParent === targetParent;
-//                }
+                //                dragAndDrop: true,
+                //                onCanMoveTo: function (moved, target, position) {
+                //                    // We only support rearranging files and folders within the same directory.
+                //                    // We hence need to check if moved and target have the same parent path.
+                //                    if (position === 'inside') {
+                //                        return false;
+                //                    }
+                //
+                //                    var movedParent = that.getParentPathFromString(moved.path);
+                //                    var targetParent = that.getParentPathFromString(target.path);
+                //
+                //                    return movedParent === targetParent;
+                //                }
             });
             this.treeElement.on(
                 'tree.click',
@@ -66,18 +66,25 @@ define([
                 }
             );
 
+            this.loadCollectionIntoTree();
+            this.restoreTreeState();
+        },
+        redrawTree: function () {
+            this.treeElement.tree('loadData', []);
+            this.loadCollectionIntoTree();
+            this.restoreTreeState();
+        },
+        loadCollectionIntoTree: function () {
+            var that = this;
             this.collection.each(function (file) {
                 that.addFileToTree(file);
             });
+        },
+        restoreTreeState: function () {
             var state = LSD.getItem('treeState');
             if (state) {
                 this.treeElement.tree('setState', JSON.parse(state));
             }
-        },
-        redrawTree: function() {
-            this.treeElement.off();
-            this.treeElement.tree('loadData', []);
-            this.initTree();
         },
         addFileToTree: function (file) {
             var source = file.get('source');
@@ -160,17 +167,16 @@ define([
             var parentPath = path.slice(0, lastSlashPosition);
             return parentPath;
         },
-        getSelectedFile: function() {
+        getSelectedFile: function () {
             return $('#file-tree').tree('getSelectedNode');
         },
-        removeNodeFromTree: function(node) {
+        removeNodeFromTree: function (node) {
             $('#file-tree').tree('removeNode', node);
         },
-        getFileType: function(node) {
+        getFileType: function (node) {
             if (node.children.length) {
                 return this.fileType.DIRECTORY;
-            }
-            else {
+            } else {
                 return this.fileType.FILE;
             }
         }
