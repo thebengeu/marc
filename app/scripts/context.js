@@ -1,11 +1,6 @@
 /*global define*/
-define([
-    'jquery',
-    'views/sidebar'
-], function ($, Sidebar) {
+define(function () {
     'use strict';
-
-    var instance = null;
 
      /**
      * This ensures a singleton of the Context module.
@@ -21,11 +16,11 @@ define([
 
         var setSidebar = function(s) {
             sidebar = s;
-        }
+        };
 
         var getSidebar = function() {
             return sidebar;
-        }
+        };
 
         return {
             setSidebar: function(sidebar) {

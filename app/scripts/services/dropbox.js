@@ -10,7 +10,7 @@ define([
     'use strict';
     
     var client;
-    client = new Dropbox.Client({ key: "fbor6xe2q47cmbf" });
+    client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
     
     /*$('#add-from-dropbox').click(function() {
         //alert("add");
@@ -26,7 +26,7 @@ define([
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
-        addFolderContents(pathOfInterest, [], function(){console.log("folder recursion done");});
+        addFolderContents(pathOfInterest, [], function(){console.log('folder recursion done');});
         $('#dialog-dropbox-browser').modal('hide');
     });
 
@@ -50,11 +50,11 @@ define([
                 // that assumes everything went well.
                 return showError(error);
             }
-            
+
             callback();
-        });       
+        });
     };
-    
+
     var browseFolder = function (path) {
         if (typeof path === 'object') {
             path = path.data;
@@ -105,13 +105,12 @@ define([
         }else{
             authenticate(showModal);
         }
-    }
-    
-    
+    };
+
     var addFolderContents = function (path, folderMonitor, callback) {
         console.log(folderMonitor);
         folderMonitor[path] = false;
-        
+
         client.readdir(path, function (error, entries, dirInfo, dirContentInfo) {
             if (error) {
                 return showError(error);  // Something went wrong.
@@ -139,16 +138,16 @@ define([
                     }
                 }
             });
-            
+
             folderMonitor[path] = true;
             console.log(folderMonitor);
-            
+
             // Check if folderMonitor is clear
             // Meaning all folders recursively completed
             var allFoldersDone = true;
-            for (path in folderMonitor){
-                console.log(path, folderMonitor[path]);
-                if (folderMonitor[path] == false){
+            for (var path2 in folderMonitor){
+                console.log(path2, folderMonitor[path2]);
+                if (folderMonitor[path2] === false){
                     allFoldersDone = false;
                 }
             }
@@ -157,12 +156,12 @@ define([
             }
         });
     };
-    
+
     // receive token after redirect authentication
     // not sure if this is the cleanest way to do things though.
     if (location.href.split('#').length > 1) {
         var urlFragment = location.href.split('#')[1];
-        if (urlFragment.indexOf("access_token=") == 0) {
+        if (urlFragment.indexOf('access_token=') === 0) {
             client.authenticate(function (error) {
                 if (error) {
                     // Replace with a call to your own error-handling code.
@@ -174,7 +173,7 @@ define([
             });
         }
     }
-    
+
     return {
         authenticate: authenticate,
         showModal: showModal,
@@ -189,7 +188,7 @@ define([
         },
         updateFile: function(file, callback) {
             authenticate(function(){
-                console.log("Dropbox UpdateFile", file, callback);
+                console.log('Dropbox UpdateFile', file, callback);
                 /*var path = file.id;
                 path = path.substr(path.indexOf("/"));
                 console.log("Path", path);
@@ -199,8 +198,8 @@ define([
         },
         updateFolder: function(path, callback, file) {
             authenticate(function(){
-                console.log("Dropbox UpdateFolder", path, callback, file);
-                path = path.substr(path.indexOf("/"));
+                console.log('Dropbox UpdateFolder', path, callback, file);
+                path = path.substr(path.indexOf('/'));
                 addFolderContents(path, [], callback);
             });
         }

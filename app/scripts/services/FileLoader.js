@@ -35,7 +35,7 @@ define([
 
 			var that = this;
 			sourceToService[source].get(path, function (data) {
-				LSD.setItem(id, data);
+				LSD.setRemoteItem(id, data);
 				file.set({
 					cached: true
 				});

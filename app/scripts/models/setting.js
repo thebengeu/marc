@@ -86,24 +86,24 @@ define([
             });
             this.on('change:font-size', function(){
                 console.log('font-size value for this model has changed.');
-                $('.CodeMirror').css('font-size', this.get('font-size') + "px");
+                $('.CodeMirror').css('font-size', this.get('font-size') + 'px');
                 
                 //
-                $('#settings-pane #font-size').val(this.get('font-size'));    
+                $('#settings-pane #font-size').val(this.get('font-size'));
             });
             this.on('change:font-face', function(){
                 console.log('font-face value for this model has changed.');
                 $('.CodeMirror').css('font-family', this.get('font-face'));
                 
                 //
-                $('#settings-pane #font-face').val(this.get('font-face'));      
+                $('#settings-pane #font-face').val(this.get('font-face'));
             });
             this.on('change:theme', function(){
                 console.log('theme value for this model has changed.');
                 CodeView.setTheme(this.get('theme'));
                 
                 //
-                $('#settings-pane #theme').val(this.get('theme'));                
+                $('#settings-pane #theme').val(this.get('theme'));
             });
             
             this.on('change', function(){
@@ -122,13 +122,13 @@ define([
             // load settings from localstorage
             if (!LSD.getItem('Settings')) {
 				LSD.setItem('Settings', JSON.stringify(this.toJSON()));
-			}            
+			}
             _.each($.parseJSON(LSD.getItem('Settings')), function(value, key){
                 console.log(key, value, typeof value);
                 this.set(key, value);
                 console.log(this.toJSON());
             }, this);
-        },
+        }
 	});
 
 	return new Setting();

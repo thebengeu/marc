@@ -17,7 +17,7 @@ define([
      * @param {Backbone.Model} file .
      */
     var removeFileContent = function(file) {
-        LSD.removeItem(file.get('id'));
+        LSD.removeRemoteItem(file.get('id'));
         RecentService.removeRoute(file.get('id'));
         Backbone.history.navigate('');
     };
@@ -25,6 +25,7 @@ define([
     var updateFile = function() {
         var sidebar = Context.getInstance().getSidebar();
         var selectedFile = sidebar.getSelectedFile();
+        var source;
         
         if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var path = selectedFile.id;
@@ -34,7 +35,7 @@ define([
                 throw new Error('Folder is empty.');
             }
 
-            var source = childFile.get('source');
+            source = childFile.get('source');
 
             deleteFile();
 
@@ -45,7 +46,7 @@ define([
         else {
             var file = FileList.getFileWithSourceAndPath(selectedFile.source,
                 selectedFile.path);
-            var source = file.get('source');
+            source = file.get('source');
 
             deleteFile();
 
@@ -58,13 +59,15 @@ define([
     var getChildFile = function(children) {
         var sidebar = Context.getInstance().getSidebar();
 
-        for (var i = 0, child; child = children[i]; i++) {
+        var i = 0, child = children[i];
+        while (child) {
             if (sidebar.getFileType(child) === sidebar.fileType.FILE) {
                 return FileList.getFileWithSourceAndPath(child.source,
                     child.path);
             }
+            child = children[++i];
         }
-    }
+    };
 
     /**
      * Deletes the currently selected file/folder in the side bar.
@@ -94,7 +97,7 @@ define([
             FileList.remove(file);
             FileList.remove(recentFile);
         }
-    }
+    };
 
     var FileService = {
         deleteFile: function() {

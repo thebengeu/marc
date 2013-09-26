@@ -13,7 +13,7 @@ define([
         var $el = $(data.el);
         var value = data.value;
         console.log(e, $el, value);
-        var elementId = $el.parent().parent().attr("id");
+        var elementId = $el.parent().parent().attr('id');
         Setting.set(elementId, value);
     });
     
