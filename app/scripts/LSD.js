@@ -185,7 +185,9 @@
                     }
                 }
                 if (!domain) {
-                    domain = '//' + (Object.keys(freeChars).length + 10).toString(36) + '.' + location.host;
+                    domain = 'http://' +
+                        (Object.keys(freeChars).length + 10).toString(36) +
+                        '.' + location.host;
                     freeChars[domain] = CHAR_LIMIT;
                     cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
                 }

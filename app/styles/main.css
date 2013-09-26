@@ -72,6 +72,11 @@
     width: 100%;
 }
 
+#settings-pane {
+    border-left: 1px solid #e7e7e7;
+    padding-left: 10px;
+}
+
 .codeView, .CodeMirror {
     height: 100%;
 }
@@ -190,7 +195,11 @@ ul.jqtree-tree {
     bottom: 0;
     z-index: 9999;
     background: whitesmoke;
-    padding: 10px;
+    padding: 8px;
+}
+
+.status-bar-text {
+    margin-left: 30px;
 }
 
 @font-face {

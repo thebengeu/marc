@@ -6,8 +6,9 @@ define([
 	'collections/fileList',
 	'LSD',
 	'utilities/services',
-	'models/file'
-], function ($, Backbone, FileList, LSD, sourceToService, File) {
+	'models/file',
+	'spinner'
+], function ($, Backbone, FileList, LSD, sourceToService, File, Spinner) {
 	'use strict';
 
 	var FileLoader = _.extend({
@@ -20,13 +21,33 @@ define([
 
 				return !(fileIsCached || fileIsInRecentList);
 			});
+			this.spinner.spin($('#status')[0]);
 			this.loadFileAsync(uncached);
 		}, 100),
+		spinner: new Spinner({
+			lines: 17, // The number of lines to draw
+			length: 3, // The length of each line
+			width: 2, // The line thickness
+			radius: 8, // The radius of the inner circle
+			corners: 0, // Corner roundness (0..1)
+			rotate: 0, // The rotation offset
+			direction: 1, // 1: clockwise, -1: counterclockwise
+			color: '#000', // #rgb or #rrggbb or array of colors
+			speed: 1, // Rounds per second
+			trail: 15, // Afterglow percentage
+			shadow: false, // Whether to render a shadow
+			hwaccel: false, // Whether to use hardware acceleration
+			className: 'spinner', // The CSS class to assign to the spinner
+			zIndex: 2e9, // The z-index (defaults to 2000000000)
+			top: '0', // Top position relative to parent in px
+			left: '0' // Left position relative to parent in px
+		}),
 		loadFileAsync: function (fileList) {
 			var file = fileList.shift();
 
 			if (typeof file === 'undefined') {
 				$('#status').text('Done.').slideUp();
+				this.spinner.stop();
 				return;
 			}
 
@@ -39,8 +60,9 @@ define([
 			var downloadingText = 'Downloading: ' + path;
 
 			document.title = documentTitle + ' | ' + downloadingText;
-			
-			$('#status').text(downloadingText).slideDown();
+
+			$('#status').slideDown();
+			$('#downloading-file-name').text(downloadingText);
 
 			var that = this;
 			sourceToService[source].get(path, function (data) {
