@@ -185,7 +185,7 @@
                     }
                 }
                 if (!domain) {
-                    domain = window.location.protocol + '//' +
+                    domain = 'http://' +
                         (Object.keys(freeChars).length + 10).toString(36) +
                         '.' + location.host;
                     freeChars[domain] = CHAR_LIMIT;
