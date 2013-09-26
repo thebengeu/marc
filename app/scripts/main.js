@@ -68,7 +68,6 @@ require.config({
         underscore: '../bower_components/lodash/dist/lodash',
         codemirror: 'vendor/codemirror',
         jqTree: '../bower_components/jqtree/tree.jquery',
-        localStorage: '../bower_components/Backbone.localStorage/backbone.localStorage',
         snap: '../bower_components/snapjs/snap',
         enquire: '../bower_components/enquire/dist/enquire',
         fastclick: '../bower_components/fastclick/lib/fastclick',
