@@ -112,15 +112,15 @@ define([
 				});
 			}
 		},
-		startPeriodicSyncing: function () {
+		startPeriodicSyncing: _.bind(function () {
 			if (this.periodic) {
 				this.stopPeriodicSyncing();
 			}
 			this.periodic = setInterval(_.bind(this.syncWithServer, this), 10000);
-		},
-		stopPeriodicSyncing: function () {
+		}, this),
+		stopPeriodicSyncing: _.bind(function () {
 			clearInterval(this.periodic);
-		},
+		}, this),
 		syncWithServer: function () {
 			var that = this;
 
@@ -162,7 +162,7 @@ define([
 				this.stopPeriodicSyncing();
 			}
 		},
-		fileListUpdated: function() {
+		fileListUpdated: function () {
 			this.updatedTime = Date.now();
 		}
 
