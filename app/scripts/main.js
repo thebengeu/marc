@@ -129,6 +129,7 @@ require([
 
     FileLoader.listenTo(FileList, 'add', FileLoader.loadFilesAsync);
     $(document).on('online', FileLoader.appOnline);
+    $(document).on('offline', FileLoader.appOffline);
 
     enquire.register('screen and (min-width: 768px)', {
         openSnapper: function (side) {
@@ -198,6 +199,7 @@ require([
     $('#github-log-in').click(function () {
         GitAuthService.getInstance().ensureAuth(function () {
             alert('You\'re now logged in with GitHub!');
+            FileLoader.startPeriodicSyncing();
         }, false);
     });
     
