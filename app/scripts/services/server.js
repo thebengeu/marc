@@ -1,7 +1,7 @@
 /*global define*/
 define([
     'jquery',
-    'Backbone'
+    'backbone'
 ], function ($, Backbone) {
     'use strict';
     return {
