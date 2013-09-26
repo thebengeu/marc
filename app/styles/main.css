@@ -72,6 +72,11 @@
     width: 100%;
 }
 
+#settings-pane {
+    border-left: 1px solid #e7e7e7;
+    padding-left: 10px;
+}
+
 .codeView, .CodeMirror {
     height: 100%;
 }
