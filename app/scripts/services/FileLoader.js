@@ -51,18 +51,22 @@ define([
 				return;
 			}
 
+			var documentTitle = document.title;
+
 			var path = file.get('path');
 			var id = file.get('id');
 			var source = file.get('source');
 
 			var downloadingText = 'Downloading: ' + path;
 
+			document.title = documentTitle + ' | ' + downloadingText;
 
 			$('#status').slideDown();
 			$('#downloading-file-name').text(downloadingText);
 
 			var that = this;
 			sourceToService[source].get(path, function (data) {
+				document.title = documentTitle;
 				LSD.setRemoteItem(id, data);
 				file.set({
 					cached: true
