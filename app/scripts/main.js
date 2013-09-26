@@ -57,6 +57,9 @@ require.config({
         },
         'dropbox': {
             exports: 'Dropbox'
+        },
+        'bootstrap-select': {
+            deps: ['jquery']
         }
     },
     paths: {
