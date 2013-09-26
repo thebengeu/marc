@@ -118,7 +118,7 @@ define([
 			if (this.periodic) {
 				this.stopPeriodicSyncing();
 			}
-			this.periodic = setInterval(_.bind(this.syncWithServer, this), 10000);
+			this.periodic = setInterval(_.bind(this.syncWithServer, this), 30000);
 		},
 		stopPeriodicSyncing: function () {
 			clearInterval(this.periodic);
