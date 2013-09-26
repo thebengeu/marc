@@ -63,8 +63,9 @@ define([
         default:
             // Caused by a bug in dropbox.js, in your application, or in Dropbox.
             // Tell the user an error occurred, ask them to refresh the page.
-            alert('Sorry, it appears that an error has occured. Please try again.\n\nIf you did not grant m(arc) permission to access your Dropbox files, please try again and grant the required permissions.');
-
+            alert('Sorry, it appears that an error has occured. Please try again.\n\nIf you did not grant m(arc) permission to access your Dropbox files, please exit/refresh and try again to grant the required permissions.');
+            client.reset();
+            location.replace("/#");            
         }
     };
 
