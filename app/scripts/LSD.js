@@ -22,7 +22,7 @@
     // http://dev-test.nemikor.com/web-storage/support-test/
     var CHAR_LIMIT = 2500 * 1024;
 
-    function CrossDomainStorage(origin, path){
+    function CrossDomainStorage(origin, path) {
         this.origin = origin;
         this.path = path;
         this._iframe = null;
@@ -39,20 +39,28 @@
 
         //public interface methods
 
-        init: function(){
+        init: function () {
             var that = this;
-            if (!this._iframe){
-                if (window.postMessage && window.JSON && window.localStorage){
+            if (!this._iframe) {
+                if (window.postMessage && window.JSON && window.localStorage) {
                     this._iframe = document.createElement("iframe");
                     this._iframe.style.cssText = "position:absolute;width:1px;height:1px;left:-9999px;";
                     document.body.appendChild(this._iframe);
 
-                    if (window.addEventListener){
-                        this._iframe.addEventListener("load", function(){ that._iframeLoaded(); }, false);
-                        window.addEventListener("message", function(event){ that._handleMessage(event); }, false);
-                    } else if (this._iframe.attachEvent){
-                        this._iframe.attachEvent("onload", function(){ that._iframeLoaded(); }, false);
-                        window.attachEvent("onmessage", function(event){ that._handleMessage(event); });
+                    if (window.addEventListener) {
+                        this._iframe.addEventListener("load", function () {
+                            that._iframeLoaded();
+                        }, false);
+                        window.addEventListener("message", function (event) {
+                            that._handleMessage(event);
+                        }, false);
+                    } else if (this._iframe.attachEvent) {
+                        this._iframe.attachEvent("onload", function () {
+                            that._iframeLoaded();
+                        }, false);
+                        window.attachEvent("onmessage", function (event) {
+                            that._handleMessage(event);
+                        });
                     }
                 } else {
                     throw new Error("Unsupported browser.");
@@ -63,114 +71,73 @@
 
         },
 
-        getItem: function(key, callback){
-            var request = {
-                    method: 'get',
-                    key: key,
-                    id: ++this._id
-                },
-                data = {
-                    request: request,
-                    callback: callback
-                };
-
-            if (this._iframeReady){
-                this._sendRequest(data);
-            } else {
-                this._queue.push(data);
-            }
-
-            if (!this._iframe){
-                this.init();
-            }
+        getItem: function (key, callback) {
+            this._queueRequest({
+                method: 'get',
+                key: key
+            }, callback);
         },
 
-        setItem: function(key, value){
-            var request = {
-                    method: 'set',
-                    key: key,
-                    value: value,
-                    id: ++this._id
-                },
-                data = {
-                    request: request,
-                    callback: function() {}
-                };
-
-            if (this._iframeReady){
-                this._sendRequest(data);
-            } else {
-                this._queue.push(data);
-            }
-
-            if (!this._iframe){
-                this.init();
-            }
+        setItem: function (key, value) {
+            this._queueRequest({
+                method: 'set',
+                key: key,
+                value: value
+            });
         },
 
-        removeItem: function(key){
-            var request = {
-                    method: 'remove',
-                    key: key,
-                    id: ++this._id
-                },
-                data = {
-                    request: request,
-                    callback: function() {}
-                };
-
-            if (this._iframeReady){
-                this._sendRequest(data);
-            } else {
-                this._queue.push(data);
-            }
-
-            if (!this._iframe){
-                this.init();
-            }
+        removeItem: function (key) {
+            this._queueRequest({
+                method: 'remove',
+                key: key
+            });
         },
 
-        clear: function(){
-            var request = {
-                    method: 'clear',
-                    id: ++this._id
-                },
-                data = {
-                    request: request,
-                    callback: function() {}
-                };
-
-            if (this._iframeReady){
-                this._sendRequest(data);
-            } else {
-                this._queue.push(data);
-            }
-
-            if (!this._iframe){
-                this.init();
-            }
+        clear: function () {
+            this._queueRequest({
+                method: 'clear'
+            });
         },
 
         //private methods
 
-        _sendRequest: function(data){
+        _queueRequest: function (request, callback) {
+            request.id = ++this._id;
+            var data = {
+                request: request,
+                callback: callback || function () {
+                }
+            }
+
+            if (this._iframeReady) {
+                this._sendRequest(data);
+            } else {
+                this._queue.push(data);
+            }
+
+            if (!this._iframe) {
+                this.init();
+            }
+        },
+
+        _sendRequest: function (data) {
             this._requests[data.request.id] = data;
             this._iframe.contentWindow.postMessage(JSON.stringify(data.request), this.origin);
         },
 
-        _iframeLoaded: function(){
+        _iframeLoaded: function () {
             this._iframeReady = true;
 
-            if (this._queue.length){
-                for (var i=0, len=this._queue.length; i < len; i++){
+            if (this._queue.length) {
+                for (var i = 0, len = this._queue.length; i < len; i++) {
                     this._sendRequest(this._queue[i]);
                 }
                 this._queue = [];
             }
         },
 
-        _handleMessage: function(event){
-            if (event.origin == this.origin){
+        _handleMessage: function (event) {
+            if (event.origin == this.origin) {
                 var data = JSON.parse(event.data);
                 this._requests[data.id].callback(data);
                 delete this._requests[data.id];
@@ -185,12 +152,13 @@
         cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
     }
 
-    var keys = localStorage.getItem('LSD:keys');
-    keys = keys ? JSON.parse(keys) : {};
+    var directory = localStorage.getItem('LSD:directory');
+    directory = directory ? JSON.parse(directory) : {};
 
     return {
         getRemoteItem: function (key, callback) {
-            var domain = keys[key];
+            var entry = directory[key];
+            var domain = entry && entry.domain;
             if (domain) {
                 cds[domain].getItem(key, function (data) {
                     callback(data.value);
@@ -202,11 +170,14 @@
         setRemoteItem: function (key, value) {
             var length = key.length + value.length;
 
-            // TODO: keep track of individual value lengths and move to new
-            // storage if not enough free chars for new length.
-            var domain = keys[key];
+            var entry = directory[key];
+            var domain = entry && entry.domain;
+            if (entry && length - entry.length > freeChars[domain]) {
+                cds[domain].removeItem(key);
+                entry = undefined;
+            }
 
-            if (!domain) {
+            if (!entry) {
                 for (var dom in freeChars) {
                     if (freeChars[dom] > length) {
                         domain = dom;
@@ -222,18 +193,21 @@
             cds[domain].setItem(key, value);
             freeChars[domain] -= length;
             localStorage['LSD:freeChars'] = JSON.stringify(freeChars);
-            keys[key] = domain;
-            localStorage['LSD:keys'] = JSON.stringify(keys);
+            directory[key] = {
+                domain: domain,
+                length: length
+            };
+            localStorage['LSD:directory'] = JSON.stringify(directory);
         },
         removeRemoteItem: function (key) {
-            var domain = keys[key];
+            var entry = directory[key];
+            var domain = entry && entry.domain;
             if (domain) {
                 cds[domain].removeItem(key);
-            }
-        },
-        clearRemotes: function () {
-            for (domain in cds) {
-                cds[domain].clear();
+                freeChars[domain] += entry.length;
+                localStorage['LSD:freeChars'] = JSON.stringify(freeChars);
+                delete directory[key];
+                localStorage['LSD:directory'] = JSON.stringify(directory);
             }
         },
         getItem: function (key) {
@@ -246,6 +220,9 @@
             localStorage.removeItem(key);
         },
         clear: function () {
+            for (domain in cds) {
+                cds[domain].clear();
+            }
             localStorage.clear();
         }
     };

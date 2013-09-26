@@ -85,7 +85,7 @@ require.config({
     }
 });
 
-var SCHEMA_VERSION = '0.0.1';
+var SCHEMA_VERSION = '0.0.2';
 
 require([
     'underscore',
