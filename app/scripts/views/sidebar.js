@@ -75,7 +75,7 @@ define([
             }
         },
         redrawTree: function() {
-            this.treeElement.off('tree.click');
+            this.treeElement.off();
             this.treeElement.tree('loadData', []);
             this.initTree();
         },
