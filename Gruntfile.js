@@ -252,6 +252,7 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'README.md',
+                        'styles/fonts/{,*/}*.ttf',
                         'images/{,*/}*.{webp,gif}'
                     ]
                 }, {
@@ -300,7 +301,7 @@ module.exports = function (grunt) {
                         '<%= yeoman.dist %>/scripts/{,*/}*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
-                        '<%= yeoman.dist %>/styles/fonts/*'
+                        '<%= yeoman.dist %>/styles/fonts/{,*/}*.ttf'
                     ]
                 }
             }
@@ -326,6 +327,7 @@ module.exports = function (grunt) {
                         'src/scripts/{,*/}*.js',
                         'src/styles/*.css',
                         'src/index.html',
+                        'LSD.html',
                         'src/README.md',
                         'src/robots.txt'
                     ],
@@ -342,6 +344,7 @@ module.exports = function (grunt) {
                         'scripts/{,*/}*.js',
                         'styles/*.css',
                         'index.html',
+                        'LSD.html',
                         'README.md',
                         'robots.txt'
                     ],
