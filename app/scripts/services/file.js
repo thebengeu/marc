@@ -17,7 +17,7 @@ define([
      * @param {Backbone.Model} file .
      */
     var removeFileContent = function(file) {
-        LSD.removeItem(file.get('id'));
+        LSD.removeRemoteItem(file.get('id'));
         RecentService.removeRoute(file.get('id'));
         Backbone.history.navigate('');
     };

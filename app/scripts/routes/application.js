@@ -51,21 +51,22 @@ define([
             }
             Recent.pushRoute(sourcePath);
 
-            var data = LSD.getItem(sourcePath);
-            if (data) {
-                console.log(sourcePath + ' loaded from localStorage');
-                updateCodeView(path, data);
-            } else {
-                var fileModel = FileList.get(sourcePath);
-                sourceToService[source].get(path, function (data) {
-                    LSD.setItem(sourcePath, data);
+            LSD.getRemoteItem(sourcePath, function (data) {
+                if (data) {
+                    console.log(sourcePath + ' loaded from localStorage');
                     updateCodeView(path, data);
+                } else {
+                    var fileModel = FileList.get(sourcePath);
+                    sourceToService[source].get(path, function (data) {
+                        LSD.setRemoteItem(sourcePath, data);
+                        updateCodeView(path, data);
 
-                    fileModel.set({
-                        cached: true
+                        fileModel.set({
+                            cached: true
+                        });
                     });
-                });
-            }
+                }
+            });
         },
         gitauth: function() {
             var urlParams = window.location.search;
