@@ -26,6 +26,7 @@ define([
 			var file = fileList.shift();
 
 			if (typeof file === 'undefined') {
+				$('#status').text('Done.').slideUp();
 				return;
 			}
 
@@ -35,8 +36,11 @@ define([
 			var id = file.get('id');
 			var source = file.get('source');
 
-			document.title = documentTitle + ' | Downloading: ' + path;
-			console.log(document.title);
+			var downloadingText = 'Downloading: ' + path;
+
+			document.title = documentTitle + ' | ' + downloadingText;
+			
+			$('#status').text(downloadingText).slideDown();
 
 			var that = this;
 			sourceToService[source].get(path, function (data) {

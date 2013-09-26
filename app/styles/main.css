@@ -183,6 +183,16 @@ ul.jqtree-tree {
     margin: 0px 5px 0px 5px;
 }
 
+.status-bar {
+    display: none;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background: whitesmoke;
+    padding: 10px;
+}
+
 @font-face {
     font-family: "Anonymous Pro";
     src: url("fonts/Anonymous_Pro/AnonymousPro-Regular.ttf");
