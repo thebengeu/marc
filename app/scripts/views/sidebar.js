@@ -17,6 +17,7 @@ define([
         initialize: function () {
             this.listenTo(this.collection, 'add', this.addFileToTree);
             this.listenTo(this.collection, 'remove', this.removeFileFromTree);
+            this.listenTo(this.collection, 'reset', this.redrawTree);
 
             this.treeElement = this.$('#file-tree');
             this.initTree();
@@ -39,7 +40,7 @@ define([
 //                    return movedParent === targetParent;
 //                }
             });
-            this.treeElement.bind(
+            this.treeElement.on(
                 'tree.click',
                 function (event) {
                     /*jshint -W106 */
@@ -72,6 +73,11 @@ define([
             if (state) {
                 this.treeElement.tree('setState', JSON.parse(state));
             }
+        },
+        redrawTree: function() {
+            this.treeElement.off('tree.click');
+            this.treeElement.tree('loadData', []);
+            this.initTree();
         },
         addFileToTree: function (file) {
             var source = file.get('source');

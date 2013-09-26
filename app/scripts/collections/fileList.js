@@ -27,10 +27,6 @@ define([
 				return file.attributes;
 			});
 			LSD.setItem('FileList', JSON.stringify(fileAttributes));
-			this.updatedTime = Date.now();
-			if (navigator.onLine) {
-				this.persistToServer();
-			}
 		},
 		loadFilesFromStorage: function () {
 			var storedFiles = JSON.parse(LSD.getItem('FileList'));
@@ -58,30 +54,6 @@ define([
 			}
 
 			return null;
-		},
-		persistToServer: function () {
-			var token = LSD.getItem('oauthToken');
-			if (typeof (token) !== 'undefined') {
-				var fileAttributes = this.map(function (file) {
-					return file.attributes;
-				});
-				var targetUrl = '//' + location.hostname + ':9999/user';
-
-				var that = this;
-				$.ajax({
-					url: targetUrl,
-					type: 'patch',
-					headers: {
-						'Authorization' : 'token ' + token
-					},
-					data: {
-						fileList: JSON.stringify(fileAttributes)
-					},
-					success: function (response) {
-						that.updatedTime = response.updatedAt;
-					}
-				});
-			}
 		}
 	});
 

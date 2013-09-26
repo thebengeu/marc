@@ -124,7 +124,7 @@ require([
     new ServicesRouter();
     Backbone.history.start();
 
-    FileLoader.listenTo(FileList, 'add', FileLoader.loadFileAsync);
+    FileLoader.listenTo(FileList, 'add', FileLoader.loadFilesAsync);
     $(document).on('online', FileLoader.appOnline);
 
     enquire.register('screen and (min-width: 768px)', {
