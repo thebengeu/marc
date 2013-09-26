@@ -128,6 +128,8 @@ require([
     Backbone.history.start();
 
     FileLoader.listenTo(FileList, 'add', FileLoader.loadFilesAsync);
+    FileLoader.listenTo(FileList, 'remove', FileLoader.fileListUpdated);
+    FileLoader.listenTo(FileList, 'change', FileLoader.fileListUpdated);
     $(document).on('online', FileLoader.appOnline);
     $(document).on('offline', FileLoader.appOffline);
 

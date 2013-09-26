@@ -85,7 +85,7 @@ define([
 			this.stopPeriodicSyncing();
 		},
 		persistToServer: function () {
-			if (!window.onLine) {
+			if (!navigator.onLine) {
 				return;
 			}
 
@@ -107,7 +107,7 @@ define([
 						fileList: JSON.stringify(fileAttributes)
 					},
 					success: function (response) {
-						that.updatedTime = response.updatedAt;
+						that.updatedTime = new Date(response.updatedAt);
 					}
 				});
 			}
@@ -116,7 +116,7 @@ define([
 			if (this.periodic) {
 				this.stopPeriodicSyncing();
 			}
-			this.periodic = setInterval(_.bind(this.syncWithServer, this), 30000);
+			this.periodic = setInterval(_.bind(this.syncWithServer, this), 10000);
 		},
 		stopPeriodicSyncing: function () {
 			clearInterval(this.periodic);
@@ -159,6 +159,9 @@ define([
 				this.stopPeriodicSyncing();
 			}
 		},
+		fileListUpdated: function() {
+			this.updatedTime = Date.now();
+		}
 
 	}, Backbone.Events);
 	FileLoader.startPeriodicSyncing();
