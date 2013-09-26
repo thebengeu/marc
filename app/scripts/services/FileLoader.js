@@ -14,6 +14,8 @@ define([
 	var FileLoader = _.extend({
 		fileQueue: [],
 		loadFilesAsync: _.debounce(function () {
+			this.fileListUpdated();
+			
 			// Get all the files we haven't cached.
 			var uncached = FileList.filter(function (file) {
 				var fileIsCached = file.get('cached');
