@@ -12,17 +12,12 @@ define([
     var client;
     client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
     
-    /*$('#add-from-dropbox').click(function() {
-        //alert("add");
-        //if (client.isAuthenticated()){
-        //    $('#dialog-dropbox-browser').modal('show');
-        //    browseFolder('/');
-        //}else{
-            Backbone.history.stop();
-            authenticate();
-            Backbone.history.start();
-        //}
-    });*/
+    // We do the following to ensure that the next time the user clicks
+    // add from dropbox, the url fragment will change and the routing
+    // will work
+    $('#dialog-dropbox-browser').on('hidden.bs.modal', function () {
+        location.replace("#");
+    });
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
