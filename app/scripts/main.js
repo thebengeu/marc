@@ -84,7 +84,8 @@ require.config({
         'active-line': '../bower_components/codemirror/addon/selection/active-line',
         dropbox: 'vendor/dropbox',
         'bootstrap-switch': '../bower_components/bootstrap-switch/static/js/bootstrap-switch',
-        'bootstrap-select': '../bower_components/bootstrap-select/bootstrap-select'
+        'bootstrap-select': '../bower_components/bootstrap-select/bootstrap-select',
+        spinner: '../bower_components/spin.js/spin'
     }
 });
 

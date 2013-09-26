@@ -190,7 +190,11 @@ ul.jqtree-tree {
     bottom: 0;
     z-index: 9999;
     background: whitesmoke;
-    padding: 10px;
+    padding: 8px;
+}
+
+.status-bar-text {
+    margin-left: 30px;
 }
 
 @font-face {
