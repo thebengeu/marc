@@ -194,17 +194,24 @@ require([
         FileService.deleteFile();
     });
 
-    $('#update-file-btn').click(function() {
+    $('#update-file-btn').click(function () {
         FileService.updateFile();
     });
 
-    $('#github-log-in').click(function () {
-        GitAuthService.getInstance().ensureAuth(function () {
-            alert('You\'re now logged in with GitHub!');
-            FileLoader.startPeriodicSyncing();
-        }, false);
-    });
-    
+    var token = LSD.getItem('oauthToken');
+    var isTokenValid = typeof token !== 'undefined' && token !== null;
+    if (isTokenValid) {
+        $('#github-log-in').addClass('disabled');
+        $('#github-log-in').text('Hooray, you\'re logged in!');
+    } else {
+        $('#github-log-in').click(function () {
+            GitAuthService.getInstance().ensureAuth(function () {
+                alert('You\'re now logged in with GitHub!');
+                FileLoader.startPeriodicSyncing();
+            }, false);
+        });
+    }
+
     // Enable bootstrap select
     $('.selectpicker').selectpicker('mobile');
 
