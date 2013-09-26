@@ -130,8 +130,8 @@ require([
     FileLoader.listenTo(FileList, 'add', FileLoader.loadFilesAsync);
     FileLoader.listenTo(FileList, 'remove', FileLoader.fileListUpdated);
     FileLoader.listenTo(FileList, 'change', FileLoader.fileListUpdated);
-    $(document).on('online', FileLoader.appOnline);
-    $(document).on('offline', FileLoader.appOffline);
+    $(document).on('online', _.bind(FileLoader.appOnline, FileLoader));
+    $(document).on('offline', _.bind(FileLoader.appOffline, FileLoader));
 
     enquire.register('screen and (min-width: 768px)', {
         openSnapper: function (side) {
