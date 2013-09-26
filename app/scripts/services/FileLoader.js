@@ -79,24 +79,54 @@ define([
 			});
 		},
 		appOnline: function () {
-			this.syncWithServer();
+			this.startPeriodicSyncing();
 		},
-		updateCachedFiles: function () {
-			var uncachedFiles = FileList.where({
-				cached: false
-			});
+		appOffline: function () {
+			this.stopPeriodicSyncing();
+		},
+		persistToServer: function () {
+			if (!window.onLine) {
+				return;
+			}
 
-			var that = this;
-			_.each(uncachedFiles, function (file) {
-				that.loadFileAsync(file);
-			});
+			var token = LSD.getItem('oauthToken');
+			if (typeof (token) !== 'undefined' && token !== null) {
+				var fileAttributes = FileList.map(function (file) {
+					return file.attributes;
+				});
+				var targetUrl = '//' + location.hostname + ':9999/user';
+
+				var that = this;
+				$.ajax({
+					url: targetUrl,
+					type: 'patch',
+					headers: {
+						'Authorization': 'token ' + token
+					},
+					data: {
+						fileList: JSON.stringify(fileAttributes)
+					},
+					success: function (response) {
+						that.updatedTime = response.updatedAt;
+					}
+				});
+			}
+		},
+		startPeriodicSyncing: function () {
+			if (this.periodic) {
+				this.stopPeriodicSyncing();
+			}
+			this.periodic = setInterval(_.bind(this.syncWithServer, this), 30000);
+		},
+		stopPeriodicSyncing: function () {
+			clearInterval(this.periodic);
 		},
 		syncWithServer: function () {
 			var that = this;
 
 			// Check if we're logged in.
 			var token = LSD.getItem('oauthToken');
-			if (typeof (token) !== 'undefined') {
+			if (typeof (token) !== 'undefined' && token !== null) {
 				var targetUrl = '//' + location.hostname + ':9999/user';
 				// Retrieve our FileList from the server.
 				$.ajax({
@@ -121,44 +151,16 @@ define([
 							FileList.reset(newModels);
 						} else {
 							// We should be uploading to the server instead.
-							this.persistToServer();
+							that.persistToServer();
 						}
 					}
 				});
 			} else {
-				this.updateCachedFiles();
+				this.stopPeriodicSyncing();
 			}
 		},
-		persistToServer: function () {
-			if (!window.onLine) {
-				return;
-			}
-
-			var token = LSD.getItem('oauthToken');
-			if (typeof (token) !== 'undefined') {
-				var fileAttributes = FileList.map(function (file) {
-					return file.attributes;
-				});
-				var targetUrl = '//' + location.hostname + ':9999/user';
-
-				var that = this;
-				$.ajax({
-					url: targetUrl,
-					type: 'patch',
-					headers: {
-						'Authorization': 'token ' + token
-					},
-					data: {
-						fileList: JSON.stringify(fileAttributes)
-					},
-					success: function (response) {
-						that.updatedTime = response.updatedAt;
-					}
-				});
-			}
-		}
 
 	}, Backbone.Events);
-
+	FileLoader.startPeriodicSyncing();
 	return FileLoader;
 });
