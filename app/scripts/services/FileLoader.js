@@ -125,8 +125,11 @@ define([
 			var that = this;
 
 			// Check if we're logged in.
+			var isOnline = navigator.onLine;
 			var token = LSD.getItem('oauthToken');
-			if (typeof (token) !== 'undefined' && token !== null) {
+			var isTokenValid = typeof token !== 'undefined' && token !== null;
+
+			if (isOnline && isTokenValid) {
 				var targetUrl = '//' + location.hostname + ':9999/user';
 				// Retrieve our FileList from the server.
 				$.ajax({
