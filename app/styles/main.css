@@ -143,27 +143,6 @@ ul.jqtree-tree {
     font-size: 20px;
 }
 
-.navbar-form .form-group {
-    display: inline-block;
-    margin-bottom: 0;
-    vertical-align: middle;
-}
-
-.navbar-form .form-control {
-    display: inline-block;
-}
-
-.navbar-form {
-    margin-right: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    width: 175px;
-    border: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
 .snap-drawer-right .control-label {
     margin-top: 20px;
     margin-left: 5px;
