@@ -327,7 +327,7 @@ module.exports = function (grunt) {
                         'src/scripts/{,*/}*.js',
                         'src/styles/*.css',
                         'src/index.html',
-                        'LSD.html',
+                        'src/LSD.html',
                         'src/README.md',
                         'src/robots.txt'
                     ],
