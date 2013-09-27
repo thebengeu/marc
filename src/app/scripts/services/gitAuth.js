@@ -50,14 +50,14 @@ define([
                 success();
             }
             else {
-                if (showModal == null) {
+                if (typeof showModal ===  'undefined') {
                     showModal = true;
                 }
 
                 Backbone.history.stop();
 
                 if (showModal) {
-                    Recent.pushRoute('add-from-github');    
+                    Recent.pushRoute('add-from-github');
                 }
                 
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
