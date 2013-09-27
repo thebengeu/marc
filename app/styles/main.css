@@ -8,10 +8,10 @@
     right: 0;
     bottom: 0;
     left: 0;
-    width: auto;
-    height: auto;
     z-index: 2;
     overflow: auto;
+    width: auto;
+    height: auto;
     /*-webkit-overflow-scrolling: touch;*/
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
@@ -36,9 +36,9 @@
     right: auto;
     bottom: 0;
     left: auto;
+    overflow: auto;
     width: 265px;
     height: auto;
-    overflow: auto;
     /*-webkit-overflow-scrolling: touch;*/
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
@@ -73,8 +73,8 @@
 }
 
 #settings-pane {
-    border-left: 1px solid #e7e7e7;
     padding-left: 3px;
+    border-left: 1px solid #e7e7e7;
 }
 
 .codeView, .CodeMirror {
@@ -95,12 +95,12 @@
 
 .CodeMirror-foldgutter-open,
 .CodeMirror-foldgutter-folded {
-    color: #555;
-    cursor: pointer;
-    font-family: monospace;
-    font-size: 0.8em;
     margin-top: 0.3em;
     margin-left: -0.2em;
+    color: #555;
+    font-size: 0.8em;
+    font-family: monospace;
+    cursor: pointer;
 }
 
 .cm-s-solarized .CodeMirror-foldgutter-open,
@@ -138,35 +138,14 @@ ul.jqtree-tree {
 }
 
 .navbar-settings {
+    padding: 3px 9px 0;
     color: #ccc;
     font-size: 20px;
-    padding: 3px 9px 0;
-}
-
-.navbar-form .form-group {
-    display: inline-block;
-    margin-bottom: 0;
-    vertical-align: middle;
-}
-
-.navbar-form .form-control {
-    display: inline-block;
-}
-
-.navbar-form {
-    width: 175px;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-right: 0;
-    margin-left: 0;
-    border: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
 }
 
 .snap-drawer-right .control-label {
-    margin-left: 5px;
     margin-top: 20px;
+    margin-left: 5px;
     width: 150px;
 }
 
@@ -189,13 +168,13 @@ ul.jqtree-tree {
 }
 
 .status-bar {
-    display: none;
     position: fixed;
     right: 0;
     bottom: 0;
     z-index: 9999;
-    background: whitesmoke;
+    display: none;
     padding: 8px;
+    background: whitesmoke;
 }
 
 .status-bar-text {
