@@ -185,9 +185,13 @@
                     }
                 }
                 if (!domain) {
+                    var host = location.host;
+                    if (host === 'marc.beng.me') {
+                        host = 'beng.me';
+                    }
                     domain = 'http://' +
                         (Object.keys(freeChars).length + 10).toString(36) +
-                        '.' + location.host;
+                        '.' + host;
                     freeChars[domain] = CHAR_LIMIT;
                     cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
                 }
