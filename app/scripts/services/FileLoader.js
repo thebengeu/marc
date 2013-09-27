@@ -53,7 +53,7 @@ define([
 				return;
 			}
 
-			var documentTitle = document.title;
+			var documentTitle = 'm(arc)';
 
 			var path = file.get('path');
 			var id = file.get('id');
