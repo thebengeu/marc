@@ -155,67 +155,85 @@
     var directory = localStorage.getItem('LSD:directory');
     directory = directory ? JSON.parse(directory) : {};
 
-    return {
-        getRemoteItem: function (key, callback) {
-            var entry = directory[key];
-            var domain = entry && entry.domain;
-            if (domain) {
-                cds[domain].getItem(key, function (data) {
-                    callback(data.value);
-                });
-            } else {
-                callback();
-            }
-        },
-        setRemoteItem: function (key, value) {
-            var length = key.length + value.length;
+    var getRemoteItem = function (key, callback) {
+        var entry = directory[key];
+        var domain = entry && entry.domain;
+        if (domain) {
+            cds[domain].getItem(key, function (data) {
+                callback(data.value);
+            });
+        } else {
+            callback();
+        }
+    };
 
-            var entry = directory[key];
-            var domain = entry && entry.domain;
-            if (entry && length - entry.length > freeChars[domain]) {
-                cds[domain].removeItem(key);
-                entry = undefined;
-            }
+    var setRemoteItem = function (key, value) {
+        var length = key.length + value.length;
 
-            if (!entry) {
-                for (var dom in freeChars) {
-                    if (freeChars[dom] > length) {
-                        domain = dom;
-                        break;
-                    }
-                }
-                if (!domain) {
-                    var host = location.host;
-                    if (host === 'marc.beng.me') {
-                        host = 'beng.me';
-                    }
-                    domain = window.location.protocol + '//' +
-                        (Object.keys(freeChars).length + 10).toString(36) +
-                        '.' + host;
-                    freeChars[domain] = CHAR_LIMIT;
-                    cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
+        var entry = directory[key];
+        var domain = entry && entry.domain;
+        if (entry && length - entry.length > freeChars[domain]) {
+            cds[domain].removeItem(key);
+            entry = undefined;
+        }
+
+        if (!entry) {
+            for (var dom in freeChars) {
+                if (freeChars[dom] > length) {
+                    domain = dom;
+                    break;
                 }
             }
-            cds[domain].setItem(key, value);
-            freeChars[domain] -= length;
+            if (!domain) {
+                var host = location.host;
+                if (host === 'marc.beng.me') {
+                    host = 'beng.me';
+                }
+                domain = window.location.protocol + '//' +
+                    (Object.keys(freeChars).length + 10).toString(36) +
+                    '.' + host;
+                freeChars[domain] = CHAR_LIMIT;
+                cds[domain] = new CrossDomainStorage(domain, '/LSD.html');
+            }
+        }
+        cds[domain].setItem(key, value);
+        freeChars[domain] -= length;
+        localStorage['LSD:freeChars'] = JSON.stringify(freeChars);
+        directory[key] = {
+            domain: domain,
+            length: length
+        };
+        localStorage['LSD:directory'] = JSON.stringify(directory);
+    };
+
+    var removeRemoteItem = function (key) {
+        var entry = directory[key];
+        var domain = entry && entry.domain;
+        if (domain) {
+            cds[domain].removeItem(key);
+            freeChars[domain] += entry.length;
             localStorage['LSD:freeChars'] = JSON.stringify(freeChars);
-            directory[key] = {
-                domain: domain,
-                length: length
-            };
+            delete directory[key];
             localStorage['LSD:directory'] = JSON.stringify(directory);
-        },
-        removeRemoteItem: function (key) {
-            var entry = directory[key];
-            var domain = entry && entry.domain;
-            if (domain) {
-                cds[domain].removeItem(key);
-                freeChars[domain] += entry.length;
-                localStorage['LSD:freeChars'] = JSON.stringify(freeChars);
-                delete directory[key];
-                localStorage['LSD:directory'] = JSON.stringify(directory);
-            }
-        },
+        }
+    };
+
+    if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        getRemoteItem = function (key, callback) {
+            callback(localStorage.getItem(key));
+        };
+        setRemoteItem = function (key, value) {
+            localStorage.setItem(key, value);
+        };
+        removeRemoteItem = function (key) {
+            localStorage.removeItem(key);
+        };
+    }
+
+    return {
+        getRemoteItem: getRemoteItem,
+        setRemoteItem: setRemoteItem,
+        removeRemoteItem: removeRemoteItem,
         getItem: function (key) {
             return localStorage.getItem(key);
         },
