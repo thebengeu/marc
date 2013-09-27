@@ -36,8 +36,8 @@ each file you add, so you can read even without a connection.
 - We have optimized both the server and build to have stellar scores with
   Google’s PageSpeed Insights and Yahoo’s YSlow.
 - We probably have one of your favorite code color schemes.
-- m(arc) includes its own source code.
-- We broke the localStorage storage barrier! (Though Firefox is too smart for that :( )
-- You can enjoy the wholesome goodness of unlimited localStorage too! With
-  LSD.js (Local Storage, Distributed)
-
+- m(arc) includes its own source code. Read it using it.
+- We broke the localStorage storage barrier! (Though Firefox is too smart for
+  that :( )
+- You can enjoy the wholesome goodness of unlimited localStorage too, with our
+  LSD.js (Local Storage, Distributed) library!
