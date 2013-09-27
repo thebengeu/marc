@@ -2,7 +2,7 @@
 define(function () {
     'use strict';
 
-     /**
+    /**
      * This ensures a singleton of the Context module.
      */
     var instance = null;
@@ -14,19 +14,19 @@ define(function () {
     var context = function () {
         var sidebar = null;
 
-        var setSidebar = function(s) {
+        var setSidebar = function (s) {
             sidebar = s;
         };
 
-        var getSidebar = function() {
+        var getSidebar = function () {
             return sidebar;
         };
 
         return {
-            setSidebar: function(sidebar) {
+            setSidebar: function (sidebar) {
                 return setSidebar(sidebar);
             },
-            getSidebar: function() {
+            getSidebar: function () {
                 return getSidebar();
             }
         };

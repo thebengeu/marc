@@ -218,7 +218,7 @@
         }
     };
 
-    if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         getRemoteItem = function (key, callback) {
             callback(localStorage.getItem(key));
         };

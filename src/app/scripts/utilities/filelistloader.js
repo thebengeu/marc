@@ -9,10 +9,10 @@ define([
 
     // TEMP. This should be moved elsewhere once we have other sources integrated.
     // Grab the files on the server.
-    var loadDirJson = function() {
+    var loadDirJson = function () {
         $.get('dir.json', function (response) {
             var source = 'm(arc) Source Code';
-            FileList.add(_.map(response, function(path) {
+            FileList.add(_.map(response, function (path) {
                 return {
                     path: path,
                     source: 'm(arc) Source Code',

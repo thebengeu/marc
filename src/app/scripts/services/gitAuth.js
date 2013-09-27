@@ -50,7 +50,7 @@ define([
                 success();
             }
             else {
-                if (typeof showModal ===  'undefined') {
+                if (typeof showModal === 'undefined') {
                     showModal = true;
                 }
 
@@ -59,7 +59,7 @@ define([
                 if (showModal) {
                     Recent.pushRoute('add-from-github');
                 }
-                
+
                 window.location.href = 'https://github.com/login/oauth/authorize?' +
                     'client_id=' + clientId;
             }

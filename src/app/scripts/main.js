@@ -113,8 +113,7 @@ require([
     'dropbox',
     'bootstrap-switch',
     'bootstrap-select'
-], function ($, _, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter,
-    File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView, GitAuthService) {
+], function ($, _, Backbone, Sidebar, FileList, ApplicationRouter, ServicesRouter, File, Snap, enquire, FastClick, FileLoader, FileService, LSD, Context, SettingsPaneView, GitAuthService) {
     // Clear local storage if schema has breaking changes.
     if (LSD.getItem('v') !== SCHEMA_VERSION) {
         LSD.clear();

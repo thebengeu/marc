@@ -22,8 +22,8 @@ define([
          * Shows the github repository selection modal view. This is called
          * after the user has authenticated.
          */
-        showModal: function() {
-            gitAuthServiceInstance.ensureAuth(function() {
+        showModal: function () {
+            gitAuthServiceInstance.ensureAuth(function () {
                 $('#github-modal').modal({
                     show: true,
                     keyboard: true
@@ -35,7 +35,7 @@ define([
          * repository. All fields are required. If any is empty, an error
          * message will be shown to the user.
          */
-        download: function() {
+        download: function () {
             var githubUsername = $('.github-modal-username-input').val();
             var repoName = $('.github-modal-repo-input').val();
 
@@ -55,13 +55,13 @@ define([
          * The view is implemented in index.html. This acts as an initialization
          * step to hide the error message view.
          */
-        render: function() {
+        render: function () {
             $('.github-modal-alert').hide();
             return this;
         }
     });
 
-    $('#github-modal').on('hidden.bs.modal', function() {
+    $('#github-modal').on('hidden.bs.modal', function () {
         Backbone.history.navigate('');
         RecentService.popRoute();
     });

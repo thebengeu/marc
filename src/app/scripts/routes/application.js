@@ -14,11 +14,10 @@ define([
     'services/recent',
     'collections/fileList',
     'utilities/services'
-], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService,
-             dropboxService, githubService, GitAuthService, Recent, FileList, sourceToService) {
+], function ($, Backbone, CodeView, GithubModalView, extToMode, LSD, serverService, dropboxService, githubService, GitAuthService, Recent, FileList, sourceToService) {
     'use strict';
 
-    var updateCodeView = function(path, data) {
+    var updateCodeView = function (path, data) {
         var extension = path.split('.').pop();
         var mode = extToMode[extension];
         CodeView.setMode(mode);
@@ -45,7 +44,7 @@ define([
         },
         view: function (source, path) {
             var sourcePath = source + '/' + path;
-            
+
             if (source === 'recent') {
                 sourcePath = path;
             }
@@ -68,11 +67,11 @@ define([
                 }
             });
         },
-        gitauth: function() {
+        gitauth: function () {
             var urlParams = window.location.search;
             var code = urlParams.split('=')[1];
 
-            GitAuthService.getInstance().setOAuthWithCode(code, function() {
+            GitAuthService.getInstance().setOAuthWithCode(code, function () {
                 window.location = '/';
             });
         }

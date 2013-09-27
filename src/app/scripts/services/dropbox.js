@@ -8,10 +8,10 @@ define([
     'collections/fileList'
 ], function ($, _, Backbone, Dropbox, FileList) {
     'use strict';
-    
+
     var client;
     client = new Dropbox.Client({ key: 'fbor6xe2q47cmbf' });
-    
+
     // We do the following to ensure that the next time the user clicks
     // add from dropbox, the url fragment will change and the routing
     // will work
@@ -21,54 +21,54 @@ define([
 
     $('#dialog-dropbox-browser #select-folder').click(function () {
         var pathOfInterest = decodeURIComponent($('#dialog-dropbox-browser .modal-body #path').html());
-        addFolderContents(pathOfInterest, [], function() {
+        addFolderContents(pathOfInterest, [], function () {
             // console.log('folder recursion done');
         });
         $('#dialog-dropbox-browser').modal('hide');
     });
 
-    var showError = function(error) {
+    var showError = function (error) {
         switch (error.status) {
-        case Dropbox.ApiError.INVALID_TOKEN:
-            // If you're using dropbox.js, the only cause behind this error is that
-            // the user token expired.
-            // Get the user through the authentication flow again.
-            alert('Sorry, your Dropbox session has expired. Please try again.');
-            break;
+            case Dropbox.ApiError.INVALID_TOKEN:
+                // If you're using dropbox.js, the only cause behind this error is that
+                // the user token expired.
+                // Get the user through the authentication flow again.
+                alert('Sorry, your Dropbox session has expired. Please try again.');
+                break;
 
-        case Dropbox.ApiError.NOT_FOUND:
-            // The file or folder you tried to access is not in the user's Dropbox.
-            // Handling this error is specific to your application.
-            break;
+            case Dropbox.ApiError.NOT_FOUND:
+                // The file or folder you tried to access is not in the user's Dropbox.
+                // Handling this error is specific to your application.
+                break;
 
-        case Dropbox.ApiError.OVER_QUOTA:
-            // The user is over their Dropbox quota.
-            // Tell them their Dropbox is full. Refreshing the page won't help.
-            break;
+            case Dropbox.ApiError.OVER_QUOTA:
+                // The user is over their Dropbox quota.
+                // Tell them their Dropbox is full. Refreshing the page won't help.
+                break;
 
-        case Dropbox.ApiError.RATE_LIMITED:
-            // Too many API requests. Tell the user to try again later.
-            // Long-term, optimize your code to use fewer API calls.
-            alert('Sorry, we is unable to service your request. Please try again later.');
-            break;
+            case Dropbox.ApiError.RATE_LIMITED:
+                // Too many API requests. Tell the user to try again later.
+                // Long-term, optimize your code to use fewer API calls.
+                alert('Sorry, we is unable to service your request. Please try again later.');
+                break;
 
-        case Dropbox.ApiError.NETWORK_ERROR:
-            // An error occurred at the XMLHttpRequest layer.
-            // Most likely, the user's network connection is down.
-            // API calls will not succeed until the user gets back online.
-            alert('A network error has occured. Please check your Internet connection and try again.');
-            break;
+            case Dropbox.ApiError.NETWORK_ERROR:
+                // An error occurred at the XMLHttpRequest layer.
+                // Most likely, the user's network connection is down.
+                // API calls will not succeed until the user gets back online.
+                alert('A network error has occured. Please check your Internet connection and try again.');
+                break;
 
-        case Dropbox.ApiError.INVALID_PARAM:
-        case Dropbox.ApiError.OAUTH_ERROR:
-        case Dropbox.ApiError.INVALID_METHOD:
+            case Dropbox.ApiError.INVALID_PARAM:
+            case Dropbox.ApiError.OAUTH_ERROR:
+            case Dropbox.ApiError.INVALID_METHOD:
             /* falls through */
-        default:
-            // Caused by a bug in dropbox.js, in your application, or in Dropbox.
-            // Tell the user an error occurred, ask them to refresh the page.
-            alert('Sorry, it appears that an error has occured. Please try again.\n\nIf you did not grant m(arc) permission to access your Dropbox files, please exit/refresh and try again to grant the required permissions.');
-            client.reset();
-            location.replace('/#');
+            default:
+                // Caused by a bug in dropbox.js, in your application, or in Dropbox.
+                // Tell the user an error occurred, ask them to refresh the page.
+                alert('Sorry, it appears that an error has occured. Please try again.\n\nIf you did not grant m(arc) permission to access your Dropbox files, please exit/refresh and try again to grant the required permissions.');
+                client.reset();
+                location.replace('/#');
         }
     };
 
@@ -136,11 +136,11 @@ define([
             // console.log(dirContentInfo);
         });
     };
-    var showModal = function(){
-        if (client.isAuthenticated()){
+    var showModal = function () {
+        if (client.isAuthenticated()) {
             browseFolder('/');
             $('#dialog-dropbox-browser').modal('show');
-        }else{
+        } else {
             authenticate(showModal);
         }
     };
@@ -183,13 +183,13 @@ define([
             // Check if folderMonitor is clear
             // Meaning all folders recursively completed
             var allFoldersDone = true;
-            for (var path2 in folderMonitor){
+            for (var path2 in folderMonitor) {
                 // console.log(path2, folderMonitor[path2]);
-                if (folderMonitor[path2] === false){
+                if (folderMonitor[path2] === false) {
                     allFoldersDone = false;
                 }
             }
-            if (allFoldersDone){
+            if (allFoldersDone) {
                 callback();
             }
         });
@@ -216,7 +216,7 @@ define([
         authenticate: authenticate,
         showModal: showModal,
         get: function (path, callback) {
-            authenticate(function(){
+            authenticate(function () {
                 // console.log(path);
                 client.readFile(path, function (error, data) {
                     if (error) {
@@ -226,18 +226,18 @@ define([
                 });
             });
         },
-        updateFile: function(file) {
-            authenticate(function(){
+        updateFile: function (file) {
+            authenticate(function () {
                 // console.log('Dropbox UpdateFile', file, callback);
                 /*var path = file.id;
-                path = path.substr(path.indexOf("/"));
-                // console.log("Path", path);
-                this.get(path, callback);*/
+                 path = path.substr(path.indexOf("/"));
+                 // console.log("Path", path);
+                 this.get(path, callback);*/
                 FileList.add(file);
             });
         },
-        updateFolder: function(path, callback) {
-            authenticate(function(){
+        updateFolder: function (path, callback) {
+            authenticate(function () {
                 // console.log('Dropbox UpdateFolder', path, callback, file);
                 path = path.substr(path.indexOf('/'));
                 addFolderContents(path, [], callback);

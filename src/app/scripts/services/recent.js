@@ -29,11 +29,11 @@ define([
      * Pushes the given route to the top of the stack.
      * @param {string} route .
      */
-    var pushRoute = function(route) {
+    var pushRoute = function (route) {
         var routeStack = getRouteStack();
 
         var routeIndex = routeStack.indexOf(route);
-        if(routeIndex !== -1) {
+        if (routeIndex !== -1) {
             // Push to top
             routeStack.splice(routeIndex, 1, route);
         }
@@ -52,7 +52,7 @@ define([
      * otherwise.
      * @param {Array.<string>} routeStack
      */
-    var _makeSpaceInStack = function(routeStack) {
+    var _makeSpaceInStack = function (routeStack) {
         if (routeStack.length >= MAX_STACK_SIZE) {
             var route = routeStack[0];
             _removeFromFileList(route);
@@ -64,7 +64,7 @@ define([
      * Pops the most recent route off the stack.
      * @return {string} The most recent route.
      */
-    var popRoute = function() {
+    var popRoute = function () {
         var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
@@ -79,7 +79,7 @@ define([
      * See what is the most recent route in the stack without returning
      * anything.
      */
-    var peekRoute = function() {
+    var peekRoute = function () {
         var routeStack = getRouteStack();
 
         if (!_isEmpty(routeStack)) {
@@ -94,7 +94,7 @@ define([
      * @param {Array.<string>} routeStack .
      * @return {Boolean} True if the stack is empty, false otherwise.
      */
-    var _isEmpty = function(routeStack) {
+    var _isEmpty = function (routeStack) {
         return routeStack.length === 0;
     };
 
@@ -103,7 +103,7 @@ define([
      * file to show up in the sidebar's file tree.
      * @param {string} route The route to be added.
      */
-    var _addToFileList = function(route) {
+    var _addToFileList = function (route) {
         if (route !== 'add-from-github') {
             var fileModel = {
                 path: route,
@@ -119,7 +119,7 @@ define([
      * be removed from the sidebar's file tree.
      * @param {string} route The route to be removed.
      */
-    var _removeFromFileList = function(route) {
+    var _removeFromFileList = function (route) {
         var fileModel = {
             path: route,
             source: 'recent',
@@ -133,13 +133,13 @@ define([
      * file list.
      * @param {string} route The route to be removed.
      */
-    var removeRoute = function(route) {
+    var removeRoute = function (route) {
         var routeStack = getRouteStack();
 
         var routeIndex = routeStack.indexOf(route);
 
         // Route exists
-        if(routeIndex !== -1) {
+        if (routeIndex !== -1) {
             // Push to top
             routeStack.splice(routeIndex, 1);
             LSD.setItem(storageRouteKey, JSON.stringify(routeStack));
@@ -150,7 +150,7 @@ define([
      * Gets a cloned copy of the recent stack stored in the LSD.
      * @return {Array.<string>} The stack of routes.
      */
-    var getRouteStack = function() {
+    var getRouteStack = function () {
         var routeStack = JSON.parse(LSD.getItem('route'));
 
         if (routeStack) {
@@ -161,19 +161,19 @@ define([
     };
 
     return {
-        pushRoute: function(route) {
+        pushRoute: function (route) {
             return pushRoute(route);
         },
-        popRoute: function() {
+        popRoute: function () {
             return popRoute();
         },
-        peekRoute: function() {
+        peekRoute: function () {
             return peekRoute();
         },
-        removeRoute: function(route) {
+        removeRoute: function (route) {
             return removeRoute(route);
         },
-        getRoutes: function() {
+        getRoutes: function () {
             return getRouteStack();
         }
     };

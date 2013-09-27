@@ -19,7 +19,7 @@ define([
         addFromDropbox: function () {
             dropboxService.showModal();
         },
-        addFromGithub: function() {
+        addFromGithub: function () {
             GithubModalView.showModal();
 
             // Prevent duplicate removal of routes.
@@ -27,7 +27,7 @@ define([
                 Recent.popRoute();
             }
         },
-        addFromServer: function() {
+        addFromServer: function () {
             FileListLoader.loadExistingFiles();
             Backbone.history.navigate('');
         }

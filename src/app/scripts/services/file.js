@@ -16,17 +16,17 @@ define([
      * Removes the file content and file from recents.
      * @param {Backbone.Model} file .
      */
-    var removeFileContent = function(file) {
+    var removeFileContent = function (file) {
         LSD.removeRemoteItem(file.get('id'));
         RecentService.removeRoute(file.get('id'));
         Backbone.history.navigate('');
     };
 
-    var updateFile = function() {
+    var updateFile = function () {
         var sidebar = Context.getInstance().getSidebar();
         var selectedFile = sidebar.getSelectedFile();
         var source;
-        
+
         if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var path = selectedFile.id;
             var childFile = getChildFile(selectedFile.children);
@@ -39,7 +39,7 @@ define([
 
             deleteFile();
 
-            sourceToService[source].updateFolder(path, function() {
+            sourceToService[source].updateFolder(path, function () {
                 // console.log('updated');
             }, childFile);
         }
@@ -50,13 +50,13 @@ define([
 
             deleteFile();
 
-            sourceToService[source].updateFile(file, function() {
+            sourceToService[source].updateFile(file, function () {
                 // console.log('updated');
             });
         }
     };
 
-    var getChildFile = function(children) {
+    var getChildFile = function (children) {
         var sidebar = Context.getInstance().getSidebar();
 
         var i = 0, child = children[i];
@@ -73,14 +73,14 @@ define([
      * Deletes the currently selected file/folder in the side bar.
      * @param {sidebar} sidebar The application's side bar.
      */
-    var deleteFile = function() {
+    var deleteFile = function () {
         var sidebar = Context.getInstance().getSidebar();
 
         var selectedFile = sidebar.getSelectedFile();
         if (sidebar.getFileType(selectedFile) === sidebar.fileType.DIRECTORY) {
             var filesToRemove = FileList.listFilesWithDirectoryPrefix(
                 selectedFile.id);
-            _.each(filesToRemove, function(file) {
+            _.each(filesToRemove, function (file) {
                 FileList.remove(file);
             });
 
@@ -100,10 +100,10 @@ define([
     };
 
     var FileService = {
-        deleteFile: function() {
+        deleteFile: function () {
             deleteFile();
         },
-        updateFile: function() {
+        updateFile: function () {
             updateFile();
         }
     };

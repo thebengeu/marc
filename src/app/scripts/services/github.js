@@ -95,7 +95,7 @@ define([
      * @param {function} callback The callback function to execute if the
      *      request is successful.
      */
-    var getFileContent = function(githubFile, callback) {
+    var getFileContent = function (githubFile, callback) {
         var sha = githubFile.get('metadata').sha;
         var relpath = githubFile.get('metadata').relpath;
         var user = githubFile.get('metadata').user;
@@ -106,7 +106,7 @@ define([
         }
 
         $.ajax(githubApiUrl + '/repos/' + user + '/' + repo + '/contents/' +
-                relpath, { 'headers': _getGitHeaders() })
+            relpath, { 'headers': _getGitHeaders() })
             .done(function (data) {
                 // Return decoded file content to callback.
                 callback(decodeBase64(data.content));
@@ -157,7 +157,7 @@ define([
         gitAuthServiceInstance.ensureAuth(getSha);
     };
 
-    var updateRepo = function(file) {
+    var updateRepo = function (file) {
         var user = file.get('metadata').user;
         var repo = file.get('metadata').repo;
 
@@ -168,14 +168,14 @@ define([
         downloadRepository: function (username, repoName) {
             return downloadRepository(username, repoName);
         },
-        get: function(path, callback) {
+        get: function (path, callback) {
             var file = FileList.getFileWithSourceAndPath('github', path);
             return getFileContent(file, callback);
         },
-        updateFile: function(file, callback) {
+        updateFile: function (file, callback) {
             return updateRepo(file, callback);
         },
-        updateFolder: function(path, callback, file) {
+        updateFolder: function (path, callback, file) {
             return updateRepo(file, callback);
         }
     };
