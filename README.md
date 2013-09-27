@@ -1,5 +1,5 @@
-[m(arc)](http://marc.beng.me/)
-==============================
+m(arc) - http://marc.beng.me/
+=============================
 
 ## Group Members
 
