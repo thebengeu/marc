@@ -40,7 +40,7 @@ define([
             deleteFile();
 
             sourceToService[source].updateFolder(path, function() {
-                console.log('updated');
+                // console.log('updated');
             }, childFile);
         }
         else {
@@ -51,7 +51,7 @@ define([
             deleteFile();
 
             sourceToService[source].updateFile(file, function() {
-                console.log('updated');
+                // console.log('updated');
             });
         }
     };

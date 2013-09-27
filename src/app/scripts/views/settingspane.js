@@ -12,7 +12,7 @@ define([
     $('#settings-pane .make-switch').on('switch-change', function (e, data) {
         var $el = $(data.el);
         var value = data.value;
-        console.log(e, $el, value);
+        // console.log(e, $el, value);
         var elementId = $el.parent().parent().attr('id');
         Setting.set(elementId, value);
     });

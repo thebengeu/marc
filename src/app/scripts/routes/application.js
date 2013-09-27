@@ -53,7 +53,7 @@ define([
 
             LSD.getRemoteItem(sourcePath, function (data) {
                 if (data) {
-                    console.log(sourcePath + ' loaded from localStorage');
+                    // console.log(sourcePath + ' loaded from localStorage');
                     updateCodeView(path, data);
                 } else {
                     var fileModel = FileList.get(sourcePath);
