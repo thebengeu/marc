@@ -1,5 +1,5 @@
-2013-mobile-group-8
-===================
+[m(arc)](http://marc.beng.me/)
+==============================
 
 ## Group Members
 
@@ -12,16 +12,34 @@
 
 ## Contributions
 
+| Feature | Who? |
+| ------- | ---- |
+| Asynchronous file loading | Jerome |
+| Backend | Beng |
+| Code view | Beng |
+| Distributed localStorage | Beng |
+| Dropbox support | Kai Yao |
+| File/folder update/delete | Benedict |
+| File treeview | Jerome |
+| GitHub support | Benedict |
+| Online/offline event handling | Jerome |
+| Recent files | Benedict |
+| Settings | Kai Yao |
+| Syncing with backend | Jerome |
+
 ## Setup
 
 ```bash
+$ cd src
 $ npm install -g bower grunt-cli
 $ npm install
 $ bower install
 ```
 
 ##  Running During Development
+
 ```bash
+$ cd src
 $ grunt server
 # With MongoDB running:
 $ node server
