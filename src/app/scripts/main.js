@@ -88,7 +88,7 @@ require.config({
     }
 });
 
-var SCHEMA_VERSION = '0.0.2';
+var SCHEMA_VERSION = '0.0.3';
 
 require([
     'jquery',
