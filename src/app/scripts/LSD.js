@@ -189,7 +189,7 @@
                     if (host === 'marc.beng.me') {
                         host = 'beng.me';
                     }
-                    domain = 'http://' +
+                    domain = window.location.protocol + '//' +
                         (Object.keys(freeChars).length + 10).toString(36) +
                         '.' + host;
                     freeChars[domain] = CHAR_LIMIT;
