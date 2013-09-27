@@ -272,6 +272,7 @@ module.exports = function (grunt) {
                         'scripts/**',
                         'styles/**',
                         'index.html',
+                        'LSD.html',
                         'README.md',
                         'robots.txt'
                     ],
