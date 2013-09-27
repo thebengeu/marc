@@ -37,7 +37,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     app.get('/authenticate/:code', function (req, res) {
-        console.log('authenticating code: ' + req.params.code);
+        // console.log('authenticating code: ' + req.params.code);
         request.post({
             url: 'https://github.com/login/oauth/access_token',
             form: {
@@ -48,7 +48,7 @@ db.once('open', function () {
         }, function (error, response, body) {
             var token = qs.parse(body).access_token;
             var result = error || { token: token };
-            console.log(result);
+            // console.log(result);
             res.json(result);
             request({
                 url: 'https://api.github.com/user',
@@ -57,12 +57,12 @@ db.once('open', function () {
                 }
             }, function (error, response, body) {
                 var user = JSON.parse(body);
-                console.log(user);
+                // console.log(user);
                 User.findOneAndUpdate({ githubId: user.id },
                     { $addToSet: { githubTokens: token } },
                     { upsert: true },
                     function (err, user) {
-                        console.log(err, user);
+                        // console.log(err, user);
                     });
             });
         });
