@@ -316,6 +316,13 @@ module.exports = function (grunt) {
                     '**/*.{html,css,js,png,eot,svg,ttf,woff}'
                 ],
                 dest: '<%= yeoman.dist %>/manifest.appcache'
+            },
+            empty: {
+                options: {
+                    basePath: '<%= yeoman.dist %>'
+                },
+                src: [],
+                dest: '<%= yeoman.dist %>/empty.appcache'
             }
         },
         dirToJson: {
